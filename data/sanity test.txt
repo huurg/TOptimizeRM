@@ -1,0 +1,43 @@
+Sanity test
+
+T-Counts
+
+Cycle17_3:
+	- Original, Hadamards = Partition, Toffoli-N = ?, Decoder = majority: T = 1944
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 1621
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 1699
+
+hwb6_47_107
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 71
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 76
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 83
+
+hwb6-42-150
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 71
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 135
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 137
+
+mod5d4
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 16
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 8
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 8
+
+nth_prime6_inc_55_667
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 400
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 418
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 442
+
+nth_prime8_inc_3346_7618
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 3531
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 4890
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 5262
+
+ham15-109-214
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 97
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 104
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 119
+
+ham15-70
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 230
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 285
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 305

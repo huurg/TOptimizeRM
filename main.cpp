@@ -15,7 +15,6 @@ using namespace std;
 #include "LukeMat_GF2.h"
 #include "GateSynthesisMatrix.h"
 #include "SQC_Circuit.h"
-#include <linbox/field/gf2.h>
 //using namespace LinBox;
 //using namespace std;
 
@@ -64,7 +63,7 @@ GateStringSparse LempelXSynthesis(const Signature& inS);
 GateStringSparse LempelXSynthesis2(const Signature& inS);
 
 //Universal T-Count finders
-int UniversalTCount(SQC_Circuit* inC);
+int UniversalTCount(SQC_Circuit* inC, int* out_daft = NULL, double* out_exec_time = NULL);
 
 //Structured circuit generators
 Signature CircuitGenerator(const string& inS);
@@ -496,7 +495,19 @@ int main(int argc, char* argv[]) {
     g_csv_filename.clear();
 
     srand(time(NULL));
-
+/*
+    SQC_Circuit blah;
+    blah.LoadMaslovFile("hwb6_47_107.tfc");
+    blah.Print();
+    blah.ConvertFromToffoli();
+    blah.Print();
+    SQC_Circuit A,B;
+    A.Copy(blah);
+    B.Copy(blah);
+    A.Clear();
+    B.Clear();
+    blah.GetPartition(&A,&B);
+*/
     if(argc>1) {
         string this_command = argv[1];
         if(!this_command.compare("optimize")&&(argc>2)) {
@@ -684,8 +695,13 @@ int main(int argc, char* argv[]) {
                 this_circuit.Load(circuit_filename.c_str());
             }
             this_circuit.Print();
-            int result = UniversalTCount(&this_circuit);
-            cout << "Final T-count = " << result << endl;
+            double exec_time = 0;
+            int daft_t_count = 0;
+            int result = UniversalTCount(&this_circuit, &daft_t_count, &exec_time);
+            cout << "Final T-count (LempelX) = " << result << endl;
+            cout << "Final T-count (Daft) = " << daft_t_count << endl;
+            cout << "Final T-count reduced by " << (daft_t_count-result) << endl;
+            cout << "Total execution time = " << exec_time << "s" << endl;
             this_circuit.Destruct();
         }
     }
@@ -1992,28 +2008,33 @@ GateStringSparse LempelXSynthesis(const Signature& inS) {
     return out;
 }
 
-int UniversalTCount(SQC_Circuit* inC) {
+int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time) {
     //cout << "C" << endl;
     int out = 0;
+    if(out_daft) *out_daft = 0;
     //inC->Print();
     //cout << endl;
-
+    int tic = clock();
     bool exit = true;
     Signature this_sig;
     int this_part = 1;
+    cout << "UniversalTCount: Algorithm begin." << endl;
     inC->ConvertFromToffoli();
-    cout << "Converted Toffolis" << endl;
+    cout << "UniversalTCount: Converted Toffolis" << endl;
     inC->Print();
     cout << endl;
-
+    //return out;
     do {
         cout << "Partition " << this_part << endl;
         exit = !inC->NextSignature(this_sig);
         cout << "Signature" << endl;
         this_sig.print();
         GateStringSparse result = LempelXSynthesis(this_sig);
+        GateStringSparse result_daft = GateSigInterface::SigToGSS(this_sig);
         int this_t_count = result.weight(true);
+        int this_t_count_daft = result_daft.weight(true);
         out += this_t_count;
+        *out_daft += this_t_count_daft;
         cout << "T-count for partition " << this_part << " = " << this_t_count << endl;
         /*
         if(!g_algorithm.compare(DAFT_GUESS)) {
@@ -2036,5 +2057,9 @@ int UniversalTCount(SQC_Circuit* inC) {
         */
         this_part++;
     } while(!exit);
+    int toc = clock();
+    double exec_time = ((double)toc-(double)tic)/CLOCKS_PER_SEC;
+    if(out_exec_time) *out_exec_time = exec_time;
+    cout << "UniversalTCount: Algorithm end." << endl;
     return out;
 }

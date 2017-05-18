@@ -58,11 +58,12 @@ void SQC_Circuit::Copy(const SQC_Circuit& in_C) {
     }
 }
 
-void SQC_Circuit::Print(ostream* in_OS) const {
+void SQC_Circuit::Print(int start_i, int print_n, bool with_t,  ostream* in_OS) const {
     (*in_OS) << "n " << n << endl;
     (*in_OS) << "m " << max_m << endl;
     (*in_OS) << "p " << p << endl;
-    for(int i = 0; i < m; i++) {
+    if(print_n<0) print_n = m; else print_n = (start_i+print_n);
+    for(int i = start_i; i < fmin(m,print_n); i++) {
         string this_op_str;
         switch(operator_list[i][0]) {
         case SQC_OPERATOR_IDENTITY:
@@ -99,6 +100,7 @@ void SQC_Circuit::Print(ostream* in_OS) const {
             this_op_str = SQC_OPSTRING_TOFFOLI_N;
             break;
         }
+        if(with_t) (*in_OS) << "[" << i << "] = ";
         (*in_OS) << this_op_str;
         int j = 0;
         int this_qubit=0;
@@ -253,7 +255,7 @@ void SQC_Circuit::Load(const char* in_filename) {
 void SQC_Circuit::Save(const char* in_filename) const {
     ofstream my_file(in_filename);
 
-    Print(&my_file);
+    Print(false,0,-1,&my_file);
 
     my_file.close();
 }
@@ -263,17 +265,17 @@ void SQC_Circuit::Clear() {
 }
 
 bool SQC_Circuit::GetPartition(SQC_Circuit* out_Hadamards, SQC_Circuit* out_CNOT_T) {
-    cout << "QWER" << endl;
+    //cout << "QWER" << endl;
     bool out = false;
     if(operator_list&&out_Hadamards->operator_list&&out_CNOT_T->operator_list) {
         out = (bool)m;
 
         if(out) {
             // Pre-process Toffoli gates by converting them to CCZ conjugated by Hadamards on the target
-            cout << "TYUI" << endl;
+            //cout << "TYUI" << endl;
             ConvertFromToffoli();
 
-            cout << "Out 1 n = " << n << endl;
+            //cout << "Out 1 n = " << n << endl;
             int init_m = m;
             bool* qubit_used = new bool[n];
             for(int i = 0; i < n; i++) qubit_used[i] = 0;
@@ -284,14 +286,19 @@ bool SQC_Circuit::GetPartition(SQC_Circuit* out_Hadamards, SQC_Circuit* out_CNOT
                     hadamard_met[i][j] = 0;
                 }
             }
-            cout << "Out 2" << endl;
+            //cout << "Out 2" << endl;
             for(int t = 0; t < m; t++) {
                 //cout << "Out t " << t << endl;
                 // If the operator is a Hadamard
                 if(operator_list[t][0]==SQC_OPERATOR_HADAMARD) {
                     //cout << "Out Hadamard" << endl;
                     // If the qubit upon which it acts hasn't been used yet
-                    if(!qubit_used[operator_list[t][1]-1]) {
+                    if(((operator_list[t][1]-1)<0)||((operator_list[t][1]-1)>(n-1))) {
+                            cout << "Place 1: AAAAAAGHH!!! t = " << t << "; a = " << (operator_list[t][1]-1) << endl;
+                            Print(t,1);
+                            return 0;
+                    }
+                    if(qubit_used[(operator_list[t][1]-1)]==0) {
                         //cout << "Out not used yet" << endl;
                         // Add it to out_Hadamards and remove it from the circuit
                         out_Hadamards->AddOperator(operator_list[t]);
@@ -301,31 +308,84 @@ bool SQC_Circuit::GetPartition(SQC_Circuit* out_Hadamards, SQC_Circuit* out_CNOT
                         t--;
                     }
                 } else {
+
                     // If non of the qubits upon which the operator acts have been acted upon by a Hadamard (except 'free' Hadamards)
                     //bool can_move_left = 0;
                     //cout << "Out Not Hadamard" << endl;
                     switch(operator_list[t][0]) {
-                    case SQC_OPERATOR_IDENTITY:
-                        break;
-                    case SQC_OPERATOR_T:
-                    case SQC_OPERATOR_S:
-                    case SQC_OPERATOR_Z:
-                        qubit_used[operator_list[t][1]-1]=1;
-                        break;
-                    case SQC_OPERATOR_CNOT:
-                    case SQC_OPERATOR_CS:
-                        qubit_used[operator_list[t][1]-1]=1;
-                        qubit_used[operator_list[t][2]-1]=1;
-                        break;
-                    case SQC_OPERATOR_CCZ:
-                        qubit_used[operator_list[t][1]-1]=1;
-                        qubit_used[operator_list[t][2]-1]=1;
-                        qubit_used[operator_list[t][3]-1]=1;
-                        break;
+                        case SQC_OPERATOR_IDENTITY:
+                            break;
+                        case SQC_OPERATOR_T:
+                        case SQC_OPERATOR_S:
+                        case SQC_OPERATOR_Z:
+                            {
+                                if(((operator_list[t][1]-1)<0)||((operator_list[t][1]-1)>(n-1))) {
+                                        cout << "Place 2: AAAAAAGHH!!! t = " << t << "; a = " << (operator_list[t][1]-1) << endl;
+                                        Print(t,1);
+                                        return 0;
+                                }
+                                qubit_used[(operator_list[t][1]-1)]=1;
+                                //cout << "This argument(" << t << ") = " << (operator_list[t][1]-1) << endl;
+                                //cout << "qwe = " << (qubit_used[(operator_list[t][1]-1)]=1) << endl;
+                                //delete [] qubit_used;
+                                //return 0;
+                            }
+                            //cout << "This argument(" << t << ") = " << (operator_list[t][1]-1) << endl;
+                            //cout << "n = " << n << endl;
+                            //Print();
+                            break;
+                        case SQC_OPERATOR_CNOT:
+                        case SQC_OPERATOR_CS:
+                            {
+                                if(((operator_list[t][1]-1)<0)||((operator_list[t][1]-1)>(n-1))) {
+                                        cout << "Place 3a: AAAAAAGHH!!! t = " << t << "; a = " << (operator_list[t][1]-1) << endl;
+                                        Print(t,1);
+                                        return 0;
+                                }
+                                if(((operator_list[t][2]-1)<0)||((operator_list[t][2]-1)>(n-1))) {
+                                        cout << "Place 3b: AAAAAAGHH!!! t = " << t << "; a = " << (operator_list[t][2]-1) << endl;
+                                        Print(t,1);
+                                        return 0;
+                                }
+                                qubit_used[(operator_list[t][1]-1)]=1;
+                                qubit_used[(operator_list[t][2]-1)]=1;
+                            }
+
+                            break;
+                        case SQC_OPERATOR_CCZ:
+                            {
+                                if(((operator_list[t][1]-1)<0)||((operator_list[t][1]-1)>(n-1))) {
+                                        cout << "Place 4a: AAAAAAGHH!!! t = " << t << "; a = " << (operator_list[t][1]-1) << endl;
+                                        Print(t,1);
+                                        return 0;
+                                }
+                                if(((operator_list[t][2]-1)<0)||((operator_list[t][2]-1)>(n-1))) {
+                                        cout << "Place 4b: AAAAAAGHH!!! t = " << t << "; a = " << (operator_list[t][2]-1) << endl;
+                                        Print(t,1);;
+                                        return 0;
+                                }
+                                if(((operator_list[t][3]-1)<0)||((operator_list[t][3]-1)>(n-1))) {
+                                        cout << "Place 4c: AAAAAAGHH!!! t = " << t << "; a = " << (operator_list[t][3]-1) << endl;
+                                        Print(t,1);
+                                        return 0;
+                                }
+                                qubit_used[(operator_list[t][1]-1)]=1;
+                                qubit_used[(operator_list[t][2]-1)]=1;
+                                qubit_used[(operator_list[t][3]-1)]=1;
+                            }
+                            break;
                     }
+
                 }
+
             }
-            cout << "Out 3" << endl;
+            //delete [] qubit_used;
+            //return 0;
+            //for(int pk = 0; pk < n; pk++) {
+            //    cout << "qubit_used[" << pk << "] = " << qubit_used[pk] << endl;
+            //}
+            //qubit_used = NULL;
+            //cout << "Out 3" << endl;
             for(int t = 0; t < m; t++) {
                 // If the operator is a Hadamard
                 if(operator_list[t][0]==SQC_OPERATOR_HADAMARD) {
@@ -360,20 +420,22 @@ bool SQC_Circuit::GetPartition(SQC_Circuit* out_Hadamards, SQC_Circuit* out_CNOT
                     }
                 }
             }
-            cout << "Out 4 init_m = " << init_m << endl;
+            //cout << "Out 4 init_m = " << init_m << endl;
             for(int i = 0; i < init_m; i++) {
                 delete [] hadamard_met[i];
                 hadamard_met[i] = NULL;
             }
-            cout << "Out 4.1" << endl;
+            //cout << "Out 4.1" << endl;
             delete [] hadamard_met;
             hadamard_met = NULL;
-            cout << "Out 4.2 qubit_used = " << qubit_used << endl;
+            //cout << "Out 4.2 qubit_used = " << qubit_used << endl;
+
             delete [] qubit_used;
             qubit_used = NULL;
-            cout << "Out 4.3" << endl;
+
+            //cout << "Out 4.3" << endl;
             out = (bool)m;
-            cout << "Out 5" << endl;
+            //cout << "Out 5" << endl;
         }
     }
     return out;
@@ -533,7 +595,7 @@ bool SQC_Circuit::NextSignature(Signature& outsig) {
     hadamards.max_m = CNOT_Ts.max_m = max_m;
     hadamards.Construct();
     CNOT_Ts.Construct();
-    cout << "xcvxcv" << endl;
+    //cout << "xcvxcv" << endl;
     bool out = GetPartition(&hadamards, &CNOT_Ts);
     //cout << "Hadamards" << endl;
     //hadamards.Print();
@@ -541,7 +603,7 @@ bool SQC_Circuit::NextSignature(Signature& outsig) {
     //cout << "{CNOT,T}" << endl;
     //CNOT_Ts.Print();
     //cout << endl;
-    cout << "asdf" << endl;
+    //cout << "asdf" << endl;
     if((bool)CNOT_Ts.m) {
         //cout << "TYUI" << endl;
         SQC_Circuit this_V, this_W;
@@ -609,9 +671,11 @@ void SQC_Circuit::ConvertFromToffoli() {
         SQC_Circuit temp;
         temp.Copy(*this);
         AllocateAncillas(temp);
+        //temp.Print();
         temp.Destruct();
         cout << "Converted to explicit ancilla mode" << endl;
-        Print();
+
+        //return;
     }
 
     // Convert Toffoli-N to Toffoli-3's
@@ -666,7 +730,9 @@ void SQC_Circuit::ConvertFromToffoli() {
             if(operator_list[i][0] == SQC_OPERATOR_TOFFOLI_N) {
                 SQC_Circuit this_toffoli_N;
                 int n_args = GetNArgs(i);
-                int N_toff = (n_args+3)/2;
+                int N_toff;
+                N_toff = n_args;
+                if(n_args>3) N_toff = (n_args+3)/2;
 
                 this_toffoli_N.n = n;
                 this_toffoli_N.max_m = 3*fmax(0,N_toff-3)+1;
@@ -679,12 +745,12 @@ void SQC_Circuit::ConvertFromToffoli() {
                 if(N_toff>=3) {
                     for(int k = 0; k < (N_toff-3); k++) {
                         this_operator[0] = SQC_OPERATOR_TOFFOLI;
-                        this_operator[1] = ((N_toff + 1 + k)>N_toff?(n-p):0) + operator_list[i][(N_toff + 1 + k)];
+                        this_operator[1] = (n-p) + operator_list[i][(N_toff + 1 + k)];
                         this_operator[2] = ((N_toff + k)>N_toff?(n-p):0) + operator_list[i][(N_toff + k)];
-                        this_operator[3] = ((N_toff - 1 - k)>N_toff?(n-p):0) + operator_list[i][(N_toff - 1 - k)];
+                        this_operator[3] = operator_list[i][(N_toff - 1 - k)];
                         this_toffoli_N.AddOperator(this_operator);
                         this_operator[0] = SQC_OPERATOR_CS;
-                        this_operator[1] = ((N_toff - 1 - k)>N_toff?(n-p):0) + operator_list[i][(N_toff - 1 - k)];
+                        this_operator[1] = operator_list[i][(N_toff - 1 - k)];
                         this_operator[2] = ((N_toff + k)>N_toff?(n-p):0) + operator_list[i][(N_toff + k)];
                         this_operator[3] = 0;
                         this_toffoli_N.AddOperator(this_operator);
@@ -700,6 +766,35 @@ void SQC_Circuit::ConvertFromToffoli() {
                         this_operator[2] = 0;
                         this_operator[3] = 0;
                         this_toffoli_N.AddOperator(this_operator);
+                        if((this_operator[1]<=0)||(this_operator[1]>(this_toffoli_N.n))) {
+                            cout << "CPlace 1: AAAAAAGHH!!!" << endl;
+                            cout << "a = " << (operator_list[i][(2*N_toff - 3 - k)]) << endl;
+                            cout << "i = " << (2*N_toff - 3 - k) << endl;
+                            cout << "N_toff = " << (N_toff) << endl;
+
+                            this_toffoli_N.Print();
+                            return;
+                        }
+                        this_operator[0] = SQC_OPERATOR_Z;
+                        this_operator[1] = ((2*N_toff - 3 - k)>N_toff?(n-p):0) + operator_list[i][(2*N_toff - 3 - k)];
+                        this_operator[2] = 0;
+                        this_operator[3] = 0;
+                        this_toffoli_N.AddOperator(this_operator);
+                        if((this_operator[1]<=0)||(this_operator[1]>(this_toffoli_N.n))) {
+                            cout << "CPlace 2: AAAAAAGHH!!!" << endl;
+                            this_toffoli_N.Print();
+                            return;
+                        }
+                        this_operator[0] = SQC_OPERATOR_HADAMARD;
+                        this_operator[1] = ((2*N_toff - 3 - k)>N_toff?(n-p):0) + operator_list[i][(2*N_toff - 3 - k)];
+                        this_operator[2] = 0;
+                        this_operator[3] = 0;
+                        this_toffoli_N.AddOperator(this_operator);
+                        if((this_operator[1]<=0)||(this_operator[1]>(this_toffoli_N.n))) {
+                            cout << "CPlace 3: AAAAAAGHH!!!" << endl;
+                            this_toffoli_N.Print();
+                            return;
+                        }
                     }
                 } else if(N_toff == 2) {
                     this_operator[0] = SQC_OPERATOR_CNOT;
@@ -710,12 +805,27 @@ void SQC_Circuit::ConvertFromToffoli() {
                     this_operator[0] = SQC_OPERATOR_HADAMARD;
                     this_operator[1] = operator_list[i][1];
                     this_toffoli_N.AddOperator(this_operator);
+                    if((this_operator[1]<=0)||(this_operator[1]>(this_toffoli_N.n))) {
+                        cout << "CPlace 4: AAAAAAGHH!!!" << endl;
+                        this_toffoli_N.Print();
+                        return;
+                    }
                     this_operator[0] = SQC_OPERATOR_Z;
                     this_operator[1] = operator_list[i][1];
                     this_toffoli_N.AddOperator(this_operator);
+                    if((this_operator[1]<=0)||(this_operator[1]>(this_toffoli_N.n))) {
+                        cout << "CPlace 5: AAAAAAGHH!!!" << endl;
+                        this_toffoli_N.Print();
+                        return;
+                    }
                     this_operator[0] = SQC_OPERATOR_HADAMARD;
                     this_operator[1] = operator_list[i][1];
                     this_toffoli_N.AddOperator(this_operator);
+                    if((this_operator[1]<=0)||(this_operator[1]>(this_toffoli_N.n))) {
+                        cout << "CPlace 6: AAAAAAGHH!!!" << endl;
+                        this_toffoli_N.Print();
+                        return;
+                    }
                 }
                 delete [] this_operator;
 
@@ -725,7 +835,7 @@ void SQC_Circuit::ConvertFromToffoli() {
         }
     }
     cout << "Converted Toffoli-N" << endl;
-    Print();
+    //Print();
     // Convert Toffoli-4 to Toffoli-3's
     for(int i = 0; i < m; i++) {
         if(operator_list[i][0] == SQC_OPERATOR_TOFFOLI_4) {
@@ -752,7 +862,7 @@ void SQC_Circuit::ConvertFromToffoli() {
         }
     }
     cout << "Converted Toffoli-4" << endl;
-    Print();
+    //Print();
     // Convert Toffoli-3 to Hadamards and CCZ
     for(int i = 0; i < m; i++) {
         if(operator_list[i][0]==SQC_OPERATOR_TOFFOLI) {
@@ -773,7 +883,7 @@ void SQC_Circuit::ConvertFromToffoli() {
     }
     // Cancel adjacent Hadamards
     cout << "Converted Toffoli to {H,CCZ}" << endl;
-    Print();
+    //Print();
 
     //cout << "Out of print." << endl;
 
@@ -781,11 +891,11 @@ void SQC_Circuit::ConvertFromToffoli() {
         //cout << "i = " << i << endl;
         if(operator_list[i][0]==SQC_OPERATOR_HADAMARD) {
             int acting_qubit = operator_list[i][1];
-            bool qubit_used = 0;
-            for(int j = (i+1); (!qubit_used)&&(j < m); j++) {
+            bool this_qubit_used = 0;
+            for(int j = (i+1); (!this_qubit_used)&&(j < m); j++) {
                 switch(operator_list[j][0]) {
                     case SQC_OPERATOR_HADAMARD:
-                        if((!qubit_used)&&(operator_list[j][1]==acting_qubit)) {
+                        if((!this_qubit_used)&&(operator_list[j][1]==acting_qubit)) {
                             DeleteOperator(j);
                             DeleteOperator(i);
                             i--;
@@ -795,18 +905,18 @@ void SQC_Circuit::ConvertFromToffoli() {
                     case SQC_OPERATOR_Z:
                     case SQC_OPERATOR_T:
                         if(operator_list[j][1]==acting_qubit) {
-                            qubit_used = 1;
+                            this_qubit_used = 1;
                         }
                         break;
                     case SQC_OPERATOR_CS:
                     case SQC_OPERATOR_CNOT:
                         if((operator_list[j][1]==acting_qubit)||(operator_list[j][2]==acting_qubit)) {
-                            qubit_used = 1;
+                            this_qubit_used = 1;
                         }
                         break;
                     case SQC_OPERATOR_CCZ:
                         if((operator_list[j][1]==acting_qubit)||(operator_list[j][2]==acting_qubit)||(operator_list[j][3]==acting_qubit)) {
-                            qubit_used = 1;
+                            this_qubit_used = 1;
                         }
                         break;
                 }
@@ -814,7 +924,7 @@ void SQC_Circuit::ConvertFromToffoli() {
         }
     }
     cout << "Cancelled adjacent Hadamards" << endl;
-    Print();
+    //Print();
 }
 
 void SQC_Circuit::AllocateAncillas(const SQC_Circuit& in_C) {
@@ -858,19 +968,26 @@ void SQC_Circuit::AllocateAncillas(const SQC_Circuit& in_C) {
                 // Go through each gate in in_C, adding ancilla indices to each ensure they are unique for each gate
                 for(int i = 0; i < in_C.m; i++) {
                     if(in_C.operator_list[i][0]==SQC_OPERATOR_TOFFOLI_N) {
-                        bool found = 0;
+                        bool found = 0;/*
                         int a = 0;
                         while((!found)&&(a<in_C.n)) {
                             if((in_C.operator_list[i][a+1]>0)&&(in_C.operator_list[i][a+1]<=in_C.n))
                             a++;
                             else
                             found = 1;
-                        }
+                        }*/
+                        int a = in_C.GetNArgs(i);
                         int this_N_ancillas = fmax(0,a-3);
-                        AddOperator(in_C.operator_list[i]);
+                        int* this_operator = new int[n+1];
+                        for(int c = 0; c < (n+1); c++) this_operator[c] = 0;
+                        this_operator[0] = SQC_OPERATOR_TOFFOLI_N;
+                        //AddOperator(in_C.operator_list[i]);
+                        for(int j = 1; j <= a; j++) this_operator[j] = in_C.operator_list[i][j];
                         for(int j = 1; j <= this_N_ancillas; j++) {
-                            operator_list[i][a+j] = j;
+                            this_operator[a+j] = j;
                         }
+                        AddOperator(this_operator);
+                        delete [] this_operator;
                     }
                 }
             }
@@ -896,6 +1013,7 @@ void SQC_Circuit::AllocateAncillas(const SQC_Circuit& in_C) {
             }
             break;
     }
+
 }
 
 int SQC_Circuit::GetNArgs(int i) const {
@@ -930,6 +1048,9 @@ void SQC_Circuit::LoadMaslovFile(const char* in_filename) {
         int linewidth = 1000;
         char* this_line = new char[linewidth];
         my_file.getline(this_line,linewidth);
+        while(!strstr(this_line,".v")) {
+            my_file.getline(this_line,linewidth);
+        }
         char* this_tok = NULL;
         this_tok = strtok(this_line,",");
         int this_n = 0;
@@ -943,27 +1064,36 @@ void SQC_Circuit::LoadMaslovFile(const char* in_filename) {
         ancilla_mode = SQC_ANCILLA_MODE_PER_GATE;
         Construct();
         my_file.getline(this_line,linewidth);
-        my_file.getline(this_line,linewidth);
-        my_file.getline(this_line,linewidth);
+        while(!strstr(this_line,"BEGIN")) {
+            my_file.getline(this_line,linewidth);
+        }
         my_file.getline(this_line,linewidth);
         int* this_operator = new int[n+1];
         this_operator[0] = SQC_OPERATOR_TOFFOLI_N;
         while(!my_file.eof()) {
-            if(strlen(this_line)&&(this_line[0]=='t')) {
+            if(strlen(this_line)&&((this_line[0]=='t')||(this_line[0]=='T'))) {
                 char* this_args;
                 this_args = strchr(this_line,' ');
                 this_args+=1;
                 cout << "this_args = " << this_args << endl;
                 for(int i = 1; i < (n+1); i++) this_operator[i] = 0;
+                int* these_args = new int[n];
                 char* this_arg = NULL;
                 this_arg = strtok(this_args,",");
-                if(this_arg) this_operator[1] = this_arg[0] - 'a' + 1;
-                int c = 2;
-                while((this_arg = strtok(NULL,","))&&(c<=n)) {
-                    this_operator[c] = this_arg[0] - 'a' + 1;
+                int c = 0;
+                if(this_arg) {
+                    these_args[0] = this_arg[0] - 'a' + 1;
                     c++;
                 }
+                while((this_arg = strtok(NULL,","))&&(c<=n)) {
+                    these_args[c] = this_arg[0] - 'a' + 1;
+                    c++;
+                }
+                for(int i = 0; i < c; i++) {
+                    this_operator[i+1] = these_args[(i+c-1)%c];
+                }
                 AddOperator(this_operator);
+                delete [] these_args;
             }
             my_file.getline(this_line,linewidth);
         }

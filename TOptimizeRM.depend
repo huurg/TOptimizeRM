@@ -1,0 +1,221 @@
+# depslib dependency file v1.0
+1495148106 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\main.cpp
+	<iostream>
+	"Signature.h"
+	"GateStringSparse.h"
+	"GateSigInterface.h"
+	"LukeMaths.h"
+	"LukeBool.h"
+	"BoolMat.h"
+	"BMSparse.h"
+	"Interface_SigBMS.h"
+	"Interface_BMSGSS.h"
+	"LukeInt.h"
+	"Bool_Signature.h"
+	"LukeMat_GF2.h"
+	"GateSynthesisMatrix.h"
+	"SQC_Circuit.h"
+	<climits>
+	<vector>
+	<cmath>
+	<ctime>
+	<string>
+	<sstream>
+	<fstream>
+	<ctime>
+	<utility>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\signature.h
+	<iostream>
+	<unordered_set>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\gatestringsparse.h
+	<iostream>
+	<unordered_set>
+	<vector>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\gatesiginterface.h
+	"GateStringSparse.h"
+	"Signature.h"
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\lukemaths.h
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\lukebool.h
+	<iostream>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\boolmat.h
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\bmsparse.h
+	<iostream>
+	<ostream>
+	<unordered_set>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\interface_sigbms.h
+	"Signature.h"
+	"BMSparse.h"
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\interface_bmsgss.h
+	<iostream>
+	"BMSparse.h"
+	"GateStringSparse.h"
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\lukeint.h
+	<iostream>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\bool_signature.h
+	<iostream>
+	<ostream>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\lukemat_gf2.h
+	<iostream>
+	<ostream>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\gatesynthesismatrix.h
+
+1495144794 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\sqc_circuit.h
+	<iostream>
+	<ostream>
+	"Signature.h"
+	"BMSparse.h"
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\bmsparse.cpp
+	"BMSparse.h"
+	<iostream>
+	<cmath>
+	<ostream>
+	<unordered_set>
+	<cstring>
+	<vector>
+	<ctime>
+	<fstream>
+	<sstream>
+	"LukeInt.h"
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\bool_signature.cpp
+	"Bool_Signature.h"
+	<iostream>
+	<ostream>
+	<cstdlib>
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\boolmat.cpp
+	"BoolMat.h"
+	<iostream>
+	<cmath>
+	<fstream>
+	"LukeMaths.h"
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\gatesiginterface.cpp
+	"GateSigInterface.h"
+	<iostream>
+	"GateStringSparse.h"
+	"Signature.h"
+	<unordered_set>
+
+1495136739 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\gatestringsparse.cpp
+	"GateStringSparse.h"
+	<iostream>
+	<unordered_set>
+	<cmath>
+	<vector>
+	<ctime>
+	"LukeMaths.h"
+	"LukeBool.h"
+	"LukeInt.h"
+	"BoolMat.h"
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\gatesynthesismatrix.cpp
+	"GateSynthesisMatrix.h"
+	<iostream>
+	<cmath>
+	"LukeMat_GF2.h"
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\interface_bmsgss.cpp
+	"Interface_BMSGSS.h"
+	<iostream>
+	"BMSparse.h"
+	"GateStringSparse.h"
+	<unordered_set>
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\interface_sigbms.cpp
+	"Interface_SigBMS.h"
+	<iostream>
+	"Signature.h"
+	"BMSparse.h"
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\lukebool.cpp
+	"LukeBool.h"
+	<iostream>
+	<cmath>
+	<utility>
+	<cstring>
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\lukeint.cpp
+	"LukeInt.h"
+	<iostream>
+	<utility>
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\lukemat_gf2.cpp
+	"LukeMat_GF2.h"
+	<iostream>
+	<ostream>
+	<cmath>
+	<cstdlib>
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\lukemaths.cpp
+	"LukeMaths.h"
+	<iostream>
+	<cmath>
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\menu.cpp
+	"Menu.h"
+	"MenuUtils.h"
+	<cstring>
+	<string>
+	<iostream>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\menu.h
+	<cstring>
+	<string>
+	<iostream>
+
+1495015040 f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\include\menuutils.h
+	<string>
+	<iostream>
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\menuutils.cpp
+	"MenuUtils.h"
+	<cstring>
+	<string>
+	<iostream>
+
+1495015040 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\signature.cpp
+	"Signature.h"
+	<iostream>
+	<unordered_set>
+	<utility>
+	<iterator>
+	<fstream>
+	<cstring>
+	<cstdlib>
+	"LukeBool.h"
+	"LukeInt.h"
+	"Bool_Signature.h"
+
+1495148683 source:f:\luketop home\personal\uni\phd\work\toptimizerm\versions\github\toptimizerm\source\sqc_circuit.cpp
+	"SQC_Circuit.h"
+	<iostream>
+	<ostream>
+	<string>
+	<cstring>
+	<fstream>
+	<utility>
+	<cmath>
+	"Signature.h"
+	"BMSparse.h"
+	"LukeMat_GF2.h"
+	"Interface_SigBMS.h"
+	"GateSynthesisMatrix.h"
+	"GateStringSparse.h"
+	"GateSigInterface.h"
+	"Interface_BMSGSS.h"
+

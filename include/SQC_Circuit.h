@@ -72,7 +72,7 @@ struct SQC_Circuit {
     void Destruct();
     void Copy(const SQC_Circuit& in_C);
 
-    void Print(ostream* in_OS = &cout) const;
+    void Print(int start_i = 0, int print_n = -1,bool with_t = true,  ostream* in_OS = &cout) const;
     void Load(const char* in_filename);
     void LoadMaslovFile(const char* in_filename);
     void Save(const char* in_filename) const;
