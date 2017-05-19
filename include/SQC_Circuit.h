@@ -11,6 +11,7 @@ typedef int* SQC_Operator; // 0^th element = Operator type, rest of elements = q
 typedef SQC_Operator* SQC_Operator_List;
 
 const int SQC_DEFAULT_MAX_M = 1;
+const int SQC_CIRCUIT_EXPAND = 100;
 
 enum SQC_AncillaMode {
     SQC_ANCILLA_MODE_MANUAL,
@@ -20,7 +21,8 @@ enum SQC_AncillaMode {
 
 enum SQC_ToffoliNMode {
     SQC_TOFFOLI_N_MODE_TOFF3, // Concatenate Toffoli-3 gates
-    SQC_TOFFOLI_N_MODE_JONES   // Add controls using Cody Jones method
+    SQC_TOFFOLI_N_MODE_JONES,   // Add controls using Cody Jones method
+    SQC_TOFFOLI_N_MODE_PSCJ     // Peter Selinger - Cody Jones method
 };
 
 enum SQC_Operator_Label {
@@ -34,7 +36,8 @@ enum SQC_Operator_Label {
         SQC_OPERATOR_Z,
         SQC_OPERATOR_TOFFOLI,
         SQC_OPERATOR_TOFFOLI_4,
-        SQC_OPERATOR_TOFFOLI_N
+        SQC_OPERATOR_TOFFOLI_N,
+        SQC_OPERATOR_PARTITION
 
 // To add operator, update:
 //  Print, AddOperator, GetPartition
@@ -50,6 +53,7 @@ constexpr static char SQC_OPSTRING_Z[] = "Z";
 constexpr static char SQC_OPSTRING_TOFFOLI[] = "Toffoli";
 constexpr static char SQC_OPSTRING_TOFFOLI_4[] = "Toffoli-4";
 constexpr static char SQC_OPSTRING_TOFFOLI_N[] = "t"; // N is given by number of arguments using formula N = (nargs+3)/2
+constexpr static char SQC_OPSTRING_PARTITION[] = "P";
 
 
 struct SQC_Circuit {
@@ -63,7 +67,7 @@ struct SQC_Circuit {
     int max_m = SQC_DEFAULT_MAX_M; //Max number of operators
     SQC_Operator_List operator_list = NULL;
     SQC_AncillaMode ancilla_mode = SQC_ANCILLA_MODE_MANUAL;
-    SQC_ToffoliNMode toffoli_n_mode = SQC_TOFFOLI_N_MODE_JONES;
+    SQC_ToffoliNMode toffoli_n_mode = SQC_TOFFOLI_N_MODE_PSCJ;
 
     // Methods
 
@@ -72,7 +76,8 @@ struct SQC_Circuit {
     void Destruct();
     void Copy(const SQC_Circuit& in_C);
 
-    void Print(ostream* in_OS = &cout) const;
+    void Print(ostream* in_OS, int start_i = 0, int print_n = -1,bool with_t = true) const;
+    void Print() const;
     void Load(const char* in_filename);
     void LoadMaslovFile(const char* in_filename);
     void Save(const char* in_filename) const;

@@ -6,6 +6,7 @@ using namespace std;
 #include <unordered_set>
 #include <cmath>
 #include <vector>
+#include <ctime>
 
 #include "LukeMaths.h"
 #include "LukeBool.h"

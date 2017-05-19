@@ -5,6 +5,8 @@ using namespace std;
 
 #include <cmath>
 #include "LukeMat_GF2.h"
+#include "LukeConsoleOut.h"
+using namespace LukeConsoleOut;
 
 bool** GateSynthesisMatrix::from_signature(bool*** S, int n, int& mp) {
     int N = (int)pow(2,n);
@@ -134,7 +136,7 @@ void GateSynthesisMatrix::LempelX(bool** A, int n, int m, int& omp) {
     int round = 0;
     while(found&&(round<m)) {
         found = 0;
-        cout << "Round = " << round << endl;
+        LOut(); cout << "Round = " << round << endl;
         LukeMat_GF2::copy(A,n,this_m,A_ext);
         for(int j1 = 0; (!found)&&(j1 < (this_m-1)); j1++) {
             for(int j2 = (j1+1); (!found)&&(j2 < this_m); j2++) {
