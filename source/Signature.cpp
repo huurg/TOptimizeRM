@@ -13,6 +13,8 @@ using namespace std;
 #include "LukeBool.h"
 #include "LukeInt.h"
 #include "Bool_Signature.h"
+#include "LukeConsoleOut.h"
+using namespace LukeConsoleOut;
 
 Signature::Signature(int in_n) {
     n = in_n;
@@ -306,11 +308,11 @@ void Signature::print(ostream& inOS) const {
             c_count++;
             break;
         default:
-            inOS << "Error! Bad index." << endl;
+            LOut(); inOS << "Error! Bad index." << endl;
             break;
         }
     }
-    inOS << "Signature: ";
+    LOut(); inOS << "Signature: ";
     //cout << "a_i:" << endl;
     for(int i = 0; i < a_count; i++) {
         inOS << "x" << this_a[i];

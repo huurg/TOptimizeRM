@@ -1,0 +1,84 @@
+Sanity test
+
+T-Counts
+
+Cycle17_3:
+	- Original, Hadamards = Partition, Toffoli-N = ?, Decoder = majority: T = 1944
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 1483
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 1485
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 3916
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 4098
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 4318
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 4320
+
+hwb6_47_107
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 71
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 72
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 79
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 76
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 83
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 83
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 83
+
+hwb6-42-150
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 71
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 115
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 132
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 122
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 136
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 137
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 144
+
+mod5d4
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 16
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 8
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 8
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 8
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 8
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 8
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 8
+
+nth_prime6_inc_55_667
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 400
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 377
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 409
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 583
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 605
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 674
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 678
+
+nth_prime8_inc_3346_7618
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 3531
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 4711
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 5278
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 5323
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 6131
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 5725
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 6341
+
+ham15-109-214
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 97
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 94
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 108
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 98
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 116
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 121
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 128
+
+ham15-70
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 230
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 263
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 286
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 350
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 368
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 407
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 410
+
+ham15tc1
+	- Original?, Hadamards = Partition, Toffoli-N = ?, Decoder = T-Par: T = 1019
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = LempelX. T = 1051
+	- New, Hadamards = Partition, Toffoli-N = Cody Jones, Decoder = Daft. T = 1103
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = LempelX. T = 1534
+	- New, Hadamards = Partition, Toffoli-N = PSCJ, Decoder = Daft. T = 1621
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = LempelX. T = 1699
+	- New, Hadamards = Partition, Toffoli-N = Toff3, Decoder = Daft. T = 1699
