@@ -6,10 +6,13 @@ using namespace std;
 
 #include <ostream>
 
+extern int dout_n;
+
 namespace LukeConsoleOut {
     extern int LOut_Pad;
 
     ostream& LOut();
+    void dout();
 }
 
 

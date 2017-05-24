@@ -5,34 +5,53 @@ using namespace std;
 
 #include "GateStringSparse.h"
 #include "Signature.h"
+#include "LukeConsoleOut.h"
+using namespace LukeConsoleOut;
 
 #include <unordered_set>
 
 GateStringSparse GateSigInterface::SigToGSS(const Signature& inSig) {
+    //cout << "GSS begin" << endl;
     int n = inSig.get_n();
     GateStringSparse out(n);
 
     int n_a = inSig.Na();
     int n_b = inSig.Nb();
     int n_c = inSig.Nc();
-
-    int a_i[n_a], b_j[n_b], b_k[n_b], c_l[n_c], c_m[n_c], c_p[n_c];
+//dout();
+//cout << n_a << " " << n_b << " " << n_c << endl;
+    //int a_i[n_a], b_j[n_b], b_k[n_b], c_l[n_c], c_m[n_c], c_p[n_c];
+    int* a_i = new int[n_a];
+    int* b_j = new int[n_b];
+    int* b_k = new int[n_b];
+    int* c_l = new int[n_c];
+    int* c_m = new int[n_c];
+    int* c_p = new int[n_c];
+//dout();
     int a_count = inSig.getA(a_i);
+
     int b_count = inSig.getB(b_j,b_k);
+
     int c_count = inSig.getC(c_l,c_m,c_p);
 
     for(int i = 0; i < a_count; i++) {
         out = out + GateStringSparse::expandLin(n, a_i[i]);
     }
-
+//dout();
     for(int i = 0; i < b_count; i++) {
         out = out + GateStringSparse::expandQuad(n, b_j[i], b_k[i]);
     }
-
+//dout();
     for(int i = 0; i < c_count; i++) {
         out = out + GateStringSparse::expandCube(n, c_l[i], c_m[i], c_p[i]);
     }
-
+    //cout << "GSS end" << endl;
+    delete [] a_i;
+    delete [] b_j;
+    delete [] b_k;
+    delete [] c_l;
+    delete [] c_m;
+    delete [] c_p;
     return out;
 }
 

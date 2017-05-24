@@ -2079,6 +2079,7 @@ int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int*
         *out_daft += this_t_count_daft;
         LOut_Pad--;
         LOut() << "T-count for partition " << this_part << " = " << this_t_count << endl;
+        LOut() << "Total T-count so far = " << out << endl;
         LOut() << "T-gate per gate for this partition " << this_part << " = " << (double)this_t_count/(double)reduces_gates << endl;
         LOut() << "Hadamard ancillas for partition " << this_part << " = " << inC->hadamard_mode_max_ancillas << endl;
         LOut_Pad++;

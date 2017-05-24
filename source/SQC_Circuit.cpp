@@ -487,11 +487,15 @@ bool SQC_Circuit::GetPartition(SQC_Circuit* out_Hadamards, SQC_Circuit* out_CNOT
 bool SQC_Circuit::GetPartition(SQC_Circuit* out) {
     bool outb = 0;
 
+    //cout << "JYGDSZF" << endl;
     ConvertFromToffoli();
+    //cout << "vbmhgcyj" << endl;
     //LOut() << "This circuit" << endl;
     //Print();
     //LOut() << endl;
+    //cout << "VBTRSTRG" << endl;
     ConvertHadamard(out,hadamard_mode_max_ancillas);
+    //cout << "vbnxt" << endl;
     outb = (bool)m;
 
     return outb;
@@ -583,6 +587,7 @@ void SQC_Circuit::DecompositionVW(SQC_Circuit* out_V, SQC_Circuit* out_W) const 
 }
 
 BMSparse SQC_Circuit::toGateSynthesisMatrix() const {
+    //cout << "tGSM start" << endl;
     Signature out(n);
 
     BMSparse A(n,0);
@@ -591,6 +596,10 @@ BMSparse SQC_Circuit::toGateSynthesisMatrix() const {
     //P.printFull();
 
     for(int t = 0; t < m; t++) {
+        //cout << "t = " << t << endl;
+        //cout << "n = " << n << endl;
+        //for(int c = 0; c < (n+1); c++) cout << (int)operator_list[t][c];
+        //cout << endl;
         Signature temp_sig(n);
         switch(operator_list[t][0]) {
             case SQC_OPERATOR_CNOT:
@@ -602,14 +611,19 @@ BMSparse SQC_Circuit::toGateSynthesisMatrix() const {
                 temp_sig.set(operator_list[t][1]);
                 break;
             case SQC_OPERATOR_CS:
+
                 temp_sig.set(operator_list[t][1], operator_list[t][2]);
+
                 break;
             case SQC_OPERATOR_CCZ:
                 temp_sig.set(operator_list[t][1], operator_list[t][2], operator_list[t][3]);
                 break;
         }
+
         if(!temp_sig.isEmpty()) {
+            //temp_sig.print();
             GateStringSparse new_cols_GSS = GateSigInterface::SigToGSS(temp_sig);
+
             BMSparse new_cols = Interface_BMSGSS::GSSToBMS(new_cols_GSS);
             //cout << "new cols" << endl;
             //new_cols.printFull();
@@ -618,6 +632,8 @@ BMSparse SQC_Circuit::toGateSynthesisMatrix() const {
             //new_cols.printFull();
             A = A && new_cols;
         }
+
+        //cout << "end iter" << endl;
     }
 
     //cout << "A" << endl;
@@ -639,7 +655,7 @@ BMSparse SQC_Circuit::toGateSynthesisMatrix() const {
 
     //cout << "A'" << endl;
     //A.printFull();
-
+    //cout << "tGSM end" << endl;
     return A;
 }
 
@@ -667,16 +683,19 @@ bool SQC_Circuit::NextSignature(Signature& outsig) {
             break;
         case SQC_HADAMARD_MODE_MONTANARO: {
             {
+                //cout << "SGHGSA" << endl;
                 out = GetPartition(&CNOT_Ts);
+                //cout << "jhjgh" << endl;
             }
             break;
         }
     }
+
     //LOut() << "This circuit" << endl;
     //Print();
     //LOut() << endl;
     //LOut() << "{CNOT,T}" << endl;
-    //CNOT_Ts.Print();
+    //CNOT_Ts.Print(&cout,0,70);
     //LOut() << endl;
     if((bool)CNOT_Ts.m) {
         //cout << "TYUI" << endl;
@@ -700,8 +719,10 @@ bool SQC_Circuit::NextSignature(Signature& outsig) {
         //outsig.print();
         this_V.Destruct();
         this_W.Destruct();
+        //cout << "ZCXG" << endl;
     }
     CNOT_Ts.Destruct();
+
 
     return out;
 }
@@ -931,11 +952,13 @@ void SQC_Circuit::ConvertFromToffoli() {
                         this_operator[2] = (((N_toff + k)>N_toff)?(n-p):0) + operator_list[i][(N_toff + k)];
                         this_operator[3] = 0;
                         this_toffoli_N.AddOperator(this_operator);
-                        this_operator[0] = SQC_OPERATOR_PARTITION;
-                        this_operator[1] = operator_list[i][(N_toff - 1 - k)];
-                        this_operator[2] = (((N_toff + k)>N_toff)?(n-p):0) + operator_list[i][(N_toff + k)];
-                        this_operator[3] = 0;
-                        this_toffoli_N.AddOperator(this_operator);
+                        if(hadamard_mode==SQC_HADAMARD_MODE_PARTITION) {
+                            this_operator[0] = SQC_OPERATOR_PARTITION;
+                            this_operator[1] = operator_list[i][(N_toff - 1 - k)];
+                            this_operator[2] = (((N_toff + k)>N_toff)?(n-p):0) + operator_list[i][(N_toff + k)];
+                            this_operator[3] = 0;
+                            this_toffoli_N.AddOperator(this_operator);
+                        }
                     }
 
                     /*{
@@ -959,9 +982,10 @@ void SQC_Circuit::ConvertFromToffoli() {
                     this_operator[3] = (n-p) + operator_list[i][(2*N_toff - 3)];
                     this_toffoli_N.AddOperator(this_operator);
 
-                    for(int c = 0; c < (n+1); c++) this_operator[c] = 0;
-                    this_operator[0] = SQC_OPERATOR_PARTITION;
-
+                    if(hadamard_mode==SQC_HADAMARD_MODE_PARTITION) {
+                        for(int c = 0; c < (n+1); c++) this_operator[c] = 0;
+                        this_operator[0] = SQC_OPERATOR_PARTITION;
+                    }
                     /*{
                         int ih = 1;
                         for(int c = 0; c < (N_toff-3); c++) {
@@ -977,11 +1001,13 @@ void SQC_Circuit::ConvertFromToffoli() {
                     }*/
 
                     for(int k = 0; k < (N_toff-3); k++) {
-                        this_operator[0] = SQC_OPERATOR_PARTITION;
-                        this_operator[1] = operator_list[i][(3 + k)];
-                        this_operator[2] = (((2*N_toff - 4 - k)>N_toff)?(n-p):0) + operator_list[i][(2*N_toff - 4 - k)];
-                        this_operator[3] = 0;
-                        this_toffoli_N.AddOperator(this_operator);
+                        if(hadamard_mode==SQC_HADAMARD_MODE_PARTITION) {
+                            this_operator[0] = SQC_OPERATOR_PARTITION;
+                            this_operator[1] = operator_list[i][(3 + k)];
+                            this_operator[2] = (((2*N_toff - 4 - k)>N_toff)?(n-p):0) + operator_list[i][(2*N_toff - 4 - k)];
+                            this_operator[3] = 0;
+                            this_toffoli_N.AddOperator(this_operator);
+                        }
                         this_operator[0] = SQC_OPERATOR_CS;
                         this_operator[1] = operator_list[i][(3 + k)];
                         this_operator[2] = (((2*N_toff - 4 - k)>N_toff)?(n-p):0) + operator_list[i][(2*N_toff - 4 - k)];
@@ -1376,6 +1402,7 @@ void SQC_Circuit::Print() const {
 }
 
 void SQC_Circuit::ConvertHadamard(SQC_Circuit* out, int max_ancillas) {
+    //cout << "Go" << endl;
     //cout << "max_ancillas = " << hadamard_mode_max_ancillas << endl;
     // Assumes circuit is composed only of {T, CS, CCZ, Clifford}
     // First determine the number of hadamards in the circuit
@@ -1398,30 +1425,35 @@ void SQC_Circuit::ConvertHadamard(SQC_Circuit* out, int max_ancillas) {
         int i = 0;
         bool exit = 0;
         int* this_operator = new int[out->n+1];
-        for(int c = 0; c < out->n+1; c++) this_operator[c] = 0;
-        this_operator[0] = SQC_OPERATOR_CS;
 
         while(!exit) {
-            if(operator_list[i][0] == SQC_OPERATOR_HADAMARD) {
-                this_operator[1] = operator_list[i][1];
+            for(int c = 0; c < out->n+1; c++) this_operator[c] = 0;
+            if(operator_list[0][0] == SQC_OPERATOR_HADAMARD) {
+                //cout << "Adding hadamard" << endl;
+                this_operator[0] = SQC_OPERATOR_CS;
+                this_operator[1] = operator_list[0][1];
                 this_operator[2] = (n+1+hadamard_count);
                 out->AddOperator(this_operator);
-                DeleteOperator(i);
-                i--;
+                DeleteOperator(0);
                 hadamard_count++;
             } else {
-                out->AddOperator(operator_list[i]);
-                DeleteOperator(i);
-                i--;
+                //cout << "Adding other" << endl;
+                for(int c = 0; c < (n+1); c++) {
+                    //cout << operator_list[0][c];
+                    this_operator[c] = operator_list[0][c];
+                }
+                //cout << endl;
+                out->AddOperator(this_operator);
+                DeleteOperator(0);
             }
 
-            i++;
-            if((hadamard_count>=max_ancillas)||(i>=m)) {
+            if((hadamard_count>=max_ancillas)||(0>=m)) {
                 exit = 1;
             }
         }
         delete [] this_operator;
     }
+    //cout << "Stop" << endl;
 }
 
 int SQC_Circuit::CountOperators(SQC_Operator_Label in_op) const {
