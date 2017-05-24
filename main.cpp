@@ -65,7 +65,7 @@ GateStringSparse LempelXSynthesis(const Signature& inS);
 GateStringSparse LempelXSynthesis2(const Signature& inS);
 
 //Universal T-Count finders
-int UniversalTCount(SQC_Circuit* inC, int* out_daft = NULL, double* out_exec_time = NULL, int* n_parts = NULL);
+int UniversalTCount(SQC_Circuit* inC, int* out_daft = NULL, double* out_exec_time = NULL, int* n_parts = NULL, int* n_hadancs = NULL);
 
 //Structured circuit generators
 Signature CircuitGenerator(const string& inS);
@@ -497,19 +497,25 @@ int main(int argc, char* argv[]) {
     g_csv_filename.clear();
 
     srand(time(NULL));
-/*
+    /*
     SQC_Circuit blah;
-    blah.LoadMaslovFile("hwb6_47_107.tfc");
+    blah.Load("test.sqc");
     blah.Print();
+    blah.toffoli_n_mode = SQC_TOFFOLI_N_MODE_TOFF3;
     blah.ConvertFromToffoli();
-    blah.Print();
+    blah.Print();*/
+    /*
     SQC_Circuit A,B;
     A.Copy(blah);
     B.Copy(blah);
     A.Clear();
     B.Clear();
     blah.GetPartition(&A,&B);
-*/
+    *//*
+    SQC_Circuit A;
+    blah.ConvertHadamard(&A);
+    A.Print();*/
+
     if(argc>1) {
         string this_command = argv[1];
         if(!this_command.compare("optimize")&&(argc>2)) {
@@ -678,7 +684,9 @@ int main(int argc, char* argv[]) {
             LOut_Pad++;
             string circuit_filename = argv[2];
             bool option_maslov = 0;
-            SQC_ToffoliNMode option_toffmode = SQC_TOFFOLI_N_MODE_PSCJ;
+            SQC_ToffoliNMode option_toffmode = SQC_TOFFOLI_N_MODE_TOFF3;
+            SQC_HadamardMode option_hadmode = SQC_HADAMARD_MODE_MONTANARO;
+            int option_hadmode_max_anc = -1;
             for(int i = 3; i < argc; i++) {
                 string this_option = argv[i];
                 if((this_option[0]=='-')&&((i+1)<argc)) {
@@ -692,6 +700,14 @@ int main(int argc, char* argv[]) {
                             if(!this_value.compare("PSCJ")) option_toffmode = SQC_TOFFOLI_N_MODE_PSCJ;
                             else if(!this_value.compare("Jones")) option_toffmode = SQC_TOFFOLI_N_MODE_JONES;
                             else if(!this_value.compare("Toff3")) option_toffmode = SQC_TOFFOLI_N_MODE_TOFF3;
+                            break;
+                        case 'h':
+                            if(!this_value.compare("Part")) option_hadmode = SQC_HADAMARD_MODE_PARTITION;
+                            else if(!this_value.compare("Mont")) option_hadmode = SQC_HADAMARD_MODE_MONTANARO;
+                            break;
+                        case 'a':
+                            cout << "option_hadmode_max_anc = " << this_value << endl;
+                            option_hadmode_max_anc = atoi(this_value.c_str());
                             break;
                     }
                     i++;
@@ -707,13 +723,17 @@ int main(int argc, char* argv[]) {
             double exec_time = 0;
             int daft_t_count = 0;
             int n_parts;
+            int n_hadancs = 0;
             this_circuit.toffoli_n_mode = option_toffmode;
-            int result = UniversalTCount(&this_circuit, &daft_t_count, &exec_time,&n_parts);
+            this_circuit.hadamard_mode = option_hadmode;
+            this_circuit.hadamard_mode_max_ancillas = option_hadmode_max_anc;
+            int result = UniversalTCount(&this_circuit, &daft_t_count, &exec_time,&n_parts,&n_hadancs);
             cout << "Final T-count (LempelX) = " << result << endl;
             cout << "Final T-count (Daft) = " << daft_t_count << endl;
             cout << "Final T-count reduced by " << (daft_t_count-result) << endl;
             cout << "Total execution time = " << exec_time << "s" << endl;
             cout << "No. partitions = " << n_parts << endl;
+            cout << "No. hadamard ancillas = " << n_hadancs << endl;
             this_circuit.Destruct();
         }
     }
@@ -2022,7 +2042,7 @@ GateStringSparse LempelXSynthesis(const Signature& inS) {
     return out;
 }
 
-int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int* n_parts) {
+int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int* n_parts, int* n_hadancs) {
     //cout << "C" << endl;
     int out = 0;
     if(out_daft) *out_daft = 0;
@@ -2044,7 +2064,10 @@ int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int*
         LOut() << "Partition " << this_part << endl;
         //inC->Print();
         LOut_Pad++;
+        int init_gates = inC->m;
+        LOut() << "Remaining gates = " << init_gates << endl;
         exit = !inC->NextSignature(this_sig);
+        int reduces_gates = init_gates-inC->m;
         LOut() << "Converted" << endl;
         //inC->Print();
         this_sig.print();
@@ -2056,6 +2079,8 @@ int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int*
         *out_daft += this_t_count_daft;
         LOut_Pad--;
         LOut() << "T-count for partition " << this_part << " = " << this_t_count << endl;
+        LOut() << "T-gate per gate for this partition " << this_part << " = " << (double)this_t_count/(double)reduces_gates << endl;
+        LOut() << "Hadamard ancillas for partition " << this_part << " = " << inC->hadamard_mode_max_ancillas << endl;
         LOut_Pad++;
         LOut() << "..." << endl;
         LOut_Pad--;
@@ -2080,7 +2105,8 @@ int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int*
         */
         this_part++;
     } while(!exit);
-    if(n_parts) *n_parts = this_part;
+    if(n_parts) *n_parts = (this_part-1);
+    if(n_hadancs) *n_hadancs = inC->hadamard_mode_max_ancillas;
     int toc = clock();
     double exec_time = ((double)toc-(double)tic)/CLOCKS_PER_SEC;
     if(out_exec_time) *out_exec_time = exec_time;

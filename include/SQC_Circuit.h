@@ -25,6 +25,11 @@ enum SQC_ToffoliNMode {
     SQC_TOFFOLI_N_MODE_PSCJ     // Peter Selinger - Cody Jones method
 };
 
+enum SQC_HadamardMode {
+    SQC_HADAMARD_MODE_PARTITION,
+    SQC_HADAMARD_MODE_MONTANARO
+};
+
 enum SQC_Operator_Label {
         SQC_OPERATOR_IDENTITY,
         SQC_OPERATOR_HADAMARD,
@@ -37,7 +42,8 @@ enum SQC_Operator_Label {
         SQC_OPERATOR_TOFFOLI,
         SQC_OPERATOR_TOFFOLI_4,
         SQC_OPERATOR_TOFFOLI_N,
-        SQC_OPERATOR_PARTITION
+        SQC_OPERATOR_PARTITION,
+        SQC_OPERATOR_N
 
 // To add operator, update:
 //  Print, AddOperator, GetPartition
@@ -63,11 +69,14 @@ struct SQC_Circuit {
                //Number of non-ancilla qubits = n-p
                //If p=-1, then allocate ancillas automatically using SQC_ANCILLA_MODE_PER_GATE
                //If p=-2, then allocate ancillas automatically using SQC_ANCILLA_MODE_PER_CIRCUIT
+    int p_hads = 0;
     int m = 0; //Number of operators
     int max_m = SQC_DEFAULT_MAX_M; //Max number of operators
     SQC_Operator_List operator_list = NULL;
     SQC_AncillaMode ancilla_mode = SQC_ANCILLA_MODE_MANUAL;
     SQC_ToffoliNMode toffoli_n_mode = SQC_TOFFOLI_N_MODE_PSCJ;
+    SQC_HadamardMode hadamard_mode = SQC_HADAMARD_MODE_MONTANARO;
+    int hadamard_mode_max_ancillas = -1;
 
     // Methods
 
@@ -89,12 +98,16 @@ struct SQC_Circuit {
     void DeleteOperator(int t);
 
     bool GetPartition(SQC_Circuit* out_Hadamards, SQC_Circuit* out_CNOT_T);
+    bool GetPartition(SQC_Circuit* out);
     void DecompositionVW(SQC_Circuit* out_V, SQC_Circuit* out_W) const;
     BMSparse toGateSynthesisMatrix() const;
     bool NextSignature(Signature& outSig);
 
     void ReplaceOperator(SQC_Circuit* in_new_ops, int t, int n_rep=1);
     void ConvertFromToffoli();
+    void ConvertHadamard(SQC_Circuit* out, int max_ancillas = -1); // Implements H -> new bool variable method of Ashley Montanaro
+    int CountOperators(SQC_Operator_Label in_op = SQC_OPERATOR_N) const;
+
     void AllocateAncillas(const SQC_Circuit& in_C); // Constructs new circuit with automatically allocated ancillas
     int GetNArgs(int i) const;
 };

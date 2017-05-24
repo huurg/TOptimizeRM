@@ -484,6 +484,19 @@ bool SQC_Circuit::GetPartition(SQC_Circuit* out_Hadamards, SQC_Circuit* out_CNOT
     return out;
 }
 
+bool SQC_Circuit::GetPartition(SQC_Circuit* out) {
+    bool outb = 0;
+
+    ConvertFromToffoli();
+    //LOut() << "This circuit" << endl;
+    //Print();
+    //LOut() << endl;
+    ConvertHadamard(out,hadamard_mode_max_ancillas);
+    outb = (bool)m;
+
+    return outb;
+}
+
 void SQC_Circuit::DeleteOperator(int t) {
     if((t<m)&&(t>=0)) {
         for(int i = 0; i < (n+1); i++) operator_list[t][i] = 0;
@@ -633,23 +646,42 @@ BMSparse SQC_Circuit::toGateSynthesisMatrix() const {
 bool SQC_Circuit::NextSignature(Signature& outsig) {
     //cout << "QWER" << endl;
     outsig = Signature(n);
+    bool out = 0;
     SQC_Circuit hadamards, CNOT_Ts;
-    hadamards.n = CNOT_Ts.n = n;
-    hadamards.max_m = CNOT_Ts.max_m = max_m;
-    hadamards.Construct();
-    CNOT_Ts.Construct();
-    //cout << "xcvxcv" << endl;
-    bool out = GetPartition(&hadamards, &CNOT_Ts);
-    LOut() << "Hadamards" << endl;
-    //hadamards.Print();
+    switch(hadamard_mode) {
+        case SQC_HADAMARD_MODE_PARTITION:
+            {
+                hadamards.n = CNOT_Ts.n = n;
+                hadamards.max_m = CNOT_Ts.max_m = max_m;
+                hadamards.Construct();
+                CNOT_Ts.Construct();
+                //cout << "xcvxcv" << endl;
+                out = GetPartition(&hadamards, &CNOT_Ts);
+                //LOut() << "Hadamards" << endl;
+                //hadamards.Print();
+                //LOut() << endl;
+
+                //cout << "zxcv" << endl;
+                hadamards.Destruct();
+            }
+            break;
+        case SQC_HADAMARD_MODE_MONTANARO: {
+            {
+                out = GetPartition(&CNOT_Ts);
+            }
+            break;
+        }
+    }
+    //LOut() << "This circuit" << endl;
+    //Print();
     //LOut() << endl;
-    LOut() << "{CNOT,T}" << endl;
+    //LOut() << "{CNOT,T}" << endl;
     //CNOT_Ts.Print();
     //LOut() << endl;
     if((bool)CNOT_Ts.m) {
         //cout << "TYUI" << endl;
         SQC_Circuit this_V, this_W;
-        this_V.n = this_W.n = n;
+        this_V.n = this_W.n = CNOT_Ts.n;
         this_V.max_m = this_W.max_m = CNOT_Ts.max_m;
         this_V.Construct();
         this_W.Construct();
@@ -669,9 +701,8 @@ bool SQC_Circuit::NextSignature(Signature& outsig) {
         this_V.Destruct();
         this_W.Destruct();
     }
-    //cout << "zxcv" << endl;
-    hadamards.Destruct();
     CNOT_Ts.Destruct();
+
     return out;
 }
 
@@ -713,10 +744,9 @@ void SQC_Circuit::ConvertFromToffoli() {
         SQC_Circuit temp;
         temp.Copy(*this);
         AllocateAncillas(temp);
+        LOut() << "Converted to explicit ancilla mode" << endl;
         //temp.Print();
         temp.Destruct();
-        LOut() << "Converted to explicit ancilla mode" << endl;
-
         //return;
     }
 
@@ -1061,10 +1091,10 @@ void SQC_Circuit::ConvertFromToffoli() {
                     case SQC_OPERATOR_HADAMARD:
                         if((!this_qubit_used)&&(operator_list[j][1]==acting_qubit)) {
                             //cout << "Deleting operator " << j << endl;
-                            for(int c = 0; c < (GetNArgs(j)+1); c++) cout << operator_list[j][c] << " ";
+                            //for(int c = 0; c < (GetNArgs(j)+1); c++) cout << operator_list[j][c] << " ";
                             //cout << endl;
                             //cout << "Deleting operator " << i << endl;
-                            for(int c = 0; c < (GetNArgs(i)+1); c++) cout << operator_list[i][c] << " ";
+                            //for(int c = 0; c < (GetNArgs(i)+1); c++) cout << operator_list[i][c] << " ";
                             //cout << endl;
                             DeleteOperator(j);
                             DeleteOperator(i);
@@ -1162,6 +1192,8 @@ void SQC_Circuit::AllocateAncillas(const SQC_Circuit& in_C) {
                         }
                         AddOperator(this_operator);
                         delete [] this_operator;
+                    } else {
+                        AddOperator(in_C.operator_list[i]);
                     }
                 }
             }
@@ -1341,4 +1373,67 @@ void SQC_Circuit::Print() const {
         LOut() << endl;
         //LOut_Pad--;
     }
+}
+
+void SQC_Circuit::ConvertHadamard(SQC_Circuit* out, int max_ancillas) {
+    //cout << "max_ancillas = " << hadamard_mode_max_ancillas << endl;
+    // Assumes circuit is composed only of {T, CS, CCZ, Clifford}
+    // First determine the number of hadamards in the circuit
+    if(out) {
+        int n_hadamards = CountOperators(SQC_OPERATOR_HADAMARD);
+        if(out->operator_list) {
+            out->Destruct();
+        }
+        if(max_ancillas==-1) {
+            max_ancillas = n_hadamards;
+        }
+        if(hadamard_mode_max_ancillas==-1) {
+            hadamard_mode_max_ancillas = n_hadamards;
+        }
+        out->n = n+max_ancillas;
+        out->p = p+max_ancillas;
+
+        out->Construct();
+        int hadamard_count = 0;
+        int i = 0;
+        bool exit = 0;
+        int* this_operator = new int[out->n+1];
+        for(int c = 0; c < out->n+1; c++) this_operator[c] = 0;
+        this_operator[0] = SQC_OPERATOR_CS;
+
+        while(!exit) {
+            if(operator_list[i][0] == SQC_OPERATOR_HADAMARD) {
+                this_operator[1] = operator_list[i][1];
+                this_operator[2] = (n+1+hadamard_count);
+                out->AddOperator(this_operator);
+                DeleteOperator(i);
+                i--;
+                hadamard_count++;
+            } else {
+                out->AddOperator(operator_list[i]);
+                DeleteOperator(i);
+                i--;
+            }
+
+            i++;
+            if((hadamard_count>=max_ancillas)||(i>=m)) {
+                exit = 1;
+            }
+        }
+        delete [] this_operator;
+    }
+}
+
+int SQC_Circuit::CountOperators(SQC_Operator_Label in_op) const {
+    int out = 0;
+    if(in_op!=SQC_OPERATOR_N) {
+        for(int i = 0; i < m; i++) {
+            if(operator_list[i][0]==in_op) {
+                out++;
+            }
+        }
+    } else {
+        out = m;
+    }
+    return out;
 }
