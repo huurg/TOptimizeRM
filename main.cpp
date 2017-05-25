@@ -497,13 +497,13 @@ int main(int argc, char* argv[]) {
     g_csv_filename.clear();
 
     srand(time(NULL));
-    /*
-    SQC_Circuit blah;
+
+    /*SQC_Circuit blah;
     blah.Load("test.sqc");
     blah.Print();
-    blah.toffoli_n_mode = SQC_TOFFOLI_N_MODE_TOFF3;
-    blah.ConvertFromToffoli();
-    blah.Print();*/
+    Matrix mat = blah.toMatrix();
+    mat.print();
+    */
     /*
     SQC_Circuit A,B;
     A.Copy(blah);
@@ -514,7 +514,16 @@ int main(int argc, char* argv[]) {
     *//*
     SQC_Circuit A;
     blah.ConvertHadamard(&A);
-    A.Print();*/
+    A.Print();*//*
+    int these_args[] = {2,1,3};
+    Matrix my_mat = Matrix::CNOT(3,these_args,3);
+    my_mat.print(); cout << endl;
+    Matrix my_vec(8,1);
+    for(int i = 0; i < 8; i++) my_vec.E(i,0,i);
+    my_vec.print(); cout << endl;
+    Matrix result = my_mat*my_vec;
+    result.print();
+    */
 
     if(argc>1) {
         string this_command = argv[1];

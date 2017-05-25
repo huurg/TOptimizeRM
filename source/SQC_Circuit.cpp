@@ -18,6 +18,7 @@ using namespace std;
 #include "GateSigInterface.h"
 #include "Interface_BMSGSS.h"
 #include "LukeConsoleOut.h"
+#include "Matrix.h"
 using namespace LukeConsoleOut;
 
 SQC_Circuit::SQC_Circuit() {
@@ -1467,5 +1468,67 @@ int SQC_Circuit::CountOperators(SQC_Operator_Label in_op) const {
     } else {
         out = m;
     }
+    return out;
+}
+
+Matrix SQC_Circuit::toMatrix() const {
+    Matrix out = Matrix::identity(pow(2,n));
+
+    for(int i = 0; i < m; i++) {
+        Matrix this_mat = Matrix::identity(n);
+        switch(operator_list[i][0]) {
+            case SQC_OPERATOR_IDENTITY:
+                break;
+            case SQC_OPERATOR_HADAMARD:
+                {
+                this_mat = Matrix::H(n,operator_list[i][1]);
+                }
+                break;
+            case SQC_OPERATOR_CNOT:
+                {
+                this_mat = Matrix::CNOT(n,operator_list[i][2],operator_list[i][1]);
+                }
+                break;
+            case SQC_OPERATOR_T:
+                {
+                this_mat = Matrix::R(n,operator_list[i][1],L_PI/4.0);
+                }
+                break;
+            case SQC_OPERATOR_CS:
+                {
+                this_mat = Matrix::CS(n,operator_list[i][1],operator_list[i][2]);
+                }
+                break;
+            case SQC_OPERATOR_CCZ:
+                {
+                this_mat = Matrix::CCZ(n,operator_list[i][1],operator_list[i][2],operator_list[i][3]);
+                }
+                break;
+            case SQC_OPERATOR_S:
+                {
+                this_mat = Matrix::R(n,operator_list[i][1],L_PI/2.0);
+                }
+                break;
+            case SQC_OPERATOR_Z:
+                {
+                this_mat = Matrix::Z(n,operator_list[i][1]);
+                }
+                break;
+            case SQC_OPERATOR_TOFFOLI:
+            case SQC_OPERATOR_TOFFOLI_N:
+                {
+                    int n_args = GetNArgs(i);
+                    int* these_args = new int[n_args];
+                    for(int c = 0; c < n_args; c++) these_args[c] = operator_list[i][c+1];
+                    this_mat = Matrix::CNOT(n,these_args,n_args);
+                    delete [] these_args;
+                }
+                break;
+            default:
+                break;
+        }
+        out = (this_mat*out);
+    }
+
     return out;
 }

@@ -6,6 +6,7 @@ using namespace std;
 #include <ostream>
 #include "Signature.h"
 #include "BMSparse.h"
+#include "Matrix.h"
 
 typedef int* SQC_Operator; // 0^th element = Operator type, rest of elements = qubit labels
 typedef SQC_Operator* SQC_Operator_List;
@@ -101,6 +102,7 @@ struct SQC_Circuit {
     bool GetPartition(SQC_Circuit* out);
     void DecompositionVW(SQC_Circuit* out_V, SQC_Circuit* out_W) const;
     BMSparse toGateSynthesisMatrix() const;
+    Matrix toMatrix() const;
     bool NextSignature(Signature& outSig);
 
     void ReplaceOperator(SQC_Circuit* in_new_ops, int t, int n_rep=1);
