@@ -1,4 +1,4 @@
-This is LuaTeX, Version beta-0.80.0 (MiKTeX 2.9 64-bit) (rev 5238)  (format=lualatex 2016.7.3)  13 JUN 2017 11:39
+This is LuaTeX, Version beta-0.80.0 (MiKTeX 2.9 64-bit) (rev 5238)  (format=lualatex 2016.7.3)  13 JUN 2017 23:26
 **phdprojectreport.tex
 (./phdprojectreport.tex
 LaTeX2e <2015/10/01> patch level 2
@@ -409,13 +409,39 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 )
+("F:/Program Files/MiKTeX 2.9/tex/latex/caption/subcaption.sty"
+Package: subcaption 2015/09/15 v1.1-100 Sub-captions (AR)
+\c@subfigure=\count132
+\c@subtable=\count133
+)
+("F:/Program Files/MiKTeX 2.9/tex/latex/graphics/graphicx.sty"
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+("F:/Program Files/MiKTeX 2.9/tex/latex/graphics/graphics.sty"
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+
+("F:/Program Files/MiKTeX 2.9/tex/latex/graphics/trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("F:/Program Files/MiKTeX 2.9/tex/latex/00miktex/graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 94.
+
+("F:/Program Files/MiKTeX 2.9/tex/latex/pdftex-def/pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+\Gread@gobject=\count134
+))
+\Gin@req@height=\dimen175
+\Gin@req@width=\dimen176
+)
 ("F:/Program Files/MiKTeX 2.9/tex/latex/algorithms/algorithm.sty"
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environ
 ment
 
 ("F:/Program Files/MiKTeX 2.9/tex/latex/float/float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count132
+\c@float@type=\count135
 \float@exts=\toks38
 \float@box=\box34
 \@float@everytoks=\toks39
@@ -425,7 +451,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
 \@float@every@algorithm=\toks40
-\c@algorithm=\count133
+\c@algorithm=\count136
 )
 ("F:/Program Files/MiKTeX 2.9/tex/latex/algorithmicx/algpseudocode.sty"
 Package: algpseudocode 
@@ -434,46 +460,46 @@ Package: algpseudocode
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
-\c@ALG@line=\count134
-\c@ALG@rem=\count135
-\c@ALG@nested=\count136
+\c@ALG@line=\count137
+\c@ALG@rem=\count138
+\c@ALG@nested=\count139
 \ALG@tlm=\skip52
 \ALG@thistlm=\skip53
-\c@ALG@Lnr=\count137
-\c@ALG@blocknr=\count138
-\c@ALG@storecount=\count139
-\c@ALG@tmpcounter=\count140
+\c@ALG@Lnr=\count140
+\c@ALG@blocknr=\count141
+\c@ALG@storecount=\count142
+\c@ALG@tmpcounter=\count143
 \ALG@tmplength=\skip54
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
 )
-\c@definition=\count141
+\c@definition=\count144
 
 
-Package amsthm Warning: Unknown theoremstyle `problem' on input line 25.
+Package amsthm Warning: Unknown theoremstyle `problem' on input line 27.
 
-\c@problem=\count142
+\c@problem=\count145
 
-Package amsthm Warning: Unknown theoremstyle `lemma' on input line 28.
+Package amsthm Warning: Unknown theoremstyle `lemma' on input line 30.
 
-\c@lemma=\count143
+\c@lemma=\count146
 (./phdprojectreport.aux)
 \openout1 = phdprojectreport.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -509,16 +535,16 @@ LaTeX Font Info:    ... okay on input line 35.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 35.
+LaTeX Font Info:    Try loading font information for U+msa on input line 37.
 ("F:/Program Files/MiKTeX 2.9/tex/latex/amsfonts/umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 35.
+LaTeX Font Info:    Try loading font information for U+msb on input line 37.
 
 ("F:/Program Files/MiKTeX 2.9/tex/latex/amsfonts/umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Package xypdf Info: Line width: 0.39998pt on input line 35.
+Package xypdf Info: Line width: 0.39998pt on input line 37.
 \AtBeginShipoutBox=\box36
 
 ("F:/Program Files/MiKTeX 2.9/tex/latex/graphics/color.sty"
@@ -528,105 +554,105 @@ Package: color 2014/10/28 v1.1a Standard LaTeX Color (DPC)
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 142.
+)
+Package hyperref Info: Link coloring ON on input line 37.
 
-("F:/Program Files/MiKTeX 2.9/tex/latex/pdftex-def/pdftex.def"
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-\Gread@gobject=\count144
-
-("F:/Program Files/MiKTeX 2.9/tex/context/base/supp-pdf.mkii"
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count145
-\scratchdimen=\dimen175
-\scratchbox=\box37
-\nofMPsegments=\count146
-\nofMParguments=\count147
-\everyMPshowfont=\toks41
-\MPscratchCnt=\count148
-\MPscratchDim=\dimen176
-\MPnumerator=\count149
-\makeMPintoPDFobject=\count150
-\everyMPtoPDFconversion=\toks42
-)))
-Package hyperref Info: Link coloring ON on input line 35.
- ("F:/Program Files/MiKTeX 2.9/tex/latex/hyperref/nameref.sty"
+("F:/Program Files/MiKTeX 2.9/tex/latex/hyperref/nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 ("F:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/gettitlestring.sty"
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count151
+\c@section@level=\count147
 )
-LaTeX Info: Redefining \ref on input line 35.
-LaTeX Info: Redefining \pageref on input line 35.
-LaTeX Info: Redefining \nameref on input line 35.
+LaTeX Info: Redefining \ref on input line 37.
+LaTeX Info: Redefining \pageref on input line 37.
+LaTeX Info: Redefining \nameref on input line 37.
 
 (./phdprojectreport.out) (./phdprojectreport.out)
 \@outlinefile=\write4
 
 \openout4 = phdprojectreport.out
-\c@lstlisting=\count152
+\c@lstlisting=\count148
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
- [1
 
-{C:/Users/Luke Heyfron/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2]
+("F:/Program Files/MiKTeX 2.9/tex/context/base/supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count149
+\scratchdimen=\dimen177
+\scratchbox=\box37
+\nofMPsegments=\count150
+\nofMParguments=\count151
+\everyMPshowfont=\toks41
+\MPscratchCnt=\count152
+\MPscratchDim=\dimen178
+\MPnumerator=\count153
+\makeMPintoPDFobject=\count154
+\everyMPtoPDFconversion=\toks42
+) [1
 
-Package amsthm Warning: Unknown theoremstyle `problem' on input line 160.
+{C:/Users/Luke Heyfron/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+[2]
 
+Package amsthm Warning: Unknown theoremstyle `problem' on input line 165.
 
-Package amsthm Warning: Unknown theoremstyle `lemma' on input line 186.
+<xymatrix 8x3 893> [3]
 
-[3]
+Package amsthm Warning: Unknown theoremstyle `lemma' on input line 221.
 
-Package amsthm Warning: Unknown theoremstyle `lemma' on input line 218.
+[4]
 
-<xymatrix 14x2 1129>
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<xymatrix 8x3 893>
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<xymatrix 9x5 1508>
-
-LaTeX Warning: `h' float specifier changed to `ht'.
+Package amsthm Warning: Unknown theoremstyle `lemma' on input line 253.
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on inp
-ut line 287.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 291.
+ut line 291.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 295.
 ("F:/Program Files/MiKTeX 2.9/tex/latex/base/omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 291.
- [4] [5]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 295.
+
+<LX_vs_Lempel.png, id=129, 439.4016pt x 280.4076pt>
+File: LX_vs_Lempel.png Graphic file (type png)
+ <use LX_vs_Lempel.png>
+Package pdftex.def Info: LX_vs_Lempel.png used on input line 380.
+(pdftex.def)             Requested size: 300.29344pt x 191.64162pt.
+
+<DeltaT.png, id=130, 450.483pt x 273.6624pt>
+File: DeltaT.png Graphic file (type png)
+ <use DeltaT.png>
+Package pdftex.def Info: DeltaT.png used on input line 384.
+(pdftex.def)             Requested size: 300.29344pt x 182.42583pt.
+ <xymatrix 9x5
+1508> [5] [6] [7<./LX_vs_Lempel.png><./DeltaT.png>] <xymatrix 14x2 1129>
 (./phdprojectreport.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 379.
- [6] [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 379.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 430.
+ [8]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 430.
  (./phdprojectreport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 379.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 379.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 430.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 430.
 Package rerunfilecheck Info: File `phdprojectreport.out' has not changed.
-(rerunfilecheck)             Checksum: F676CE155D2B16A110BE0A730F77443D;978.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 379.
+(rerunfilecheck)             Checksum: 57A33B6762E2BCFD6139EBB3E07BD481;1090.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 430.
 )
 
 Here is how much of LuaTeX's memory you used:
- 12138 strings out of 494933
+ 12385 strings out of 494933
  100000,383344 words of node,token memory allocated
- 1938 words of node memory still in use:
+ 1955 words of node memory still in use:
     nodes
-   avail lists: 1:1,2:39,3:771,4:2838,5:712,6:4216,7:69,8:22,9:1876,10:273
- 15349 multiletter control sequences out of 65536+200000
- 66 fonts using 2603935 bytes
- 38i,25n,43p,1526b,1203s stack positions out of 5000i,500n,10000p,200000b,50000s
+   avail lists: 1:1,2:40,3:525,4:2426,5:523,6:3706,7:73,8:20,9:1238,10:255
+ 15552 multiletter control sequences out of 65536+200000
+ 67 fonts using 2643151 bytes
+ 38i,26n,43p,1526b,1200s stack positions out of 5000i,500n,10000p,200000b,50000s
 <<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><<F:/Pro
 gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><<F:/Program Fil
 es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><<F:/Program Files/MiKT
@@ -639,14 +665,14 @@ e1/public/amsfonts/cm/cmmi5.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public
 /Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><<F:/Program F
 iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><<F:/Program Files/MiKTe
 X 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><<F:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmsy10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmsy5.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/am
-sfonts/cm/cmsy7.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmti10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/ms
-bm10.pfb>
-Output written on phdprojectreport.pdf (7 pages, 253131 bytes).
+s/type1/public/amsfonts/cm/cmr9.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmsy5.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmsy7.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pf
+b><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on phdprojectreport.pdf (8 pages, 284244 bytes).
 
-PDF statistics: 210 PDF objects out of 1000 (max. 8388607)
- 57 named destinations out of 1000 (max. 131072)
- 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+PDF statistics: 229 PDF objects out of 1000 (max. 8388607)
+ 61 named destinations out of 1000 (max. 131072)
+ 129 words of extra memory for PDF output out of 10000 (max. 10000000)
 

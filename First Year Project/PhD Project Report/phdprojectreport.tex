@@ -11,6 +11,8 @@
 \usepackage[bookmarks = true, pdfpagemode = None, pdfstartview = FitH, colorlinks = true, urlcolor = blue]{hyperref}
 \usepackage{listings}
 \usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 \makeatletter
@@ -101,6 +103,9 @@
 		\subsection{Classical Coding Theory}
 		
 		\subsection{Reed-Muller Codes}
+		
+		\subsection{Notes}
+		NOTE: use mathbf for all matrices and vectors
 	
 	\section{The Gate Synthesis Problem}
 	NOTES from Earl's paper:
@@ -161,11 +166,41 @@
 	\begin{problem}{Gate Synthesis Problem (version 1).}
 		Let $A$ be some gate synthesis matrix.
 	\end{problem}
+
+	% Phase polynomial
+	\begin{figure}[h]
+		\[
+		\Qcircuit @C=1em @R=0.7em {
+			\lstick{\ket{x_1}} & \gate{T} & \ctrl{1} & \qw & \qw & \ctrl{1} & \qw & \qw \\
+			& & & \push{\rule{2em}{0em}} & & & & \rstick{\omega^{f(x)}\ket{x_1,x_2}} \\
+			\lstick{\ket{x_2}} & \gate{T} & \targ \qwx & \ustick{x_1 \oplus x_2}\qw  & \gate{T} & \targ \qwx & \ustick{x_2}\qw  & \qw
+		}
+		\]
+		\caption{For circuits composed of CNOT and T gates, the phase polynomial is determined by updating the state of the target qubit of each CNOT gate and adding the appropriate term after each T gate. This circuit has phase polynomial $f(x)=x_1 + x_2 + x_1\oplus x_2$.}
+	\end{figure}
+
+	\subsection{Notes}
+	NOTE: Before defining signature tensors, establish the notion that the signature tensor is a unique representation for an equivalence class of phase functions that are equal to each other up to a Clifford group operator. This can be done by first proving that all phase functions that have the same weighted polynomial are Clifford equivalent. All gate synthesis matrices that have the same signature tensor have the same weighted polynomial, therefore are Clifford equivalent.
+	
+	NOTE: Define clifford equivalence and gate synthesis matrices like in earl's paper. Say something like "throughout we work in the framework of gate synthesis matrices as defined in <cite earl>" then summarise the notation used.
 	
 	\section{Solutions to the Gate Synthesis Problem}
 	\label{s4_Solution}
+		NOTE: Establish somewhere that for both Lempel algorithms all addition is modulo 2 except where explicitly stated.
+	
 		\subsection{The Lempel Algorithm}
+		NOTE: This method is based on the Lempel algorithm developed by Abraham Lempel in (reference). The means of applying the algorithm to gate synthesis for circuits over CNOT and T gates is proposed by campbell and howard (reference).
+		
+		NOTE: We will summarize the Lempel algorithm here.
+		
+		NOTE: We define two different versions as with feedback and without feedback.
+		
 		\subsection{The Extended Lempel Algorithm}
+		NOTE: The first part of the section shows that we can add an arbitrary column vector $x$ to an arbitrary subset of the columns of a gate synthesis matrix given by $y$ without altering the signature tensor. The second part shows that choosing a specific value of $x$ results in a new gate synthesis matrix that has two identical columns, which can subsequently be removed.
+		
+		NOTE: In this section we will show how to reduce the width of a gate synthesis matrix by 2, given certain conditions are met. Then one can simply apply this method iteratively until the conditions are no longer met.		
+		
+		
 		\theoremstyle{definition}
 		\begin{definition}{\emph{Signature tensor.}}
 			Let $A$ be an $n \times m$ gate synthesis matrix. The signature tensor of $A$ is an $n \times n \times n$ symmetric tensor on GF(2) defined as,
@@ -245,42 +280,11 @@
 			\end{align}
 		\end{proof}
 	
-		% Removing Hadamards
-		\begin{figure}[h]
-		\[
-			\Qcircuit @C=1em @R=1em {
-				\lstick{\ket{\psi}} & \gate{H} &  \rstick{H\ket{\psi}}\qw & &\push{\rule{2em}{0em}=\rule{2em}{0em}} &  \lstick{\ket{\psi}} & \qw & \ctrl{1} & \qw & \qswap & \qw & \qw & \gate{X} & \rstick{H\ket{\psi}}\qw \\
-				& & & & & \lstick{\ket{0}} & \gate{H} & \ctrl{-1} & \qw & \qswap \qwx & \qw & \gate{H} & \meter \cwx
-			}
-		\]
-		\caption{This circuit identity is used to trade the internal Hadamards of a circuit for external Hadamards, along with a Pauli-X correction conditioned on the measurement result of an ancilla.}
-		\end{figure}
+		
 	
-		% Phase polynomial
-		\begin{figure}[h]
-			\[
-			\Qcircuit @C=1em @R=0.7em {
-				\lstick{\ket{x_1}} & \gate{T} & \ctrl{1} & \qw & \qw & \ctrl{1} & \qw & \qw \\
-				& & & \push{\rule{2em}{0em}} & & & & \rstick{\omega^{f(x)}\ket{x_1,x_2}} \\
-				\lstick{\ket{x_2}} & \gate{T} & \targ \qwx & \ustick{x_1 \oplus x_2}\qw  & \gate{T} & \targ \qwx & \ustick{x_2}\qw  & \qw
-			}
-			\]
-			\caption{For circuits composed of CNOT and T gates, the phase polynomial is determined by updating the state of the target qubit of each CNOT gate and adding the appropriate term after each T gate. This circuit has phase polynomial $f(x)=x_1 + x_2 + x_1\oplus x_2$.}
-		\end{figure}
+		
 	
-		% Toffoli-n
-		\begin{figure}[h]
-			\[
-			\Qcircuit @C=1em @R=0.7em {
-				& \ctrl{1} & \qw & \push{\rule{4em}{0em}} &  & \ctrl{1} & \qw & \ctrl{1} & \qw\\
-				& \ctrl{1} & \qw & = &  & \ctrl{3} & \qw & \ctrl{3} & \qw\\
-				& \ctrl{1} & \qw & &   &\qw & \ctrl{1} & \qw & \qw \\
-				& \targ \qwx & \qw &  &  &\qw & \targ & \qw  & \qw\\
-				&&&&\lstick{\ket{0}} & \targ \qwx & \ctrl{-1} & \targ & \qw
-			}
-			\]		
-			\caption{Circuit showing a method to construct the the $4$-control Toffoli gate with standard Toffoli gates. The generalized $n$-controlled Toffoli can be constructed similarly with additional ancillas.}
-		\end{figure}
+		
 	
 		\begin{algorithm}
 			\label{al_1}
@@ -348,31 +352,78 @@
 			\end{algorithmic}
 		\end{algorithm}
 			
-				NOTE: Before defining signature tensors, establish the notion that the signature tensor is a unique representation for an equivalence class of phase functions that are equal to each other up to a Clifford group operator. This can be done by first proving that all phase functions that have the same weighted polynomial are Clifford equivalent. All gate synthesis matrices that have the same signature tensor have the same weighted polynomial, therefore are Clifford equivalent.
-			
 				%NOTE: The next bit is to show that adding xyT to A where x = ci + cj and y is a nullspace vector and yi + yj = 1 means that c'i = c'j and can therefore be eliminated.
 				
-				NOTE: Then the full algorithm where we search over all column pairs i,j, form chi matrix and find nullspace basis vector y that yi + yj = 1 and append a column when |y| = 1. Exit condition is that no column pair is eliminated for one exhaustive search through pairs.
+				NOTE: Full algorithm still needs prose. %NOTE: Then the full algorithm where we search over all column pairs i,j, form chi matrix and find nullspace basis vector y that yi + yj = 1 and append a column when |y| = 1. Exit condition is that no column pair is eliminated for one exhaustive search through pairs.
 				
-				NOTE: Make part of the definition of a "lean" gate synthesis matrix that all columns are unique and non-zero.
+				% Don't NOTE: Make part of the definition of a "lean" gate synthesis matrix that all columns are unique and non-zero.
 				
-				NOTE: Establish somewhere that for both Lempel algorithms all addition is modulo 2 except where explicitly stated.
 				
-				NOTE: use mathbf for all matrices and vectors
+				NOTE: LempelX algorithm results depend on the order of searching through pairs
 				
-				NOTE: The first part of the section shows that we can add an arbitrary column vector $x$ to an arbitrary subset of the columns of a gate synthesis matrix given by $y$ without altering the signature tensor. The second part shows that choosing a specific value of $x$ results in a new gate synthesis matrix that has two identical columns, which can subsequently be removed.
+				NOTE: List rules for converting universal circuit to CNOT, T circuit: Toffoli-n->Toffoli, Toffoli->HCCZH, HH->I, TT->I, CSCS->I, CCZCCZ->I
 				
-				NOTE: Define clifford equivalence and gate synthesis matrices like in earl's paper. Say something like "throughout we work in the framework of gate synthesis matrices as defined in <cite earl>" then summarise the notation used.
 				
-				NOTE: In this section we will show how to reduce the width of a gate synthesis matrix by 2, given certain conditions are met. Then one can simply apply this method iteratively until the conditions are no longer met.
 			
 			\section{Experimental Results}
+			NOTE: Implemented Lempel and LempelX algorithms in C++ and benchmark tested against randomized circuits over CNOT, T on a (CPU) processor. The circuits were generated such that each element of the signature tensor is 1 with probablity 1/2.
+			
+			NOTE: The naive decoder is based on expanding each term in the weighted polynomial according to the identity (modulo 2 to integer arithmentic identity).
+			
+			NOTE: We see that both Lempel and LempelX perform much better than the naive decoder. The LempelX yields a T count that is less than Lempel by a constant that is (5ish, the value on the paper)
+			
 			\label{s5_Results}
 				\subsection{Random Circuits Composed of CNOT and T Gates}
+				\begin{figure}
+					\centering
+					\begin{subfigure}[b]{0.6\textwidth}
+						\includegraphics[width=\textwidth]{LX_vs_Lempel}
+						\caption{}
+					\end{subfigure}
+					\begin{subfigure}[b]{0.6\textwidth}
+						\includegraphics[width=\textwidth]{DeltaT}
+						\caption{}
+					\end{subfigure}
+					\caption{Random Circuits Composed of CNOT and T Gates}
+				\end{figure}
+				
 				\subsection{Universal Practical Circuits}
+				Then tested on universal circuits using the following protocol to generalize Toffoli and eliminate Hadamards.
+				% Toffoli-n
+				\begin{figure}[h]
+					\[
+					\Qcircuit @C=1em @R=0.7em {
+						& \ctrl{1} & \qw & \push{\rule{4em}{0em}} &  & \ctrl{1} & \qw & \ctrl{1} & \qw\\
+						& \ctrl{1} & \qw & = &  & \ctrl{3} & \qw & \ctrl{3} & \qw\\
+						& \ctrl{1} & \qw & &   &\qw & \ctrl{1} & \qw & \qw \\
+						& \targ \qwx & \qw &  &  &\qw & \targ & \qw  & \qw\\
+						&&&&\lstick{\ket{0}} & \targ \qwx & \ctrl{-1} & \targ & \qw
+					}
+					\]		
+					\caption{Circuit showing a method to construct the the $4$-control Toffoli gate with standard Toffoli gates. The generalized $n$-controlled Toffoli can be constructed similarly with additional ancillas.}
+				\end{figure}
+			
+				% Removing Hadamards
+				\begin{figure}[h]
+					\[
+					\Qcircuit @C=1em @R=1em {
+						\lstick{\ket{\psi}} & \gate{H} &  \rstick{H\ket{\psi}}\qw & &\push{\rule{2em}{0em}=\rule{2em}{0em}} &  \lstick{\ket{\psi}} & \qw & \ctrl{1} & \qw & \qswap & \qw & \qw & \gate{X} & \rstick{H\ket{\psi}}\qw \\
+						& & & & & \lstick{\ket{0}} & \gate{H} & \ctrl{-1} & \qw & \qswap \qwx & \qw & \gate{H} & \meter \cwx
+					}
+					\]
+					\caption{This circuit identity is used to trade the internal Hadamards of a circuit for external Hadamards, along with a Pauli-X correction conditioned on the measurement result of an ancilla.}
+				\end{figure}
 			
 			\section{Discussion and Conclusions}
 			\label{s6_Discussion}
+			
+			NOTE: One avenue of improvement especially for the universal construction is to combine T count optimization algorithms with H count optimization such as in (reference). This is likely to complement each other as Hadamard gates serve as obstacles to the T count optimization methods discussed in this report. (Perhaps vice versa). Also would reduce the number of ancillas required to compose multiply controlled toffolis.
+			
+			NOTE: There may be other conditions that allow for the elimination of gate synthesis matrix columns.
+			
+			NOTE: It is evident from our analysis of the gate synthesis problem in terms of gate synthesis matrix and signature tensors that the problem is equivalent to determining the symmetric tensor rank of symmetric tensors of order 3. There is likely methods in the Literature that may be adapted for these purposes.
+			
+			
 			
 			\bibliographystyle{abbrv}
 			\bibliography{keylit} % IMPORTANT! Remember to ammend arXiv references that have been published.
