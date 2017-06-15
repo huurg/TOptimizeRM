@@ -8,9 +8,10 @@ N.~Abdessaied, M.~Soeken, and R.~Drechsler.
 
 \bibitem{4_Amy_2013}
 M.~Amy, D.~Maslov, and M.~Mosca.
-\newblock Polynomial-time t-depth optimization of clifford+t circuits via
-  matroid partitioning.
-\newblock {\em arXiv}, arXiv:1303.2042v2 [quant-ph], 2013.
+\newblock Polynomial-time t-depth optimization of clifford #x002b;t circuits
+  via matroid partitioning.
+\newblock {\em IEEE Transactions on Computer-Aided Design of Integrated
+  Circuits and Systems}, 33(10):1476--1489, Oct 2014.
 
 \bibitem{3_Amy_2013}
 M.~Amy, D.~Maslov, M.~Mosca, and M.~Roetteler.
@@ -33,6 +34,11 @@ S.~Bravyi and A.~Kitaev.
 \newblock Universal quantum computation with ideal clifford gates and noisy
   ancillas.
 \newblock {\em Physical Review A}, 71(022316), 2005.
+
+\bibitem{40_Campbell_web}
+E.~T. Campbell and M.~Howard.
+\newblock ``supplementary material''.
+\newblock \url{http://link.aps.org/supplemental/10.1103/PhysRevA.95.022316}.
 
 \bibitem{1_Campbell_2017}
 E.~T. Campbell and M.~Howard.
