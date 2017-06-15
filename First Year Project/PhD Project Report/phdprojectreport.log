@@ -1,4 +1,4 @@
-This is LuaTeX, Version beta-0.80.0 (MiKTeX 2.9 64-bit) (rev 5238)  (format=lualatex 2016.7.3)  13 JUN 2017 23:26
+This is LuaTeX, Version beta-0.80.0 (MiKTeX 2.9 64-bit) (rev 5238)  (format=lualatex 2016.7.3)  15 JUN 2017 15:00
 **phdprojectreport.tex
 (./phdprojectreport.tex
 LaTeX2e <2015/10/01> patch level 2
@@ -453,6 +453,9 @@ Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 \@float@every@algorithm=\toks40
 \c@algorithm=\count136
 )
+("F:/Program Files/MiKTeX 2.9/tex/latex/placeins/placeins.sty"
+Package: placeins 2005/04/18  v 2.2
+)
 ("F:/Program Files/MiKTeX 2.9/tex/latex/algorithmicx/algpseudocode.sty"
 Package: algpseudocode 
 
@@ -476,30 +479,30 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 \c@definition=\count144
 
 
-Package amsthm Warning: Unknown theoremstyle `problem' on input line 27.
+Package amsthm Warning: Unknown theoremstyle `problem' on input line 29.
 
 \c@problem=\count145
 
-Package amsthm Warning: Unknown theoremstyle `lemma' on input line 30.
+Package amsthm Warning: Unknown theoremstyle `lemma' on input line 32.
 
 \c@lemma=\count146
 (./phdprojectreport.aux)
 \openout1 = phdprojectreport.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -535,16 +538,16 @@ LaTeX Font Info:    ... okay on input line 37.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 37.
+LaTeX Font Info:    Try loading font information for U+msa on input line 39.
 ("F:/Program Files/MiKTeX 2.9/tex/latex/amsfonts/umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 37.
+LaTeX Font Info:    Try loading font information for U+msb on input line 39.
 
 ("F:/Program Files/MiKTeX 2.9/tex/latex/amsfonts/umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Package xypdf Info: Line width: 0.39998pt on input line 37.
+Package xypdf Info: Line width: 0.39998pt on input line 39.
 \AtBeginShipoutBox=\box36
 
 ("F:/Program Files/MiKTeX 2.9/tex/latex/graphics/color.sty"
@@ -555,7 +558,7 @@ File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 142.
 )
-Package hyperref Info: Link coloring ON on input line 37.
+Package hyperref Info: Link coloring ON on input line 39.
 
 ("F:/Program Files/MiKTeX 2.9/tex/latex/hyperref/nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -565,9 +568,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count147
 )
-LaTeX Info: Redefining \ref on input line 37.
-LaTeX Info: Redefining \pageref on input line 37.
-LaTeX Info: Redefining \nameref on input line 37.
+LaTeX Info: Redefining \ref on input line 39.
+LaTeX Info: Redefining \pageref on input line 39.
+LaTeX Info: Redefining \nameref on input line 39.
 
 (./phdprojectreport.out) (./phdprojectreport.out)
 \@outlinefile=\write4
@@ -594,85 +597,92 @@ Package caption Info: End \AtBeginDocument code.
 ) [1
 
 {C:/Users/Luke Heyfron/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+
+Package amsthm Warning: Unknown theoremstyle `problem' on input line 141.
+
 [2]
 
-Package amsthm Warning: Unknown theoremstyle `problem' on input line 165.
+Package amsthm Warning: Unknown theoremstyle `problem' on input line 189.
 
-<xymatrix 8x3 893> [3]
+<xymatrix 8x3 893>
 
-Package amsthm Warning: Unknown theoremstyle `lemma' on input line 221.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-[4]
-
-Package amsthm Warning: Unknown theoremstyle `lemma' on input line 253.
-
+[3] [4]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on inp
-ut line 291.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 295.
-("F:/Program Files/MiKTeX 2.9/tex/latex/base/omscmr.fd"
+ut line 270.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 310.
+ ("F:/Program Files/MiKTeX 2.9/tex/latex/base/omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 295.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 310.
+ [5] [6]
 
-<LX_vs_Lempel.png, id=129, 439.4016pt x 280.4076pt>
+Package amsthm Warning: Unknown theoremstyle `lemma' on input line 383.
+
+
+Package amsthm Warning: Unknown theoremstyle `lemma' on input line 416.
+
+[7] [8] [9] <LX_vs_Lempel.png, id=204, 439.4016pt x 280.4076pt>
 File: LX_vs_Lempel.png Graphic file (type png)
- <use LX_vs_Lempel.png>
-Package pdftex.def Info: LX_vs_Lempel.png used on input line 380.
+
+<use LX_vs_Lempel.png>
+Package pdftex.def Info: LX_vs_Lempel.png used on input line 539.
 (pdftex.def)             Requested size: 300.29344pt x 191.64162pt.
-
-<DeltaT.png, id=130, 450.483pt x 273.6624pt>
+ <DeltaT.png, id=205, 450.483pt x 273.6624pt>
 File: DeltaT.png Graphic file (type png)
- <use DeltaT.png>
-Package pdftex.def Info: DeltaT.png used on input line 384.
+
+<use DeltaT.png>
+Package pdftex.def Info: DeltaT.png used on input line 544.
 (pdftex.def)             Requested size: 300.29344pt x 182.42583pt.
- <xymatrix 9x5
-1508> [5] [6] [7<./LX_vs_Lempel.png><./DeltaT.png>] <xymatrix 14x2 1129>
-(./phdprojectreport.bbl
+ [10] [11<./LX_vs_Lempel.png><./DeltaT.png>] <xymatrix 9x5
+1508> <xymatrix 14x2 1129> [12] (./phdprojectreport.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 621.
+ [13] [14]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 621.
 
-LaTeX Warning: Empty `thebibliography' environment on input line 3.
-
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 430.
- [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 430.
- (./phdprojectreport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 430.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 430.
+(./phdprojectreport.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 621.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 621.
 Package rerunfilecheck Info: File `phdprojectreport.out' has not changed.
-(rerunfilecheck)             Checksum: 57A33B6762E2BCFD6139EBB3E07BD481;1090.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 430.
+(rerunfilecheck)             Checksum: 07AC2F29955568A72168F4F2B703104F;844.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 621.
 )
 
 Here is how much of LuaTeX's memory you used:
- 12385 strings out of 494933
+ 12467 strings out of 494933
  100000,383344 words of node,token memory allocated
- 1955 words of node memory still in use:
+ 2012 words of node memory still in use:
     nodes
-   avail lists: 1:1,2:40,3:525,4:2426,5:523,6:3706,7:73,8:20,9:1238,10:255
- 15552 multiletter control sequences out of 65536+200000
- 67 fonts using 2643151 bytes
- 38i,26n,43p,1526b,1200s stack positions out of 5000i,500n,10000p,200000b,50000s
+   avail lists: 1:1,2:40,3:421,4:1776,5:345,6:4142,7:264,8:21,9:1173,10:431
+ 15596 multiletter control sequences out of 65536+200000
+ 77 fonts using 3035595 bytes
+ 38i,26n,43p,1753b,1200s stack positions out of 5000i,500n,10000p,200000b,50000s
 <<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><<F:/Pro
 gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><<F:/Program Fil
-es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><<F:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><<F:/Program Files/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmmi10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmmi5.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public
-/amsfonts/cm/cmmi7.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts
-/cm/cmr10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12
-.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><<F:
-/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><<F:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><<F:/Program Files/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><<F:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmr9.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmsy10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmsy5.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
-cmsy7.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pf
-b><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on phdprojectreport.pdf (8 pages, 284244 bytes).
+es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><<F:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><<F:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmex10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmmi10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public
+/amsfonts/cm/cmmi5.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts
+/cm/cmmi7.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9
+.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><<F:
+/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><<F:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><<F:/Program Files/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><<F:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmr6.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/
+public/amsfonts/cm/cmr7.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmr8.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+mr9.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+<<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy5.pfb><<F:/Prog
+ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><<F:/Program Files
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><<F:/Program Files/MiKTeX 2
+.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><<F:/Program Files/MiKTeX 2.9/fonts
+/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on phdprojectreport.pdf (14 pages, 364231 bytes).
 
-PDF statistics: 229 PDF objects out of 1000 (max. 8388607)
- 61 named destinations out of 1000 (max. 131072)
- 129 words of extra memory for PDF output out of 10000 (max. 10000000)
+PDF statistics: 317 PDF objects out of 1000 (max. 8388607)
+ 82 named destinations out of 1000 (max. 131072)
+ 97 words of extra memory for PDF output out of 10000 (max. 10000000)
 

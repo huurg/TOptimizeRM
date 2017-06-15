@@ -1,6 +1,5 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: phdprojectreport.aux
 The style file: abbrv.bst
-I found no \citation commands---while reading file phdprojectreport.aux
 Database file #1: keylit.bib
 You're missing a field name---line 6 of file keylit.bib
  :     
@@ -178,6 +177,11 @@ You're missing a field name---line 408 of file keylit.bib
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 You're missing a field name---line 419 of file keylit.bib
+ :  
+ :  %pages    = "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 441 of file keylit.bib
  :  
  :  %pages    = "",
 (Error may have been on previous line)

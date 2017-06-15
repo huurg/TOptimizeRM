@@ -1,16 +1,12 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Theory and Terminology}{}% 2
 \BOOKMARK [2][-]{subsection.2.1}{Quantum Theory}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Classical Coding Theory}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{Reed-Muller Codes}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{Notes}{section.2}% 6
-\BOOKMARK [1][-]{section.3}{The Gate Synthesis Problem}{}% 7
-\BOOKMARK [2][-]{subsection.3.1}{Circuits Composed of CNOT and T Gates}{section.3}% 8
-\BOOKMARK [2][-]{subsection.3.2}{Notes}{section.3}% 9
-\BOOKMARK [1][-]{section.4}{Solutions to the Gate Synthesis Problem}{}% 10
-\BOOKMARK [2][-]{subsection.4.1}{The Lempel Algorithm}{section.4}% 11
-\BOOKMARK [2][-]{subsection.4.2}{The Extended Lempel Algorithm}{section.4}% 12
-\BOOKMARK [1][-]{section.5}{Experimental Results}{}% 13
-\BOOKMARK [2][-]{subsection.5.1}{Random Circuits Composed of CNOT and T Gates}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.2}{Universal Practical Circuits}{section.5}% 15
-\BOOKMARK [1][-]{section.6}{Discussion and Conclusions}{}% 16
+\BOOKMARK [1][-]{section.3}{The Gate Synthesis Problem}{}% 4
+\BOOKMARK [2][-]{subsection.3.1}{Circuits Composed of CNOT and T Gates}{section.3}% 5
+\BOOKMARK [1][-]{section.4}{Solutions to the Gate Synthesis Problem}{}% 6
+\BOOKMARK [2][-]{subsection.4.1}{Lempel's Factoring Algorithm}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.2}{The Extended Lempel Algorithm}{section.4}% 8
+\BOOKMARK [1][-]{section.5}{Experimental Results}{}% 9
+\BOOKMARK [2][-]{subsection.5.1}{Random Circuits Composed of CNOT and T Gates}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.2}{Universal Practical Circuits}{section.5}% 11
+\BOOKMARK [1][-]{section.6}{Discussion and Conclusions}{}% 12

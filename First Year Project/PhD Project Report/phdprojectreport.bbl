@@ -1,3 +1,41 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{4_Amy_2013}
+M.~Amy, D.~Maslov, and M.~Mosca.
+\newblock Polynomial-time t-depth optimization of clifford+t circuits via
+  matroid partitioning.
+\newblock {\em arXiv}, arXiv:1303.2042v2 [quant-ph], 2013.
+
+\bibitem{3_Amy_2013}
+M.~Amy, D.~Maslov, M.~Mosca, and M.~Roetteler.
+\newblock A meet-in-the-middle algorithm for fast synthesis of depth-optimal
+  quantum circuits.
+\newblock {\em arXiv}, arXiv:1206.0758v3 [quant-ph], 2013.
+
+\bibitem{8_Amy_2016}
+M.~Amy and M.~Mosca.
+\newblock T-count optimization and reed-muller codes.
+\newblock {\em arXiv}, arXiv:1601.07363v1 [quant-ph], 2016.
+
+\bibitem{1_Campbell_2017}
+E.~T. Campbell and M.~Howard.
+\newblock Unified framework for magic state distillation and multiqubit gate
+  synthesis with reduced resource cost.
+\newblock {\em Phys. Rev. A}, 95(022316), 2017.
+
+\bibitem{2_Campbell_2017}
+E.~T. Campbell and M.~Howard.
+\newblock Unifying gate synthesis and magic state distillation.
+\newblock {\em Phys. Rev. Lett.}, 118(060501), 2017.
+
+\bibitem{5_Gosset_2013}
+D.~Gosset, V.~Kliuchnikov, M.~Mosca, and V.~Russo.
+\newblock An algorithm for the t-count.
+\newblock {\em arXiv}, arXiv:1308.4134v1 [quant-ph], 2013.
+
+\bibitem{36_Lempel_1975}
+A.~Lempel.
+\newblock Matrix factorization over gf(2) and trace-orthogonal bases of gf(2).
+\newblock {\em SIAM J. Comput.}, 4(2), 1975.
 
 \end{thebibliography}
