@@ -186,4 +186,15 @@ You're missing a field name---line 441 of file keylit.bib
  :  %pages    = "",
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-(There were 37 error messages)
+You're missing a field name---line 476 of file keylit.bib
+ :  
+ :  %number   = "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 488 of file keylit.bib
+ :  
+ :  %number   = "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--can't use both author and editor fields in Abdessaied2014
+(There were 39 error messages)

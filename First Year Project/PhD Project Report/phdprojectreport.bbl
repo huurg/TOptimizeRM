@@ -1,4 +1,10 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{Abdessaied2014}
+N.~Abdessaied, M.~Soeken, and R.~Drechsler.
+\newblock {\em Quantum Circuit Optimization by Hadamard Gate Reduction}, pages
+  149--162.
+\newblock Springer International Publishing, Cham, 2014.
 
 \bibitem{4_Amy_2013}
 M.~Amy, D.~Maslov, and M.~Mosca.
@@ -17,25 +23,53 @@ M.~Amy and M.~Mosca.
 \newblock T-count optimization and reed-muller codes.
 \newblock {\em arXiv}, arXiv:1601.07363v1 [quant-ph], 2016.
 
+\bibitem{33_Bravyi_2012}
+S.~Bravyi and J.~Haah.
+\newblock Magic-state distillation with low overhead.
+\newblock {\em Physical Review A}, 86(052329), 2012.
+
+\bibitem{32_Bravyi_2005}
+S.~Bravyi and A.~Kitaev.
+\newblock Universal quantum computation with ideal clifford gates and noisy
+  ancillas.
+\newblock {\em Physical Review A}, 71(022316), 2005.
+
 \bibitem{1_Campbell_2017}
 E.~T. Campbell and M.~Howard.
 \newblock Unified framework for magic state distillation and multiqubit gate
   synthesis with reduced resource cost.
 \newblock {\em Phys. Rev. A}, 95(022316), 2017.
 
-\bibitem{2_Campbell_2017}
-E.~T. Campbell and M.~Howard.
-\newblock Unifying gate synthesis and magic state distillation.
-\newblock {\em Phys. Rev. Lett.}, 118(060501), 2017.
+\bibitem{38_Dennis_2001}
+E.~Dennis, A.~Kitaev, A.~Landahl, and J.~Preskill.
+\newblock Topological quantum memory.
+\newblock {\em arXiv}, arXiv:quant-ph/0110143, 2001.
 
 \bibitem{5_Gosset_2013}
 D.~Gosset, V.~Kliuchnikov, M.~Mosca, and V.~Russo.
 \newblock An algorithm for the t-count.
 \newblock {\em arXiv}, arXiv:1308.4134v1 [quant-ph], 2013.
 
+\bibitem{30_Gottesman_1997}
+D.~Gottesman.
+\newblock Theory of fault-tolerant quantum computation.
+\newblock {\em Physical Review A}, 57(1), 1997.
+
+\bibitem{39_Gottesman_1999}
+D.~Gottesman and I.~L. Chuang.
+\newblock Demonstrating the viability of universal quantum computation using
+  teleportation and single-qubit operations.
+\newblock {\em Nature}, 402:390--393, 1999.
+
 \bibitem{36_Lempel_1975}
 A.~Lempel.
 \newblock Matrix factorization over gf(2) and trace-orthogonal bases of gf(2).
 \newblock {\em SIAM J. Comput.}, 4(2), 1975.
+
+\bibitem{37_Maslov_web}
+D.~Maslov.
+\newblock ``reversible logic synthesis benchmarks page''.
+\newblock \url{http://webhome.cs.uvic.ca/~dmaslov/}.
+\newblock 2011.
 
 \end{thebibliography}

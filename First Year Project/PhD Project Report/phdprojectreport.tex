@@ -32,7 +32,7 @@
 \theoremstyle{lemma}
 \newtheorem{lemma}{Lemma}[section]
 
-\title{PhD Project Report\\Optimal Designs for Fault-Tolerant Quantum Computers}
+\title{PhD Project First Year Report\\Optimal Designs for Fault-Tolerant Quantum Computers}
 \author{Author: Luke Heyfron\\Supervisor: Dr. Earl T. Campbell}
 \date{June 2017}
 
@@ -51,11 +51,13 @@
 	%This is often chosen to be the T gate, which unfortunately does not have a transversal implementation on the toric code.
 	%A standard way to apply a T gate fault-tolerantly to a logically encoded qubit is to prepare a high-fidelity ancillary T-type magic state using magic state distillation protocols, then apply a teleportation gadget between the ancilla and the target qubit. This method involves many more elementary gates than the transversal Clifford gates, which motivates the cost model for logical quantum gates where the Clifford gates are ``free" and T gates are ``expensive". Consequentially, it is of interest to find ways to reduce the number of T gates used in implementations of quantum circuits.
 	
-	In order to realise fault-tolerant universal quantum computation, it is important to consider the resources required in implementing quantum circuits. For many types of quantum error correction code including the surface code, a special class of so-called Clifford operations have \emph{transversal} implementations, meaning the physical gates used to implement a logical operator act independently on each qubit with the same code block. A transversal operator is natively protected by the error correction code against noise and the physical gates required are linear in the number of physical qubits. Therefore, such operators are assumed to be cheap, perfect resources. However, Clifford operations alone are insufficient for universal quantum computation. The T gate is the common choice for the canonical non-Clifford gate, whose inclusion in the gate set allows for universal quantum computation. The T gate is not transversal for the surface code as well as many other codes and requires many more steps to implement fault-tolerantly. The standard method for implementing a T gate requires the distillation of many noisy resource states called magic states into few high-fidelity states over several rounds. The state can then be teleported into a circuit using a scheme such as (blah). The distillation and teleportation stages can be performed with physical Clifford operations but involve many more physical Clifford operations than those of logical Cliffords, which means T gates are considered as high costing gates compared to Clifford operations.
+	%In order to realise fault-tolerant universal quantum computation, it is important to consider the resources required in implementing quantum circuits.
+	For many types of quantum error correction code including the surface code, a special class of so-called Clifford operations have \emph{transversal} implementations \cite{38_Dennis_2001}, meaning the physical gates used to implement a logical operator act independently on each qubit with the same code block \cite{30_Gottesman_1997}. A transversal operator is natively protected by the error correction code against noise and the number of physical gates required for its implementation are linear in the number of physical qubits. Therefore, such operators are assumed to be cheap, perfect resources. However, Clifford operations alone are insufficient for universal quantum computation. The T gate is the common choice for the canonical non-Clifford gate, whose inclusion in the gate set allows for universal quantum computation. The T gate is not transversal for the surface code as well as many other codes and requires many more steps to implement fault-tolerantly. An established method for implementing a T gate requires the distillation of many noisy resource states called magic states into few high-fidelity states over several rounds \cite{32_Bravyi_2005},\cite{33_Bravyi_2012}. The state can then be teleported into a circuit using a scheme such as \cite{39_Gottesman_1999}. The distillation and teleportation stages can be performed with physical Clifford operations but involve many more physical Clifford operations than those of logical Cliffords, which means T gates are considered as high costing gates compared to Clifford operations.
 	Therefore, it is of interest to develop protocols for synthesizing quantum circuit decompositions that minimize the number of T gates used.% synthesizing T gate optimal quantum circuits.%optimize quantum circuits with respect to the number of T gates.% develop ways to synthesize circuits that use a minimal number of the T gates. %understand how best we can optimize quantum circuits with respect to the number of T gates.
 	
 	%Previous work in this area.
-	A large amount of work has already been done to develop T gate optimization algorithms.  \cite{3_Amy_2013}, \cite{4_Amy_2013}, \cite{5_Gosset_2013},\cite{8_Amy_2016}, \cite{1_Campbell_2017}
+	Much work has already been done to develop T gate optimization algorithms. Algorithms for optimizing the T depth, another resource metric for T gates, were developed by Amy, Maslov, Mosca and Roetteler in \cite{3_Amy_2013} and by Amy, Maslov and Mosca in \cite{4_Amy_2013}. Gosset, Kliuchnikov, Mosca and Russo developed an algorithm that finds T count optimal decompositions for multi-qubit Clifford and T circuits \cite{5_Gosset_2013}.
+	More recently, Amy and Mosca \cite{8_Amy_2016} proved a relationship between the problem of finding T gate minimal decompositions of circuits composed of CNOT and T gates and minimum distance decoding of the punctured Reed-Muller code of length $n$ and order $n-4$. This was followed by Campbell and Howards work \cite{1_Campbell_2017}, in which a method for simultaneously performing gate synthesis and magic state distillation was proposed that features a fast Reed-Muller decoder based on Lempel's matrix factoring algorithm with improved T count scaling compared to \cite{8_Amy_2016} (see sections \ref{s_Lempel} and \ref{s_rand}).
 	
 	In this report an algorithm is presented for reducing the T count for $n$-qubit quantum circuits composed of CNOT and T gates. It is shown how it is possible to generalize this algorithm for the universal gate set $\{H, CNOT, T\}$. The rest of the paper is structured as follows: in section \ref{s2_Theory} we define the terminology and notation conventions used for the rest of the paper; in section \ref{s3_Problem} we define the gate synthesis problem that our algorithm solves, first in the quantum circuit picture, then in terms of a special kind of matrix representation that facilitates the description of our solution. In section \ref{s4_Solution} we describe the algorithm presented in this paper for reducing the T count; in section \ref{s5_Results} we present the results of this algorithm compared to previous works for both randomized circuits over CNOT and T as well as practical circuits of a universal gate set. Finally, we consolidate our results and discuss future work in section \ref{s6_Discussion}.
 	
@@ -219,6 +221,7 @@
 		%NOTE: Establish somewhere that for both Lempel algorithms all addition is modulo 2 except where explicitly stated.	
 		\FloatBarrier
 		\subsection{Lempel's Factoring Algorithm}
+		\label{s_Lempel}
 		The synthesis algorithm described in this section is based on the Lempel algorithm developed by Abraham Lempel in \cite{36_Lempel_1975}. The algorithm itself provides a minimal factorization of a symmetric matrix $A=BB^T$ defined on GF(2) such that $B$ has minimal columns. The process involves finding an initial matrix $B$ that satisfies $A=BB^T$  known as the \emph{elementary factor} of $A$, which does not necessarily have minimal columns. Algorithm \ref{alg_elem} describes the procedure for finding the elementary factor, which is based on the supplementary MATLAB code for \cite{1_Campbell_2017}. Once we have an elementary factor, we can find the minimal factor using Lempel's factoring algorithm described in algorithm \ref{alg_lempel}. Within the main loop structure is a procedure that reduces the number of columns of $B$ by $1$ or $2$ each iteration. The algorithm terminates when a certain condition is met that depends on the number of columns of $B$, the rank of $A$ and the diagonal elements of $A$. Note that the version of the Lempel factorization algorithm described here works for non-singular $A$ matrices only. The general algorithm for singular matrices can be found in section 4 of \cite{36_Lempel_1975} and is omitted from this work for brevity.
 		
 		 The means of applying the algorithm to gate synthesis for circuits over CNOT and T gates is proposed by Campbell and Howard in \cite{1_Campbell_2017}. It involves breaking up the synthesis process into a number of rounds where after each round, a part of the circuit is synthesized and the remaining part acts on one fewer qubit than the previous round. In this way we reduce the problem size until it is feasible to use the computationally inefficient optimal Reed-Muller decoder, which requires searching over every element of $\mathcal{R}$. The cardinality of $\mathcal{R}$ increases This enforces a practical limitation on the number of qubits 
@@ -526,21 +529,22 @@
 				
 				%NOTE: Put example in here.
 			
-			\FloatBarrier
+			%\FloatBarrier
 			\section{Experimental Results}			
 			
 			\label{s5_Results}
 				\subsection{Random Circuits Composed of CNOT and T Gates}
+				\label{s_rand}
 				The Lempel and LempelX algorithms were implemented in C++ and benchmark tested against randomized circuits over CNOT, T. The circuits were generated such that each element of the signature tensor is 1 with probability 1/2. The naive decoder is based on expanding each term in the weighted polynomial according to the identity $x_a \oplus x_b = x_a + x_b - 2x_a x_b$. We see in figure \ref{f_random_a} that both Lempel and LempelX perform much better than the naive decoder. This was expected for Lempel as the naive decoder yields worse-case T counts that scale asymptotically as $\mathcal{O}(n^3)$ with the number of qubits $n$, whereas Campbell and Howard showed that Lempel (feedback) scales as $\mathcal{O}(n^2)$ \cite{1_Campbell_2017}. The experimental data in \ref{f_random_b} shows that LempelX a lower T count than Lempel (feedback) by a value that converges to a constant of $5.5\pm 0.7$ from $n\geq 10$. This implies the T count of LempelX has the same asymptotic scaling as Lempel (feedback), however an analytical argument for this scaling has not yet been found.
 				
 				\begin{figure}					
 					\centering
-					\begin{subfigure}[h]{0.6\textwidth}
+					\begin{subfigure}[h]{0.55\textwidth}
 						\includegraphics[width=\textwidth]{LX_vs_Lempel}
 						\caption{}
 						\label{f_random_a}
 					\end{subfigure}
-					\begin{subfigure}[h]{0.6\textwidth}
+					\begin{subfigure}[h]{0.44\textwidth}
 						\includegraphics[width=\textwidth]{DeltaT}
 						\caption{}
 						\label{f_random_b}
@@ -549,9 +553,11 @@
 					\label{f_random}
 				\end{figure}
 				
-				\FloatBarrier
+				%\FloatBarrier
 				\subsection{Universal Practical Circuits}
-				Both Lempel and LempelX were tested on universal circuits composed from CNOT, H and T gates. These circuits were taken from Maslov's reversible benchmark website using the following protocol to generalize Toffoli and eliminate Hadamards. Enforced a maximum Hadamard-ancilla count.
+				The Lempel and LempelX algorithms were tested on universal circuits composed from CNOT, H and T gates and the results are compiled in table \ref{t_1}. These circuits were taken from Maslov's reversible benchmark website \cite{37_Maslov_web}. Multiply controlled Toffoli gates are constructed using a standard method demonstrated in figure \ref{f_toffn}. 
+				Hadamards are eliminated using \ref{f_had}, which has the effect of swapping the Boolean variable associated with the qubit to which the Hadamard is applied with a completely new variable representing the ``Hadamard-ancilla''. This trick for Hadamard removal using so called \emph{path variables} is due to \cite{4_Amy_2013}. The addition of potentially hundreds of Hadamard-ancillas for large circuits could cause practical issues for the synthesis algorithms regarding time constraints.  A full investigation is yet to be conducted into the practical limits on space and time resources for our implementation of Lempel and LempelX. Until this is done, functionality has been included in our implementations to optionally divide the input circuit into partitions, each of which can only contain up to a specifiable maximum number of Hadamards.
+				%Although the time and space resources for both Lempel and LempelX scale polynomial in $n$, the absolute time-scales for circuits with $n>100$ would probably not be practical.  phase polynomial by  Enforced a maximum Hadamard-ancilla count.
 				% Toffoli-n
 				\begin{figure}[h]
 					\[
@@ -564,6 +570,7 @@
 					}
 					\]		
 					\caption{Circuit showing a method to construct the the $4$-control Toffoli gate with standard Toffoli gates. The generalized $n$-controlled Toffoli can be constructed similarly with additional ancillas.}
+					\label{f_toffn}
 				\end{figure}
 			
 				% Removing Hadamards
@@ -574,11 +581,14 @@
 						& & & & & \lstick{\ket{0}} & \gate{H} & \ctrl{-1} & \qw & \qswap \qwx & \qw & \gate{H} & \meter \cwx
 					}
 					\]
-					\caption{This circuit identity is used to trade the internal Hadamards of a circuit for external Hadamards, along with a Pauli-X correction conditioned on the measurement result of an ancilla.}
+					\caption{Internal Hadamards are eliminated by delegating them to act on ancillas according to the above circuit identity. The Hadamards on the left-hand circuit are now external, therefore they no longer obstruct the Lempel and LempelX synthesis algorithms.}
+					\label{f_had}
 				\end{figure}
 			
 				\begin{table}
 					\centering
+					\caption{T counts for various benchmark circuits composed of CNOT, H and T gates as synthesized by the extended Lempel algorithm. $T_{\text{original}}$ are the results produced my Amy and Mosca in \cite{8_Amy_2016} and are listed for comparison. $N_H$ is the size of the ancilla registry for Hadamard-ancillas and $N_{\text{partitions}}$ is the number of partitions. All circuits are taken from \cite{37_Maslov_web}.}
+					\label{t_1}
 					\begin{tabularx}{0.9\linewidth}{ |X|r|r|r|r|r|r| }
 						\hline						
 						Circuit & $T_{\text{original}}\cite{8_Amy_2016}$ & $T_{\text{LempelX}}$ & $T_{\text{naive}}$ & $N_{partitions}$ & $N_{H}$ & Time (s) \\
@@ -593,28 +603,37 @@
 						ham15-70 & 230 & 103 & 148 & 3 & 30 & 100.899 \\
 						ham15tc1 & 1019 & 258 & 359 & 7 & 30 & 270.862 \\
 						\hline
-					\end{tabularx}
-					\caption{T counts for various benchmark circuits composed of CNOT, H and T gates as synthesized by the extended Lempel algorithm. These are compared to the results produced my Amy and Mosca in \cite{8_Amy_2016}. $N_H$ is the size of the ancilla registry for Hadamard ancillas. All circuits are taken from }
+					\end{tabularx}					
 				\end{table}
 			%Circuit & T-count (Original) & T-count (LempelX) & T-count (Naive) & No. Partitions & No. Hadamards & Exec. Time (s) \\
 			
 			\FloatBarrier
-			\section{Discussion and Conclusions}
+			\section{Discussion, Conclusions and Plans for Future Work}
 			\label{s6_Discussion}
 			
-			NOTE: LempelX algorithm results depend on the order of searching through pairs
+			To summarize, in this report an algorithm was presented for reducing the T count of circuits over CNOT and T gates that extends the principle of Lempel's factoring algorithm to symmetric tensors of order 3. This was benchmark tested on randomized CNOT and T circuits and was found to perform marginally better than then next best algorithm. Finally, it was tested on universal circuits for which decompositions were found that use between $25\%$ and $77\%$ T gates compared to previous constructions from \cite{8_Amy_2016}. At this stage, how much of this decrease is attributable to the synthesis algorithm is unqualified, however it seems likely that it is mostly caused by discrepancies in other stages of circuit processing. For example, in this work path variables are used to effectively ``remove'' Hadamards but other methods exist for Hadamard avoidance such as breaking the circuit into partitions that alternate between columns of Hadamards and regions composed only of CNOT and T gates.
 			
-			NOTE: One avenue of improvement especially for the universal construction is to combine T count optimization algorithms with H count optimization such as in (reference). This is likely to complement each other as Hadamard gates serve as obstacles to the T count optimization methods discussed in this report. (Perhaps vice versa). Also would reduce the number of ancillas required to compose multiply controlled toffolis.
+			There are many avenues for future work on T count optimization. Over the remaining two years of this project I plan to investigate the following:			
+			\begin{itemize}
+				\item The results for Lempel depend on the order that qubits are factorized and for LempelX, the order that columns pairs are searched. I wish to investigate whether there are any means of characterizing these variations in order to optimize both algorithms with respect to execution sequence.
+				\item One avenue for improving T count optimization, especially for the universal construction, is to combine T count optimization algorithms with H count optimization such as in \cite{Abdessaied2014}. It seems intuitive that solutions to both problems would complement each other as Hadamards and T gates serve as mutual obstacles during gate synthesis.
+				\item There may be other conditions for which columns of gate synthesis matrices can be eliminated. I wish to investigate this further.
+				\item It is known that minimum distance decoding of $RM^*(n-4,n)$ is equivalent to determining the symmetric tensor rank of symmetric tensors of order 3. I will research the best available algorithms for performing this task.
+				\item In its current form, LempelX does not use the optimal Reed-Muller decoder at any stage. I will modify LempelX in order to switch to the optimal decoder once the rank of the gate synthesis matrix is reduced to $\leq n_{RM}$ where $n_{RM}$ is the practical limit on the number of qubits for the Reed-Muller decoder.
+			\end{itemize}
 			
-			NOTE: There may be other conditions that allow for the elimination of gate synthesis matrix columns.
 			
-			NOTE: It is evident from our analysis of the gate synthesis problem in terms of gate synthesis matrix and signature tensors that the problem is equivalent to determining the symmetric tensor rank of symmetric tensors of order 3. There is likely methods in the Literature that may be adapted for these purposes.
+			%NOTE: 
 			
-			NOTE: Change effective no. qubits in Lempel algorithm to rank as matrix row operations on GF(2) are generated by CNOT operators. Therefore, more T gate savings may be available in cases where no. eff. qubits > rank.
+			%NOTE: There may be other conditions that allow for the elimination of gate synthesis matrix columns.
 			
-			NOTE: Could make a more expensive version of LempelX that uses the brute force decoder at the end - would require finding the rank of the gate synthesis matrix between every round of LempelXbase.
+			%NOTE: It is evident from our analysis of the gate synthesis problem in terms of gate synthesis matrix and signature tensors that the problem 
 			
-			NOTE: Try another matrix extension featuring rows with the full expression in equation (Signature tensor). The more general matrix could flag more times when columns can be eliminated.
+			%NOTE: Change effective no. qubits in Lempel algorithm to rank as matrix row operations on GF(2) are generated by CNOT operators. Therefore, more T gate savings may be available in cases where no. eff. qubits > rank.
+			
+			%NOTE: Could make a more expensive version of LempelX that uses the brute force decoder at the end - would require finding the rank of the gate synthesis matrix between every round of LempelXbase.
+			
+			%NOTE: Try another matrix extension featuring rows with the full expression in equation (Signature tensor). The more general matrix could flag more times when columns can be eliminated.
 			
 			\bibliographystyle{abbrv}
 			\bibliography{keylit} % IMPORTANT! Remember to ammend arXiv references that have been published.

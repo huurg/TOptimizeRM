@@ -1,4 +1,4 @@
-This is LuaTeX, Version beta-0.80.0 (MiKTeX 2.9 64-bit) (rev 5238)  (format=lualatex 2016.7.3)  15 JUN 2017 15:00
+This is LuaTeX, Version beta-0.80.0 (MiKTeX 2.9 64-bit) (rev 5238)  (format=lualatex 2016.7.3)  15 JUN 2017 18:17
 **phdprojectreport.tex
 (./phdprojectreport.tex
 LaTeX2e <2015/10/01> patch level 2
@@ -597,12 +597,12 @@ Package caption Info: End \AtBeginDocument code.
 ) [1
 
 {C:/Users/Luke Heyfron/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-
-Package amsthm Warning: Unknown theoremstyle `problem' on input line 141.
-
 [2]
 
-Package amsthm Warning: Unknown theoremstyle `problem' on input line 189.
+Package amsthm Warning: Unknown theoremstyle `problem' on input line 143.
+
+
+Package amsthm Warning: Unknown theoremstyle `problem' on input line 191.
 
 <xymatrix 8x3 893>
 
@@ -610,54 +610,53 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [3] [4]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on inp
-ut line 270.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 310.
+ut line 273.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 313.
  ("F:/Program Files/MiKTeX 2.9/tex/latex/base/omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 310.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 313.
  [5] [6]
 
-Package amsthm Warning: Unknown theoremstyle `lemma' on input line 383.
+Package amsthm Warning: Unknown theoremstyle `lemma' on input line 386.
 
 
-Package amsthm Warning: Unknown theoremstyle `lemma' on input line 416.
+Package amsthm Warning: Unknown theoremstyle `lemma' on input line 419.
 
-[7] [8] [9] <LX_vs_Lempel.png, id=204, 439.4016pt x 280.4076pt>
+[7] <LX_vs_Lempel.png, id=201, 439.4016pt x 280.4076pt>
 File: LX_vs_Lempel.png Graphic file (type png)
+ <use LX_vs_Lempel.png>
+Package pdftex.def Info: LX_vs_Lempel.png used on input line 543.
+(pdftex.def)             Requested size: 275.26772pt x 175.67361pt.
 
-<use LX_vs_Lempel.png>
-Package pdftex.def Info: LX_vs_Lempel.png used on input line 539.
-(pdftex.def)             Requested size: 300.29344pt x 191.64162pt.
- <DeltaT.png, id=205, 450.483pt x 273.6624pt>
+<DeltaT.png, id=202, 450.483pt x 273.6624pt>
 File: DeltaT.png Graphic file (type png)
-
-<use DeltaT.png>
-Package pdftex.def Info: DeltaT.png used on input line 544.
-(pdftex.def)             Requested size: 300.29344pt x 182.42583pt.
- [10] [11<./LX_vs_Lempel.png><./DeltaT.png>] <xymatrix 9x5
-1508> <xymatrix 14x2 1129> [12] (./phdprojectreport.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 621.
- [13] [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 621.
-
-(./phdprojectreport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 621.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 621.
+ <use DeltaT.png>
+Package pdftex.def Info: DeltaT.png used on input line 548.
+(pdftex.def)             Requested size: 220.21417pt x 133.77838pt.
+ <xymatrix 9x5
+1508> [8] [9] <xymatrix 14x2 1129> [10<./LX_vs_Lempel.png><./DeltaT.png>]
+(./phdprojectreport.bbl [11])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 640.
+ [12]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 640.
+ (./phdprojectreport.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 640.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 640.
 Package rerunfilecheck Info: File `phdprojectreport.out' has not changed.
-(rerunfilecheck)             Checksum: 07AC2F29955568A72168F4F2B703104F;844.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 621.
+(rerunfilecheck)             Checksum: CB3D5FF72378CD774015311B75823366;867.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 640.
 )
 
 Here is how much of LuaTeX's memory you used:
- 12467 strings out of 494933
+ 12484 strings out of 494933
  100000,383344 words of node,token memory allocated
  2012 words of node memory still in use:
     nodes
-   avail lists: 1:1,2:40,3:421,4:1776,5:345,6:4142,7:264,8:21,9:1173,10:431
- 15596 multiletter control sequences out of 65536+200000
- 77 fonts using 3035595 bytes
+   avail lists: 1:1,2:40,3:530,4:2639,5:578,6:5181,7:264,8:34,9:1221,10:495
+ 15608 multiletter control sequences out of 65536+200000
+ 78 fonts using 3074811 bytes
  38i,26n,43p,1753b,1200s stack positions out of 5000i,500n,10000p,200000b,50000s
 <<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><<F:/Pro
 gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><<F:/Program Fil
@@ -679,10 +678,11 @@ mr9.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
 ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><<F:/Program Files
 /MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><<F:/Program Files/MiKTeX 2
 .9/fonts/type1/public/amsfonts/cm/cmti10.pfb><<F:/Program Files/MiKTeX 2.9/fonts
-/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on phdprojectreport.pdf (14 pages, 364231 bytes).
+/type1/public/amsfonts/cm/cmtt10.pfb><<F:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/symbols/msbm10.pfb>
+Output written on phdprojectreport.pdf (12 pages, 385598 bytes).
 
-PDF statistics: 317 PDF objects out of 1000 (max. 8388607)
- 82 named destinations out of 1000 (max. 131072)
+PDF statistics: 337 PDF objects out of 1000 (max. 8388607)
+ 86 named destinations out of 1000 (max. 131072)
  97 words of extra memory for PDF output out of 10000 (max. 10000000)
 

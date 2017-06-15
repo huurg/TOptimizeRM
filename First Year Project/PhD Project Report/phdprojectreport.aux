@@ -16,11 +16,17 @@
 \gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{38_Dennis_2001}
+\citation{30_Gottesman_1997}
+\citation{32_Bravyi_2005}
+\citation{33_Bravyi_2012}
+\citation{39_Gottesman_1999}
 \citation{3_Amy_2013}
 \citation{4_Amy_2013}
 \citation{5_Gosset_2013}
 \citation{8_Amy_2016}
 \citation{1_Campbell_2017}
+\citation{8_Amy_2016}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Theory and Terminology}{2}{section.2}}
 \newlabel{s2_Theory}{{2}{2}{Theory and Terminology}{section.2}{}}
@@ -31,10 +37,10 @@
 \newlabel{e4_T}{{4}{2}{Quantum Theory}{equation.2.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}The Gate Synthesis Problem}{2}{section.3}}
 \newlabel{s3_Problem}{{3}{2}{The Gate Synthesis Problem}{section.3}{}}
-\newlabel{e_Cost}{{7}{2}{The Gate Synthesis Problem}{equation.3.7}{}}
 \citation{8_Amy_2016}
 \citation{1_Campbell_2017}
 \citation{8_Amy_2016}
+\newlabel{e_Cost}{{7}{3}{The Gate Synthesis Problem}{equation.3.7}{}}
 \newlabel{p_gsp1}{{3.1}{3}{}{problem.3.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Circuits Composed of CNOT and T Gates}{3}{subsection.3.1}}
 \citation{36_Lempel_1975}
@@ -47,6 +53,7 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4}Solutions to the Gate Synthesis Problem}{4}{section.4}}
 \newlabel{s4_Solution}{{4}{4}{Solutions to the Gate Synthesis Problem}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Lempel's Factoring Algorithm}{4}{subsection.4.1}}
+\newlabel{s_Lempel}{{4.1}{4}{Lempel's Factoring Algorithm}{subsection.4.1}{}}
 \newlabel{e_working3}{{13}{4}{Lempel's Factoring Algorithm}{equation.4.13}{}}
 \newlabel{e_working4}{{17}{5}{Lempel's Factoring Algorithm}{equation.4.17}{}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Elementary Factor\relax }}{5}{algorithm.1}}
@@ -59,36 +66,52 @@
 \newlabel{lem1}{{4.1}{7}{}{lemma.4.1}{}}
 \newlabel{e_working1}{{22}{7}{The Extended Lempel Algorithm}{equation.4.22}{}}
 \newlabel{lem2}{{4.2}{7}{}{lemma.4.2}{}}
+\citation{1_Campbell_2017}
+\citation{37_Maslov_web}
+\citation{4_Amy_2013}
 \newlabel{e_working2}{{27}{8}{The Extended Lempel Algorithm}{equation.4.27}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Results}{8}{section.5}}
+\newlabel{s5_Results}{{5}{8}{Experimental Results}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Random Circuits Composed of CNOT and T Gates}{8}{subsection.5.1}}
+\newlabel{s_rand}{{5.1}{8}{Random Circuits Composed of CNOT and T Gates}{subsection.5.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Universal Practical Circuits}{8}{subsection.5.2}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Extended Lempel Algorithm (Base)\relax }}{9}{algorithm.3}}
 \newlabel{al_1}{{3}{9}{Extended Lempel Algorithm (Base)\relax }{algorithm.3}{}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces Extended Lempel Algorithm (Full)\relax }}{9}{algorithm.4}}
 \newlabel{alg_full}{{4}{9}{Extended Lempel Algorithm (Full)\relax }{algorithm.4}{}}
-\citation{1_Campbell_2017}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Results}{10}{section.5}}
-\newlabel{s5_Results}{{5}{10}{Experimental Results}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Random Circuits Composed of CNOT and T Gates}{10}{subsection.5.1}}
-\newlabel{f_random_a}{{2a}{11}{\relax }{figure.caption.2}{}}
-\newlabel{sub@f_random_a}{{a}{11}{\relax }{figure.caption.2}{}}
-\newlabel{f_random_b}{{2b}{11}{\relax }{figure.caption.2}{}}
-\newlabel{sub@f_random_b}{{b}{11}{\relax }{figure.caption.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces T counts for random circuits composed of CNOT and T gates synthesized by Lempel and LempelX.\relax }}{11}{figure.caption.2}}
-\newlabel{f_random}{{2}{11}{T counts for random circuits composed of CNOT and T gates synthesized by Lempel and LempelX.\relax }{figure.caption.2}{}}
 \citation{8_Amy_2016}
+\citation{37_Maslov_web}
 \citation{8_Amy_2016}
+\citation{37_Maslov_web}
 \citation{8_Amy_2016}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Universal Practical Circuits}{12}{subsection.5.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Circuit showing a method to construct the the $4$-control Toffoli gate with standard Toffoli gates. The generalized $n$-controlled Toffoli can be constructed similarly with additional ancillas.\relax }}{12}{figure.caption.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces This circuit identity is used to trade the internal Hadamards of a circuit for external Hadamards, along with a Pauli-X correction conditioned on the measurement result of an ancilla.\relax }}{12}{figure.caption.4}}
+\newlabel{f_random_a}{{2a}{10}{\relax }{figure.caption.2}{}}
+\newlabel{sub@f_random_a}{{a}{10}{\relax }{figure.caption.2}{}}
+\newlabel{f_random_b}{{2b}{10}{\relax }{figure.caption.2}{}}
+\newlabel{sub@f_random_b}{{b}{10}{\relax }{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces T counts for random circuits composed of CNOT and T gates synthesized by Lempel and LempelX.\relax }}{10}{figure.caption.2}}
+\newlabel{f_random}{{2}{10}{T counts for random circuits composed of CNOT and T gates synthesized by Lempel and LempelX.\relax }{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Circuit showing a method to construct the the $4$-control Toffoli gate with standard Toffoli gates. The generalized $n$-controlled Toffoli can be constructed similarly with additional ancillas.\relax }}{10}{figure.caption.3}}
+\newlabel{f_toffn}{{3}{10}{Circuit showing a method to construct the the $4$-control Toffoli gate with standard Toffoli gates. The generalized $n$-controlled Toffoli can be constructed similarly with additional ancillas.\relax }{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Internal Hadamards are eliminated by delegating them to act on ancillas according to the above circuit identity. The Hadamards on the left-hand circuit are now external, therefore they no longer obstruct the Lempel and LempelX synthesis algorithms.\relax }}{10}{figure.caption.4}}
+\newlabel{f_had}{{4}{10}{Internal Hadamards are eliminated by delegating them to act on ancillas according to the above circuit identity. The Hadamards on the left-hand circuit are now external, therefore they no longer obstruct the Lempel and LempelX synthesis algorithms.\relax }{figure.caption.4}{}}
+\citation{8_Amy_2016}
+\citation{Abdessaied2014}
 \bibstyle{abbrv}
 \bibdata{keylit}
-\bibcite{4_Amy_2013}{1}
-\bibcite{3_Amy_2013}{2}
-\bibcite{8_Amy_2016}{3}
-\bibcite{1_Campbell_2017}{4}
-\bibcite{2_Campbell_2017}{5}
-\bibcite{5_Gosset_2013}{6}
-\bibcite{36_Lempel_1975}{7}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces T counts for various benchmark circuits composed of CNOT, H and T gates as synthesized by the extended Lempel algorithm. These are compared to the results produced my Amy and Mosca in \cite  {8_Amy_2016}. $N_H$ is the size of the ancilla registry for Hadamard ancillas. All circuits are taken from \relax }}{13}{table.caption.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion and Conclusions}{13}{section.6}}
-\newlabel{s6_Discussion}{{6}{13}{Discussion and Conclusions}{section.6}{}}
+\bibcite{Abdessaied2014}{1}
+\bibcite{4_Amy_2013}{2}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces T counts for various benchmark circuits composed of CNOT, H and T gates as synthesized by the extended Lempel algorithm. $T_{\text  {original}}$ are the results produced my Amy and Mosca in \cite  {8_Amy_2016} and are listed for comparison. $N_H$ is the size of the ancilla registry for Hadamard-ancillas and $N_{\text  {partitions}}$ is the number of partitions. All circuits are taken from \cite  {37_Maslov_web}.\relax }}{11}{table.caption.5}}
+\newlabel{t_1}{{1}{11}{T counts for various benchmark circuits composed of CNOT, H and T gates as synthesized by the extended Lempel algorithm. $T_{\text {original}}$ are the results produced my Amy and Mosca in \cite {8_Amy_2016} and are listed for comparison. $N_H$ is the size of the ancilla registry for Hadamard-ancillas and $N_{\text {partitions}}$ is the number of partitions. All circuits are taken from \cite {37_Maslov_web}.\relax }{table.caption.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion, Conclusions and Plans for Future Work}{11}{section.6}}
+\newlabel{s6_Discussion}{{6}{11}{Discussion, Conclusions and Plans for Future Work}{section.6}{}}
+\bibcite{3_Amy_2013}{3}
+\bibcite{8_Amy_2016}{4}
+\bibcite{33_Bravyi_2012}{5}
+\bibcite{32_Bravyi_2005}{6}
+\bibcite{1_Campbell_2017}{7}
+\bibcite{38_Dennis_2001}{8}
+\bibcite{5_Gosset_2013}{9}
+\bibcite{30_Gottesman_1997}{10}
+\bibcite{39_Gottesman_1999}{11}
+\bibcite{36_Lempel_1975}{12}
+\bibcite{37_Maslov_web}{13}
