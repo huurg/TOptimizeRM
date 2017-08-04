@@ -4,6 +4,7 @@
 using namespace std;
 
 #include <utility>
+#include <cstdlib>
 
 void LukeInt::sort(int* x, int n, bool desc, int* a, int method) {
     if(a) {
@@ -76,7 +77,7 @@ void LukeInt::concat(int* top, const int* bottom, int n, int m) {
     }
 }
 
-void LukeInt::randperm(int* x, int n) {
+void LukeInt::randperm(int* x, int n, int x0) {
     bool* p = new bool[n];
     for(int i = 0; i < n; i++) p[i] = false;
     for(int i = 0; i < n; i++) {
@@ -89,6 +90,7 @@ void LukeInt::randperm(int* x, int n) {
         }
         x[i] = r+shift;
         p[r+shift] = true;
+        x[i] += x0;
     }
     delete [] p;
 }

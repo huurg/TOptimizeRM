@@ -16,6 +16,8 @@ using namespace std;
 #include "GateSynthesisMatrix.h"
 #include "SQC_Circuit.h"
 #include "LukeConsoleOut.h"
+#include "PhasePolynomial.h"
+#include "TO_Maps.h"
 using namespace LukeConsoleOut;
 //using namespace LinBox;
 //using namespace std;
@@ -57,6 +59,7 @@ int LempelSelector_Random(const Signature& inS);
 GateStringSparse LempelSynthesis(const Signature& inS, int maxRM, LempelSelector lempelSelector, bool feedback, int psrmc=0, int col_order=0, int n_orders=1);
 GateStringSparse LempelSynthesis(const Signature& inS, int maxRM, bool feedback, int n_rand = 1, int psrmc=0, int col_order=0, int n_orders=1);
 GateStringSparse LempelSynthesis(const Signature& inS, int maxRM, int n_rand = 1, int psrmc=0, int col_order=0, int n_orders=1);
+GateStringSparse LempelSynthesis(const Signature& inS);
 void result_analysis(const Signature& inS, const GateStringSparse& inResult, ostream& inOS = cout);
 bool synthesis_success(const Signature& inS, const GateStringSparse& inResult);
 
@@ -82,6 +85,7 @@ int trapezoid_width(const BMSparse& inBMS, int height);
 //Tests
 void test_PSRMC_1();
 void test_Nullspace_t_vs_n();
+void test_LX_exec_times();
 
 // Global variables
 string g_output_filename;
@@ -100,6 +104,7 @@ namespace SYNTHESIS_ALGORITHM_TAG {
     const string LEMPEL_GREEDY = "lg";
     const string LEMPEL_RANDOM = "lr";
     const string LEMPEL_X = "lx";
+    const string LEMPEL_X_2 = "lx2";
     const string REED_MULLER = "rm";
     const string ALL_LEMPEL_SELECTORS = "als";
     const string ALL_LEMPEL = "all";
@@ -113,7 +118,8 @@ enum SYNTHESIS_ALGORITHM_ID {
     LEMPEL_LEAST_GREEDY_NF,
     LEMPEL_GREEDY_NF,
     LEMPEL_RANDOM_NF,
-    LEMPEL_X
+    LEMPEL_X,
+    LEMPEL_X_2
 };
 
 int main(int argc, char* argv[]);
@@ -498,9 +504,21 @@ int main(int argc, char* argv[]) {
 
     srand(time(NULL));
 
-    /*SQC_Circuit blah;
+    // TODO: Have UniversalT/optimize produce SQC_Circuit decompositions
+    //      Implement the rest of PhasePolynomial
+    // TODO: Implement map from SQC_Circuit to unitary matrix.
+    //      Modify UniversalT/optimize to check init matrix = final matrix
+
+
+    SQC_Circuit blah;
     blah.Load("test.sqc");
     blah.Print();
+    PhasePolynomial blee = TO_Maps::SQC_Circuit_to_PhasePolynomial(blah);
+    blee.print();
+    GateStringSparse blon = TO_Maps::PhasePolynomial_to_GateStringSparse(blee);
+    blon.print();
+
+    /*
     Matrix mat = blah.toMatrix();
     mat.print();
     */
@@ -614,6 +632,12 @@ int main(int argc, char* argv[]) {
             } else if(!option_algorithm.compare(SYNTHESIS_ALGORITHM_TAG::DAFT_GUESS)) {
                 cout << "Daft guess" << endl;
                 GateStringSparse tempout = GateSigInterface::SigToGSS(this_sig);
+                if(!g_csv_filename.empty()) {
+                    ofstream my_csv(g_csv_filename.c_str(),iostream::app);
+                    int n = this_sig.get_n();
+                    my_csv << SYNTHESIS_ALGORITHM_ID::DAFT_GUESS << "," << n << "," << g_random_circuit_seed << "," << tempout.weight(true) << endl;
+                    my_csv.close();
+                }
                 out.assign(tempout);
             } else if(!option_algorithm.compare(SYNTHESIS_ALGORITHM_TAG::LEMPEL_RANDOM)) {
                 cout << "Lempel random" << endl;
@@ -629,6 +653,10 @@ int main(int argc, char* argv[]) {
                 out.assign(tempout);
             } else if(!option_algorithm.compare(SYNTHESIS_ALGORITHM_TAG::LEMPEL_X)) {
                 cout << "LempelX" << endl;
+                GateStringSparse tempout = LempelXSynthesis(this_sig);
+                out.assign(tempout);
+            } else if(!option_algorithm.compare(SYNTHESIS_ALGORITHM_TAG::LEMPEL_X_2)) {
+                cout << "LempelX.2" << endl;
                 GateStringSparse tempout = LempelXSynthesis(this_sig);
                 out.assign(tempout);
             }
@@ -664,6 +692,8 @@ int main(int argc, char* argv[]) {
                 test_PSRMC_1();
             } else if(!test_name.compare("Nullspace_t_vs_n")) {
                 test_Nullspace_t_vs_n();
+            } else if(!test_name.compare("LX_exec_times")) {
+                test_LX_exec_times();
             }
         } else if(!this_command.compare("generate")&&(argc>=3)) {
             cout << "Procedurally generate a circuit." << endl;
@@ -2038,7 +2068,12 @@ GateStringSparse LempelXSynthesis(const Signature& inS) {
     int t;
     clock_t tic = clock();
     LOut_Pad++;
-    GateSynthesisMatrix::LempelX(A_bool,n,m,t);
+    if(!g_algorithm.compare(SYNTHESIS_ALGORITHM_TAG::LEMPEL_X))
+        GateSynthesisMatrix::LempelX(A_bool,n,m,t);
+    else if(!g_algorithm.compare(SYNTHESIS_ALGORITHM_TAG::LEMPEL_X_2))
+        GateSynthesisMatrix::LempelX2(A_bool,n,m,t);
+    else
+        GateSynthesisMatrix::LempelX(A_bool,n,m,t);
     clock_t toc = clock();
     double exec_time = ((double)toc-(double)tic)/CLOCKS_PER_SEC;
     BMSparse out_BMS(n,t);
@@ -2048,6 +2083,13 @@ GateStringSparse LempelXSynthesis(const Signature& inS) {
     LOut(); cout << "LempelX executed in " << exec_time << " seconds." << endl;
     LOut_Pad--;
     LOut(); cout << "Gate synthesis end." << endl;
+    if(!g_csv_filename.empty()) {
+        ofstream my_csv(g_csv_filename.c_str(),iostream::app);
+        int n = inS.get_n();
+        my_csv << SYNTHESIS_ALGORITHM_ID::DAFT_GUESS << "," << n << "," << g_random_circuit_seed << "," << A_GSS.weight(true) << endl;
+        my_csv << SYNTHESIS_ALGORITHM_ID::LEMPEL_X << "," << n << "," << g_random_circuit_seed << "," << out.weight(true) << endl;
+        my_csv.close();
+    }
     return out;
 }
 
@@ -2064,6 +2106,22 @@ int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int*
     LOut() << "UniversalTCount: Algorithm begin." << endl;
     LOut_Pad++;
     inC->ConvertFromToffoli();
+    inC->RemoveExternalHadamards();
+    //LOut() << "Before" << endl;
+    //inC->Print();
+    {
+        bool this_exit = 0;
+        while(!this_exit) {
+            //cout << "A" << endl;
+            this_exit = 0;
+            this_exit += inC->CancelAdjacentTs();
+            this_exit += inC->CancelAdjacentHadamards();
+            this_exit = !this_exit;
+        }
+    }
+
+    //LOut() << "After" << endl;
+    //inC->Print();
     LOut() << "UniversalTCount: Converted to elementary gate set." << endl;
     //inC->Print(&cout,0,65);
     LOut() << endl;
@@ -2075,10 +2133,12 @@ int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int*
         LOut_Pad++;
         int init_gates = inC->m;
         LOut() << "Remaining gates = " << init_gates << endl;
+        //inC->Print();
         exit = !inC->NextSignature(this_sig);
         int reduces_gates = init_gates-inC->m;
         LOut() << "Converted" << endl;
         //inC->Print();
+        //LOut() << "m = " << inC->m << endl;
         this_sig.print();
         GateStringSparse result = LempelXSynthesis(this_sig);
         GateStringSparse result_daft = GateSigInterface::SigToGSS(this_sig);
@@ -2123,4 +2183,27 @@ int UniversalTCount(SQC_Circuit* inC, int* out_daft, double* out_exec_time, int*
     LOut_Pad--;
     LOut() << "UniversalTCount: Algorithm end." << endl << endl;
     return out;
+}
+
+void test_LX_exec_times() {
+    cout << "LempelX execution times." << endl;
+    int d = 9;
+    int n_start = 6;
+    int n_end = 16;
+    for(int i = 0; i < d; i++) {
+        cout << "i = " << i << " of " << d << endl;
+        for(int n = n_start; n <= n_end; n++) {
+            cout << "n = " << n << endl;
+            Signature this_sig = CircuitGenerator_RandomComplex(n);
+            this_sig.print();
+
+            clock_t tic = clock();
+            GateStringSparse result = LempelXSynthesis(this_sig);
+            clock_t toc = clock();
+            double exec_time = (double)(toc-tic)/(double)CLOCKS_PER_SEC;
+            ofstream outfile("LX_exec_times.csv", iostream::app);
+            outfile << n << "," << exec_time << endl;
+            outfile.close();
+        }
+    }
 }

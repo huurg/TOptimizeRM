@@ -25,6 +25,24 @@ SQC_Circuit::SQC_Circuit() {
     ;
 }
 
+SQC_Circuit::SQC_Circuit(int in_n) {
+    n = in_n;
+    Construct();
+}
+
+SQC_Circuit::~SQC_Circuit() {
+    Destruct();
+}
+
+SQC_Circuit::SQC_Circuit(const SQC_Circuit& in_C) {
+    n = in_C.n;
+    d = in_C.d;
+    m = in_C.m;
+    max_m = in_C.max_m;
+    hadamard_mode_max_ancillas = in_C.hadamard_mode_max_ancillas;
+    p_hads = in_C.p_hads;
+}
+
 void SQC_Circuit::Construct() {
     if(!operator_list) operator_list = new int*[max_m];
     for(int i = 0; i < max_m; i++){
@@ -158,6 +176,10 @@ void SQC_Circuit::AddOperator(const char* in_op_str) {
                     operator_list[m][0] = SQC_OPERATOR_TOFFOLI_N;
                 } else if(!strcmp(this_tok, SQC_OPSTRING_PARTITION)) {
                     operator_list[m][0] = SQC_OPERATOR_PARTITION;
+                } else if(!strcmp(this_tok, SQC_OPSTRING_X)) {
+                    operator_list[m][0] = SQC_OPERATOR_X;
+                } else if(!strcmp(this_tok, SQC_OPSTRING_Y)) {
+                    operator_list[m][0] = SQC_OPERATOR_Y;
                 }
                 int i = 0;
                 bool exit = false;
@@ -512,7 +534,7 @@ void SQC_Circuit::DeleteOperator(int t) {
     }
 }
 
-void SQC_Circuit::AddOperator(const SQC_Operator in_op) {
+void SQC_Circuit::AddOperator(const SQC_Operator in_op, int len) {
     // Resize if necessary
     if(m>=max_m) {
         Resize(max_m+SQC_CIRCUIT_EXPAND);
@@ -520,7 +542,11 @@ void SQC_Circuit::AddOperator(const SQC_Operator in_op) {
     }
     if(m<max_m) {
         for(int i = 0; i < (n+1); i++) {
-            operator_list[m][i] = in_op[i];
+            if((len>0)&&(i>=len)) {
+                operator_list[m][i] = 0;
+            } else {
+                operator_list[m][i] = in_op[i];
+            }
         }
         m++;
     }
@@ -1107,7 +1133,8 @@ void SQC_Circuit::ConvertFromToffoli() {
     //Print();
 
     //cout << "Out of print." << endl;
-    int n_deleted = 0;
+    CancelAdjacentHadamards();
+    /*int n_deleted = 0;
     for(int i = 0; i < (m-1); i++) {
         //cout << "i = " << i << endl;
         if(operator_list[i][0]==SQC_OPERATOR_HADAMARD) {
@@ -1152,10 +1179,14 @@ void SQC_Circuit::ConvertFromToffoli() {
                 }
             }
         }
-    }
+    }*/
     //cout << "N deleted = " << n_deleted << endl;
     LOut() << "Cancelled adjacent Hadamards" << endl;
+    //Print();
     //Print(&cout,0,70);
+    //RemoveExternalHadamards();
+    //LOut() << "Removed external Hadamards" << endl;
+    //Print();
 }
 
 void SQC_Circuit::AllocateAncillas(const SQC_Circuit& in_C) {
@@ -1386,6 +1417,12 @@ void SQC_Circuit::Print() const {
         case SQC_OPERATOR_PARTITION:
             this_op_str = SQC_OPSTRING_PARTITION;
             break;
+        case SQC_OPERATOR_X:
+            this_op_str = SQC_OPSTRING_X;
+            break;
+        case SQC_OPERATOR_Y:
+            this_op_str = SQC_OPSTRING_Y;
+            break;
         }
         if(with_t) {
             LOut() << "[" << i << "] = ";
@@ -1430,13 +1467,29 @@ void SQC_Circuit::ConvertHadamard(SQC_Circuit* out, int max_ancillas) {
         while(!exit) {
             for(int c = 0; c < out->n+1; c++) this_operator[c] = 0;
             if(operator_list[0][0] == SQC_OPERATOR_HADAMARD) {
-                //cout << "Adding hadamard" << endl;
-                this_operator[0] = SQC_OPERATOR_CS;
-                this_operator[1] = operator_list[0][1];
-                this_operator[2] = (n+1+hadamard_count);
-                out->AddOperator(this_operator);
-                DeleteOperator(0);
-                hadamard_count++;
+                if(hadamard_count>=max_ancillas) {
+                    exit = 1;
+                } else {
+                    //cout << "Adding hadamard" << endl;
+                    /*this_operator[0] = SQC_OPERATOR_CS;
+                    this_operator[1] = operator_list[0][1];
+                    this_operator[2] = (n+1+hadamard_count);
+                    out->AddOperator(this_operator);*/
+                    this_operator[0] = SQC_OPERATOR_CNOT;
+                    this_operator[1] = operator_list[0][1];
+                    this_operator[2] = (n+1+hadamard_count);
+                    out->AddOperator(this_operator);
+                    this_operator[0] = SQC_OPERATOR_CNOT;
+                    this_operator[1] = (n+1+hadamard_count);
+                    this_operator[2] = operator_list[0][1];
+                    out->AddOperator(this_operator);
+                    this_operator[0] = SQC_OPERATOR_CNOT;
+                    this_operator[1] = operator_list[0][1];
+                    this_operator[2] = (n+1+hadamard_count);
+                    out->AddOperator(this_operator);
+                    DeleteOperator(0);
+                    hadamard_count++;
+                }
             } else {
                 //cout << "Adding other" << endl;
                 for(int c = 0; c < (n+1); c++) {
@@ -1448,7 +1501,7 @@ void SQC_Circuit::ConvertHadamard(SQC_Circuit* out, int max_ancillas) {
                 DeleteOperator(0);
             }
 
-            if((hadamard_count>=max_ancillas)||(0>=m)) {
+            if(m==0) {
                 exit = 1;
             }
         }
@@ -1514,6 +1567,16 @@ Matrix SQC_Circuit::toMatrix() const {
                 this_mat = Matrix::Z(n,operator_list[i][1]);
                 }
                 break;
+            case SQC_OPERATOR_X:
+                {
+                this_mat = Matrix::X(n,operator_list[i][1]);
+                }
+                break;
+            case SQC_OPERATOR_Y:
+                {
+                this_mat = Matrix::Y(n,operator_list[i][1]);
+                }
+                break;
             case SQC_OPERATOR_TOFFOLI:
             case SQC_OPERATOR_TOFFOLI_N:
                 {
@@ -1531,4 +1594,175 @@ Matrix SQC_Circuit::toMatrix() const {
     }
 
     return out;
+}
+
+void SQC_Circuit::RemoveExternalHadamards() {
+    bool* operator_used = new bool[n];
+    for(int i = 0; i < n; i++) operator_used[i] = 0;
+
+    for(int t = 0; t < m; t++) {
+        if(operator_list[t][0]==SQC_OPERATOR_HADAMARD) {
+            if(!operator_used[operator_list[t][1]-1]) {
+                DeleteOperator(t);
+                t--;
+            }
+        } else {
+            int this_n_args = GetNArgs(t);
+            for(int i = 0; i < this_n_args; i++) operator_used[operator_list[t][i+1]-1] = 1;
+        }
+    }
+
+    for(int i = 0; i < n; i++) operator_used[i] = 0;
+
+    for(int t = (m-1); t >= 0; t--) {
+        if(operator_list[t][0]==SQC_OPERATOR_HADAMARD) {
+            if(!operator_used[operator_list[t][1]-1]) {
+                DeleteOperator(t);
+            }
+        } else {
+            int this_n_args = GetNArgs(t);
+            for(int i = 0; i < this_n_args; i++) operator_used[operator_list[t][i+1]-1] = 1;
+        }
+    }
+
+    delete [] operator_used;
+}
+
+bool SQC_Circuit::CancelAdjacentHadamards() {
+    bool out = 0;
+    int n_deleted = 0;
+    for(int i = 0; i < (m-1); i++) {
+        //cout << "i = " << i << endl;
+        if(operator_list[i][0]==SQC_OPERATOR_HADAMARD) {
+            int acting_qubit = operator_list[i][1];
+            bool this_qubit_used = 0;
+            for(int j = (i+1); (!this_qubit_used)&&(j < m); j++) {
+                switch(operator_list[j][0]) {
+                    case SQC_OPERATOR_HADAMARD:
+                        if((!this_qubit_used)&&(operator_list[j][1]==acting_qubit)) {
+                            //cout << "Deleting operator " << j << endl;
+                            //for(int c = 0; c < (GetNArgs(j)+1); c++) cout << operator_list[j][c] << " ";
+                            //cout << endl;
+                            //cout << "Deleting operator " << i << endl;
+                            //for(int c = 0; c < (GetNArgs(i)+1); c++) cout << operator_list[i][c] << " ";
+                            //cout << endl;
+                            DeleteOperator(j);
+                            DeleteOperator(i);
+                            i--;
+                            n_deleted++;
+                            n_deleted++;
+                            this_qubit_used = 1;
+                            out = 1;
+                        }
+                        break;
+                    case SQC_OPERATOR_S:
+                    case SQC_OPERATOR_Z:
+                    case SQC_OPERATOR_T:
+                        if(operator_list[j][1]==acting_qubit) {
+                            this_qubit_used = 1;
+                        }
+                        break;
+                    case SQC_OPERATOR_CS:
+                    case SQC_OPERATOR_CNOT:
+                        if((operator_list[j][1]==acting_qubit)||(operator_list[j][2]==acting_qubit)) {
+                            this_qubit_used = 1;
+                        }
+                        break;
+                    case SQC_OPERATOR_CCZ:
+                        if((operator_list[j][1]==acting_qubit)||(operator_list[j][2]==acting_qubit)||(operator_list[j][3]==acting_qubit)) {
+                            this_qubit_used = 1;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+    return out;
+}
+
+bool SQC_Circuit::CancelAdjacentTs() {
+    bool out = 0;
+    //cout << "FDSAGHAF" << endl;
+    //bool* qubit_used = new bool[n];
+    //for(int i = 0; i < n; i++) qubit_used[i] = 0;
+    for(int i = 0; i < (m-1); i++) {
+        //cout << "i = " << i << endl;
+        switch(operator_list[i][0]) {
+            case SQC_OPERATOR_T:
+            case SQC_OPERATOR_CS:
+            case SQC_OPERATOR_CCZ:
+                {
+                    //cout << "jmnhgtyr" << endl;
+                    int this_nargs = GetNArgs(i);
+                    int acting_qubit[3];
+                    acting_qubit[0] = operator_list[i][1];
+                    acting_qubit[1] = operator_list[i][2];
+                    acting_qubit[2] = operator_list[i][3];
+                    if(acting_qubit[2]>acting_qubit[1]) swap(acting_qubit[2],acting_qubit[1]);
+                    if(acting_qubit[1]>acting_qubit[0]) swap(acting_qubit[1],acting_qubit[0]);
+                    if(acting_qubit[2]>acting_qubit[1]) swap(acting_qubit[2],acting_qubit[1]);
+                    //cout << "\tActing qubit = (" << acting_qubit[0] << ", " << acting_qubit[1] << ", " << acting_qubit[2] << ")" << endl;
+                    bool this_qubit_used = 0;
+                    for(int j = (i+1); (!this_qubit_used)&&(j < m); j++) {
+                        //cout << "\t\tj = " << j << endl;
+                        int jacting_qubit[3];
+                        jacting_qubit[0] = operator_list[j][1];
+                        jacting_qubit[1] = operator_list[j][2];
+                        jacting_qubit[2] = operator_list[j][3];
+                        if(jacting_qubit[2]>jacting_qubit[1]) swap(jacting_qubit[2],jacting_qubit[1]);
+                        if(jacting_qubit[1]>jacting_qubit[0]) swap(jacting_qubit[1],jacting_qubit[0]);
+                        if(jacting_qubit[2]>jacting_qubit[1]) swap(jacting_qubit[2],jacting_qubit[1]);
+                        //cout << "\t\t\tjActing qubit = (" << jacting_qubit[0] << ", " << jacting_qubit[1] << ", " << jacting_qubit[2] << ")" << endl;
+                        switch(operator_list[j][0]) {
+                            case SQC_OPERATOR_T:
+                            case SQC_OPERATOR_CS:
+                            case SQC_OPERATOR_CCZ:
+                                if((!this_qubit_used)&&(jacting_qubit[0]==acting_qubit[0])&&(jacting_qubit[1]==acting_qubit[1])&&(jacting_qubit[2]==acting_qubit[2])) {
+                                    //cout << "Deleting operator " << j << endl;
+                                    //for(int c = 0; c < (GetNArgs(j)+1); c++) cout << operator_list[j][c] << " ";
+                                    //cout << endl;
+                                    //cout << "Deleting operator " << i << endl;
+                                    //for(int c = 0; c < (GetNArgs(i)+1); c++) cout << operator_list[i][c] << " ";
+                                    //cout << endl;
+                                    DeleteOperator(j);
+                                    DeleteOperator(i);
+                                    i--;
+                                    //n_deleted++;
+                                    //n_deleted++;
+                                    this_qubit_used = 1;
+                                    out = 1;
+                                }
+                                break;
+                            case SQC_OPERATOR_HADAMARD:
+                                for(int c = 0; c < this_nargs; c++) {
+                                    if(operator_list[j][1]==acting_qubit[c]) {
+                                        this_qubit_used = 1;
+                                    }
+                                }
+                                break;
+                            case SQC_OPERATOR_S:
+                                break;
+                            case SQC_OPERATOR_Z:
+                                break;
+                            case SQC_OPERATOR_CNOT:
+                                for(int c = 0; c < this_nargs; c++) {
+                                    if(operator_list[j][1]==acting_qubit[c]) {
+                                        this_qubit_used = 1;
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+                break;
+
+
+        }
+    }
+    //delete [] qubit_used;
+    return out;
+}
+
+void SQC_Circuit::AddAncilla(int anc_inc) {
+    ;
 }

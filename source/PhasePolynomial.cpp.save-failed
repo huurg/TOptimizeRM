@@ -1,0 +1,76 @@
+#include "PhasePolynomial.h"
+
+#include <iostream>
+using namespace std;
+
+#include <cmath>
+
+#include "LukeBool.h"
+
+PhasePolynomial::PhasePolynomial(int in_n) {
+    n = in_n;
+    N = (int)pow(2,n);
+    if(n>0) {
+        a = new int[N];
+        for(int i = 0; i < N; i++) {
+            a[i] = 0;
+        }
+    }
+}
+
+PhasePolynomial::~PhasePolynomial() {
+    if(a) {
+        delete [] a;
+        a = NULL;
+    }
+}
+
+void PhasePolynomial::print() const {
+    for(int i = 1; i < N; i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+}
+
+int PhasePolynomial::getNoTerms() const {
+    int out = 0;
+    for(int i = 0; i < N; i++) {
+        out += (a[i]>0);
+    }
+    return out;
+}
+
+int PhasePolynomial::operator[](const int in_I) const {
+    int out = -1;
+
+    if(a&&(in_I>=0)&&(in_I<N)) {
+        out = a[in_I];
+    }
+
+    return out;
+}
+
+int PhasePolynomial::operator[](const bool* in_x) const {
+    int out = -1;
+
+    int in_I = LukeBool::BoolVecToInt(in_x, n);
+    if(a&&(in_I>=0)&&(in_I<N)) {
+        out = a[in_I];
+    }
+
+    return out;
+}
+
+int& PhasePolynomial::operator[](const int in_I) {
+    if(a&&(in_I>=0)&&(in_I<N)) {
+        return a[in_I];
+    }
+}
+
+int& PhasePolynomial::operator[](const bool* in_x) {
+    int in_I = LukeBool::BoolVecToInt(in_x, n);
+    cout << in_I << endl;
+    if(a&&(in_I>=0)&&(in_I<N)) {
+        return a[in_I];
+    }
+}

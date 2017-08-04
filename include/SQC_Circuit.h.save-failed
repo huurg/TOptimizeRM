@@ -5,7 +5,6 @@
 using namespace std;
 #include <ostream>
 #include "Signature.h"
-#include "GateStringSparse.h"
 #include "BMSparse.h"
 #include "Matrix.h"
 
@@ -76,13 +75,12 @@ struct SQC_Circuit {
     int max_m = SQC_DEFAULT_MAX_M; //Max number of operators
     SQC_Operator_List operator_list = NULL;
     int hadamard_mode_max_ancillas = -1; // n_H in writing
-    int p_hads = 0; // Number of Hadamard ancillas indexed from n - p_hads to n-1
 
     int p = 0; //(deprocated) Number of ancillas, ancilla indices: n-p+1 -> n
                //Number of non-ancilla qubits = n-p
                //If p=-1, then allocate ancillas automatically using SQC_ANCILLA_MODE_PER_GATE
                //If p=-2, then allocate ancillas automatically using SQC_ANCILLA_MODE_PER_CIRCUIT
-
+    int p_hads = 0; // (deprocated)
     SQC_AncillaMode ancilla_mode = SQC_ANCILLA_MODE_MANUAL; // (deprocated)
     SQC_ToffoliNMode toffoli_n_mode = SQC_TOFFOLI_N_MODE_PSCJ; // (deprocated)
     SQC_HadamardMode hadamard_mode = SQC_HADAMARD_MODE_MONTANARO; // (deprocated)
@@ -92,7 +90,6 @@ struct SQC_Circuit {
 
     SQC_Circuit();
     SQC_Circuit(int in_n);
-    SQC_Circuit(const SQC_Circuit& in_C);
     ~SQC_Circuit();
     void Construct();
     void Destruct();
@@ -105,7 +102,6 @@ struct SQC_Circuit {
     void Save(const char* in_filename) const;
     void Clear();
     void Resize(int in_max_m);
-    void AddAncilla(int anc_inc = 1);
 
     void AddOperator(const char* in_op_str);
     void AddOperator(const SQC_Operator in_op, int len = 0);

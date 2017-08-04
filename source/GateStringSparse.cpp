@@ -7,6 +7,7 @@ using namespace std;
 #include <cmath>
 #include <vector>
 #include <ctime>
+#include <cstdlib>
 
 #include "LukeMaths.h"
 #include "LukeBool.h"

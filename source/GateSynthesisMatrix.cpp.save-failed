@@ -235,27 +235,6 @@ void GateSynthesisMatrix::Chi(bool** A, bool** x, int n, int m, bool** Aext) {
     }
 }
 
-void GateSynthesisMatrix::ChiPrime(bool** A, bool** x, int n, int m, bool** Aext) {
-    int i = 0;
-    int temp = 0;
-    for(int alpha = 0; alpha < n; alpha++) {
-        for(int beta = 0; beta < n; beta++) {
-            for(int gamma = 0; gamma < n; gamma++) {
-                for(int j = 0; j < m; j++) {
-                    temp = x[alpha][0]*x[beta][0]*A[gamma][j]
-                        + x[beta][0]*x[gamma][0]*A[alpha][j]
-                        + x[gamma][0]*x[alpha][0]*A[beta][j]
-                        + x[alpha][0]*A[beta][j]*A[gamma][j]
-                        + x[beta][0]*A[gamma][j]*A[alpha][j]
-                        + x[gamma][0]*A[alpha][j]*A[beta][j];
-                    Aext[i][j] = (temp%2);
-                }
-                i++;
-            }
-        }
-    }
-}
-
 void GateSynthesisMatrix::LempelX2(bool** A, int n, int m, int& omp) {
     int this_m = m;
     bool** x = LukeMat_GF2::construct(n,1);
@@ -282,19 +261,21 @@ void GateSynthesisMatrix::LempelX2(bool** A, int n, int m, int& omp) {
     bool found = 1;
     int round = 0;
     while(found&&(round<m)) {
-        found = 0;
+        //found = 0;
         LOut(); cout << "Round = " << round << endl;
         //LukeMat_GF2::print(A,n,this_m,"A: ");
         LukeInt::randperm(r_j1,this_m-1);
-        for(int j1 = 0; (!found)&&(j1 < (this_m-1)); j1++) {
+        for(int j1 = 0; /*(!found)&&*/(j1 < (this_m-1)); j1++) {
             int this_col_1 = r_j1[j1];
             LukeInt::randperm(r_j2,this_m-1-j1,j1+1);
-            for(int j2 = 0; (!found)&&(j2 < (this_m-1-j1)); j2++) {
+            for(int j2 = 0; /*(!found)&&*/(j2 < (this_m-1-j1)); j2++) {
                 int this_col_2 = r_j2[j2];
 
                 for(int i = 0; i < n; i++) {
                     x[i][0] = (A[i][this_col_1] + A[i][this_col_2])%2;
                 }
+
+                found = 0;
 
                 // Check chi.
                 GateSynthesisMatrix::Chi(A,x,n,this_m,chi_A);
@@ -308,7 +289,7 @@ void GateSynthesisMatrix::LempelX2(bool** A, int n, int m, int& omp) {
                     found = (NS[this_col_1][h]+NS[this_col_2][h])%2;
                     if(found) {
                         nsv = h;
-                        //cout << "j1 = " << this_col_1 << ", j2 = " << this_col_2 << endl;
+                        cout << "j1 = " << this_col_1 << ", j2 = " << this_col_2 << endl;
                     }
                 }
                 if(found) {
@@ -321,23 +302,15 @@ void GateSynthesisMatrix::LempelX2(bool** A, int n, int m, int& omp) {
                     }
                     int mp;
                     GateSynthesisMatrix::cleanup(Anew,n,this_m,mp);
-                    //this_m = mp;
+                    this_m = mp;
                     if(mp<m_best) {
                         LukeMat_GF2::copy(Anew,n,mp,Abest);
                         m_best = mp;
-                    }
-                } else {
-                    if(false/*Conditions for chi prime*/) {
-                        // Do chi prime
-                    } else {
-                        // Do single column
                     }
                 }
                 if(d) LukeMat_GF2::destruct(NS,this_m,d);
             }
         }
-        LukeMat_GF2::copy(Abest,n,m_best,A);
-        this_m = m_best;
         round++;
     }
 

@@ -85,7 +85,7 @@ bool LukeBool::increment(bool* x, int len) {
     return out;
 }
 
-int LukeBool::BoolVecToInt(bool* x, int len) {
+int LukeBool::BoolVecToInt(const bool* x, int len) {
     int out = 0;
     for(int i = 0; i < len; i++) {
         out += x[i]*pow(2,i);

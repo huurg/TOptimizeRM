@@ -1,0 +1,7 @@
+#ifndef UNIVERSAL_OPTIMIZE_HEADER
+
+#include "SQC_Circuit.h"
+
+void SQC_Circuit::convert_Y_to_XZ();
+
+#endif // UNIVERSAL_OPTIMIZE_HEADER

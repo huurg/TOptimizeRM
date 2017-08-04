@@ -6,7 +6,7 @@ using namespace std;
 
 namespace LukeBool {
     int IntToBoolVec(bool* out, int I, int m = -1);
-    int BoolVecToInt(bool* x, int len);
+    int BoolVecToInt(const bool* x, int len);
     int BitSize(int I);
     int Inner(bool* x1, bool* x2, int len);
     int Weight(bool* x, int len);

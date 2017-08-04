@@ -168,7 +168,7 @@ bool** LukeMat_GF2::nullspace(bool** A, int n, int m, int& out_d) {
 
     //cout << "A_rank = " << A_rank << endl;
 
-    int d = (m - A_rank);
+    int d = (A_rank>0)?(m - A_rank):0;
 
     //cout << "d = " << d << endl;
 

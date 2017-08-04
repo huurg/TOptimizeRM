@@ -19,7 +19,7 @@ namespace LukeInt {
     void copy(int* dst, const int* src, int n);
     void sub(int* dst, const int* src, int n, int m, int i0=0);
     void concat(int* top, const int* bottom, int n, int m);
-    void randperm(int* x, int n);
+    void randperm(int* x, int n, int x0 = 0);
 }
 
 #endif
