@@ -7,6 +7,8 @@
 #include "PhasePolynomial.h"
 #include "SQC_Circuit.h"
 #include "GateStringSparse.h"
+#include "WeightedPolynomial.h"
+#include "Signature.h"
 
 namespace TO_Maps {
     // PhasePolynomial <-> SQC_Circuit
@@ -17,6 +19,12 @@ namespace TO_Maps {
     GateStringSparse PhasePolynomial_to_GateStringSparse(const PhasePolynomial& in);
     PhasePolynomial GateStringSparse_to_PhasePolynomial(const GateStringSparse& in);
 
+    // PhasePolynomial <-> WeightedPolynomial
+    WeightedPolynomial PhasePolynomial_to_WeightedPolynomial(const PhasePolynomial& in);
+    PhasePolynomial WeightedPolynomial_to_PhasePolynomial(const WeightedPolynomial& in);
+
+    // WeightedPolynomia <-> Signature
+    Signature WeightedPolynomial_to_Signature(const WeightedPolynomial& in);
 }
 
 #endif // TO_MAPS_HEADER

@@ -24,7 +24,5 @@ void LukeConsoleOut::dout() {
 double LukeConsoleOut::secs(clock_t tic, clock_t toc) {
     double out = 0.0;
 
-    out = ((double)toc-(double)tic)/(double)CLOCKS_PER_SEC;
-
     return out;
 }

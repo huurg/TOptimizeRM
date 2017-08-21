@@ -6,8 +6,6 @@ using namespace std;
 
 #include <ostream>
 
-#include <ctime>
-
 extern int dout_n;
 
 namespace LukeConsoleOut {
@@ -16,7 +14,7 @@ namespace LukeConsoleOut {
     ostream& LOut();
     void dout();
 
-    double secs(clock_t tic, clock_t toc);
+    double PrintTime(clock_t tic, clock_t toc);
 }
 
 

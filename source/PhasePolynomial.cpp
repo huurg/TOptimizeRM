@@ -4,8 +4,10 @@
 using namespace std;
 
 #include <cmath>
+#include <unordered_set>
 
 #include "LukeBool.h"
+
 
 PhasePolynomial::PhasePolynomial(int in_n) {
     n = in_n;
@@ -15,6 +17,14 @@ PhasePolynomial::PhasePolynomial(int in_n) {
         for(int i = 0; i < N; i++) {
             a[i] = 0;
         }
+        //data = new unordered_set<int*>;
+    }
+}
+
+PhasePolynomial::PhasePolynomial(const PhasePolynomial& in) {//*
+    PhasePolynomial(in.n);
+    for(int i = 0; i < in.N; i++) {
+        a[i] = in.a[i];
     }
 }
 
@@ -23,6 +33,10 @@ PhasePolynomial::~PhasePolynomial() {
         delete [] a;
         a = NULL;
     }
+    /*if(data) {
+        delete data;
+        data = NULL;
+    }*/
 }
 
 void PhasePolynomial::print() const {
@@ -151,5 +165,11 @@ void PhasePolynomial::mod2() {
     for(int i = 0; i < N; i++) {
         while(a[i]<0) a[i] += 2;
         a[i] %= 2;
+    }
+}
+
+void PhasePolynomial::operator=(const PhasePolynomial& in) {
+    for(int i = 0; i < N; i++) {
+        a[i] = in.a[i];
     }
 }

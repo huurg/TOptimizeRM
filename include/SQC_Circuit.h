@@ -8,6 +8,7 @@ using namespace std;
 #include "GateStringSparse.h"
 #include "BMSparse.h"
 #include "Matrix.h"
+#include "TO_Decoder.h"
 
 typedef int* SQC_Operator; // 0^th element = Operator type, rest of elements = qubit labels
 typedef SQC_Operator* SQC_Operator_List;
@@ -39,14 +40,19 @@ enum SQC_Operator_Label {
         SQC_OPERATOR_HADAMARD,
         SQC_OPERATOR_CNOT,
         SQC_OPERATOR_T,
+        SQC_OPERATOR_T_DAG,
         SQC_OPERATOR_CS,
+        SQC_OPERATOR_CS_DAG,
+        SQC_OPERATOR_CZ,
         SQC_OPERATOR_CCZ,
         SQC_OPERATOR_S,
+        SQC_OPERATOR_S_DAG,
         SQC_OPERATOR_Z,
         SQC_OPERATOR_TOFFOLI,
         SQC_OPERATOR_TOFFOLI_4,
         SQC_OPERATOR_TOFFOLI_N,
         SQC_OPERATOR_PARTITION,
+        SQC_OPERATOR_POST_0, // Measures a single qubit in Pauli-Z basis and post-selects +1 outcome (projects qubit onto |0>)
         SQC_OPERATOR_N
 
 // To add operator, update:
@@ -56,9 +62,13 @@ constexpr static char SQC_OPSTRING_IDENTITY[] = "I";
 constexpr static char SQC_OPSTRING_HADAMARD[] = "H";
 constexpr static char SQC_OPSTRING_CNOT[] = "CNOT";
 constexpr static char SQC_OPSTRING_T[] = "T";
+constexpr static char SQC_OPSTRING_T_DAG[] = "T'";
 constexpr static char SQC_OPSTRING_CS[] = "CS";
+constexpr static char SQC_OPSTRING_CS_DAG[] = "CS'";
+constexpr static char SQC_OPSTRING_CZ[] = "CZ";
 constexpr static char SQC_OPSTRING_CCZ[] = "CCZ";
 constexpr static char SQC_OPSTRING_S[] = "S";
+constexpr static char SQC_OPSTRING_S_DAG[] = "S'";
 constexpr static char SQC_OPSTRING_Z[] = "Z";
 constexpr static char SQC_OPSTRING_TOFFOLI[] = "Toffoli";
 constexpr static char SQC_OPSTRING_TOFFOLI_4[] = "Toffoli-4";
@@ -66,7 +76,7 @@ constexpr static char SQC_OPSTRING_TOFFOLI_N[] = "t"; // N is given by number of
 constexpr static char SQC_OPSTRING_PARTITION[] = "P";
 constexpr static char SQC_OPSTRING_X[] = "X";
 constexpr static char SQC_OPSTRING_Y[] = "Y";
-
+constexpr static char SQC_OPSTRING_POST_0[] = "M";
 
 struct SQC_Circuit {
     // Properties
@@ -98,8 +108,8 @@ struct SQC_Circuit {
     void Destruct();
     void Copy(const SQC_Circuit& in_C);
 
-    void Print(ostream* in_OS, int start_i = 0, int print_n = -1,bool with_t = true) const;
-    void Print() const;
+    void Print(ostream* in_OS = &cout, int start_i = 0, int print_n = -1,bool with_t = true) const;
+    //void Print() const;
     void Load(const char* in_filename);
     void LoadMaslovFile(const char* in_filename);
     void Save(const char* in_filename) const;
@@ -128,9 +138,12 @@ struct SQC_Circuit {
     bool CancelAdjacentHadamards();
     bool CancelAdjacentTs();
 
+    void PrintOperatorDistribution() const;
 
     void AllocateAncillas(const SQC_Circuit& in_C); // Constructs new circuit with automatically allocated ancillas
     int GetNArgs(int i) const;
+
+    static SQC_Circuit* LoadTFCFile(const char* inFilename);
 
     #include "UniversalOptimize.h"
 };

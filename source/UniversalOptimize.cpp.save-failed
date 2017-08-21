@@ -111,22 +111,7 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
     for(int i = 0; i < step6_Hs[step6_N_Hs-1]->m; i++) out.AddOperator(step6_Hs[step6_N_Hs-1]->operator_list[i],step6_Hs[step6_N_Hs-1]->n+1);
     //out.PrintOperatorDistribution();
     out.simplify();
-    clock_t finish = clock();
-
-    LOut() << "Step 8: Hadamard gadgets. Executed in " << step8_time << "s" << endl;
-    LOut() << "Step 9: Diagonalise {CNOT, T}. Executed in " << step9_time << "s" << endl;
-    LOut() << "Step 10: Optimize. Executed in " << step10_time << "s" << endl;
-
-    accounted_time += step8_time;
-    accounted_time += step9_time;
-    accounted_time += step10_time;
-
-    LOut() << "Accounted time: " << accounted_time << "s" << endl;
-    LOut() << "Total time: " << secs(start,finish) << "s" << endl;
-
-    LOut_Pad--;
-
-    LOut() << "UniversalOptimize end." << endl;
+    cout << "UniversalOptimize end." << endl;
     return out;
 }
 

@@ -173,7 +173,7 @@ void GateSynthesisMatrix::LempelX(bool** A, int n, int m, int& omp) {
                     found = (NS[j1][h]+NS[j2][h])%2;
                     if(found) {
                         nsv = h;
-                        cout << "j1 = " << j1 << ", j2 = " << j2 << endl;
+                        //cout << "j1 = " << j1 << ", j2 = " << j2 << endl;
                     }
                 }
                 if(found) {
@@ -234,6 +234,7 @@ void GateSynthesisMatrix::Chi(bool** A, bool** x, int n, int m, bool** Aext) {
         }
     }
 }
+
 
 void GateSynthesisMatrix::ChiPrime(bool** A, bool** x, int n, int m, bool** Aext) {
     int i = 0;
