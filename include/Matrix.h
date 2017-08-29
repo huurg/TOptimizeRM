@@ -34,22 +34,25 @@ class Matrix {
 		void E(int,int,bool,double);					//Assign value at given indices with effectively one double. Assigns only imaginary part and bool is ignored. (By convention use true)
 		int getRows() const;
 		int getCols() const;
-		bool isSquare();
+		bool isSquare() const;
 		int isVec() const;								//Returns -1 for row vec, 0 for not a vec, 1 for col vec
 		double magnitude() const;							//Returns length if matrix is a vector (row or col)
 		int length() const;								//Returns number of elements on main axis if vector
-		bool multCompatible(Matrix&);
-		Matrix multiply(Matrix&);
+		bool multCompatible(const Matrix&) const;
+		Matrix multiply(const Matrix&) const;
 		//Vector multiply(Vector&);
-		Matrix inverse();
-		Matrix transpose();
-		Matrix adjoint();
-		Complex determinant();
+		Matrix inverse() const;
+		Matrix transpose() const;
+		Matrix adjoint() const;
+		Complex trace() const;
+		Matrix partialTrace(int q_i, Complex* tr_i = NULL) const; //Valid only for 1 <= q_i <= n where this is a square 2^n X 2^n matrix. Returns the matrix where qubit i has been traced out. tr_i is container for the renormalization scalar. In this case returns unitary.
+		Complex determinant() const;
 		bool isNAM() const;
-		Matrix add(Matrix& inM);
-		Matrix tensorProduct(const Matrix&);
+		Matrix add(const Matrix& inM) const;
+		Matrix tensorProduct(const Matrix&) const;
 		static Matrix nTensorM(const Matrix&, int inN);
 		void clone(const Matrix& inM);
+		Matrix submatrix(int r_0, int c_0, int n_r, int n_c) const;
 
 		//Display functions
 		void print() const;
@@ -58,14 +61,15 @@ class Matrix {
 			//Assignment
 		void operator=(const Matrix&);
 			//Addition and subtraction
-		Matrix operator+(Matrix&);
-		Matrix operator-(Matrix&);
+		Matrix operator+(const Matrix&) const;
+		Matrix operator-(const Matrix&) const;
 			//Scalar and matrix multiplication
-		Matrix operator*(double);						//Note: This means scalar multiplication always has to be at the END of a statement involving matrices
-		Matrix operator*(Matrix&);
+		Matrix operator*(double) const;						//Note: This means scalar multiplication always has to be at the END of a statement involving matrices
+		Matrix operator*(const Matrix&) const;
+		Matrix operator*(const Complex& in) const;
 		//Vector operator*(Vector&);
 			//Tensor product
-		Matrix operator^(const Matrix&);
+		Matrix operator^(const Matrix&) const;
 		Matrix operator^=(const Matrix&);
 			//Vector element access
 		Complex operator[](int index) const;
@@ -80,6 +84,9 @@ class Matrix {
 		static Matrix Y();
 		static Matrix Z();
 		static Matrix H();
+		static Matrix S();
+		static Matrix T();
+		static Matrix M(); // Post-select +1 outcome of Pauli-Z measurement
 		static Matrix R(double theta);
 		static Matrix CNOT();
 		static Matrix CMAT(const Matrix& inMat);
@@ -87,6 +94,9 @@ class Matrix {
 		static Matrix Y(int Nbit,int nth);
 		static Matrix Z(int Nbit,int nth);
 		static Matrix H(int Nbit,int nth);
+		static Matrix S(int Nbit,int nth);
+		static Matrix T(int Nbit,int nth);
+		static Matrix M(int Nbit,int nth);
 		static Matrix R(int Nbit,int nth, double theta);
 		static Matrix O(int Nbit,int nth);
 		static Matrix CNOT(int Nbit, int cbit, int obit);
@@ -94,12 +104,13 @@ class Matrix {
 		static Matrix PERM(int Nbits, int cbit, int Mbits, int inA, int inC);
         static Matrix CNOT(int Nbit, int* qargs, int nargs = -1);//qargs[0] = target, quargs[1 -> (n-1)] = controls
         static Matrix CS(int Nbit, int c1, int c2);
+        static Matrix CZ(int Nbit, int c1, int c2);
         static Matrix CCZ(int Nbit, int c1, int c2, int c3);
 
 		static Matrix loadMatrix(const char* filename);
 
 		//Shorthand
-		Matrix T();
+		//Matrix T();
 };
 
 #endif

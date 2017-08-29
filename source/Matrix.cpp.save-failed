@@ -960,8 +960,8 @@ Matrix Matrix::partialTrace(int q_i, Complex* tr_i) const {
             Matrix this_basis = Matrix::colVec(2);
             Matrix this_id = Matrix::identity(2);
             this_basis.E(0,0,1);
-            for(int i = 0; i < n; i++) {
-                if(i==(n-q_i)) {
+            for(int i = 1; i <= n; i++) {
+                if(i==q_i) {
                     tempR ^= this_basis;
                 } else {
                     tempR ^= this_id;
@@ -969,11 +969,10 @@ Matrix Matrix::partialTrace(int q_i, Complex* tr_i) const {
             }
             Matrix tempL = tempR.adjoint();
             Matrix temp_result = (tempL*(*this)*tempR);
-            //cout << "tempL" << endl;
-            //tempL.print();
-            //cout << "tempR" << endl;
-            //tempR.print();
-            //temp_result.print();
+            cout << "tempL" << endl;
+            tempL.print();
+            tempR.print();
+            temp_result.print();
             out = (out + temp_result);
         }
         {
@@ -981,8 +980,8 @@ Matrix Matrix::partialTrace(int q_i, Complex* tr_i) const {
             Matrix this_basis = Matrix::colVec(2);
             Matrix this_id = Matrix::identity(2);
             this_basis.E(1,0,1);
-            for(int i = 0; i < n; i++) {
-                if(i==(n-q_i)) {
+            for(int i = 1; i <= n; i++) {
+                if(i==q_i) {
                     tempR ^= this_basis;
                 } else {
                     tempR ^= this_id;
@@ -990,24 +989,8 @@ Matrix Matrix::partialTrace(int q_i, Complex* tr_i) const {
             }
             Matrix tempL = tempR.adjoint();
             Matrix temp_result = (tempL*(*this)*tempR);
-            //cout << "tempL" << endl;
-            //tempL.print();
-            //cout << "tempR" << endl;
-            //tempR.print();
             //temp_result.print();
             out = (out + temp_result);
-        }
-    }
-
-    return out;
-}
-
-Matrix Matrix::submatrix(int r_0, int c_0, int n_r, int n_c) const {
-    Matrix out(n_r,n_c);
-
-    for(int i = r_0; (i<n_r)&&(i<rows); i++) {
-        for(int j = c_0; (j<n_c)&&(j<cols); j++) {
-            out.E(i-r_0,j-c_0,E(i,j));
         }
     }
 

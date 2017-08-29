@@ -6,13 +6,15 @@ using namespace std;
 
 #include <string>
 #include <unordered_set>
+#include <vector>
 
 class PhasePolynomial {
     private:
-        int* a = NULL;
+        //int* a = NULL;
         int n = 0;
         int N = 0;
-        //unordered_set<int*>* data = NULL; // Each element is an integer tuple with form {<index>, <coefficient>}, where the binary expansion of <index> gives the F_2 coefficients of x vector and <coefficients> gives the Z_8 coefficients.
+        vector<int> m;
+        vector<int> a;
     public:
         PhasePolynomial(int in_n);
         PhasePolynomial(const PhasePolynomial& in);
@@ -22,12 +24,15 @@ class PhasePolynomial {
 
         int get_n() const;
         int get_N() const;
-        int getNoTerms() const;
+        int T() const;
+        int get_m_at(const int in_t) const;
+        int get_a_at(const int in_t) const;
 
         void operator+=(const PhasePolynomial& inPP);
         void operator*=(const int in_I);
         void operator-=(const PhasePolynomial& inPP);
         void operator=(const PhasePolynomial& in);
+        void operator%=(const int in_m);
 
         // Getters
         int operator[](const int in_I) const;

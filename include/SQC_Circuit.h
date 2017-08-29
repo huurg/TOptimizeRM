@@ -102,6 +102,8 @@ struct SQC_Circuit {
 
     SQC_Circuit();
     SQC_Circuit(int in_n);
+    SQC_Circuit(int in_n, int in_d);
+    SQC_Circuit(int in_n, int in_d, int in_p);
     SQC_Circuit(const SQC_Circuit& in_C);
     ~SQC_Circuit();
     void Construct();
@@ -147,5 +149,8 @@ struct SQC_Circuit {
 
     #include "UniversalOptimize.h"
 };
+
+double VerifyOptimization(const SQC_Circuit& in, const SQC_Circuit& out); //Returns 0.0 only if in and out are identical, otherwise a negative number.
+double VerifyOptimization2(const SQC_Circuit& in, const SQC_Circuit& out); //Returns 0.0 only if in and out are identical, otherwise a negative number.
 
 #endif // HEADER_SQC_CIRCUIT

@@ -21,6 +21,8 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
     toc = clock();
     LOut() << "Step 1 end. Executed in " << secs(tic,toc) << "s" << endl;
     accounted_time += secs(tic,toc);
+    //step1.Print();
+
 
     LOut() << "Step 2 begin: Expand Toffoli-n." << endl;
     tic = clock();
@@ -28,6 +30,7 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
     toc = clock();
     LOut() << "Step 2 end. Executed in " << secs(tic,toc) << "s" << endl;
     accounted_time += secs(tic,toc);
+    //step2.Print();
 
     LOut() << "Step 3 begin: Convert X to HZH etc." << endl;
     tic = clock();
@@ -35,6 +38,7 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
     toc = clock();
     LOut() << "Step 3 end. Executed in " << secs(tic,toc) << "s" << endl;
     accounted_time += secs(tic,toc);
+    //step3.Print();
 
     LOut() << "Step 4 begin: Convert CS to {CNOT, T} etc." << endl;
     tic = clock();
@@ -42,6 +46,7 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
     toc = clock();
     LOut() << "Step 4 end. Executed in " << secs(tic,toc) << "s" << endl;
     accounted_time += secs(tic,toc);
+    //step4.Print();
 
     LOut() << "Step 5 begin: Convert T* to ZST etc." << endl;
     tic = clock();
@@ -49,6 +54,7 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
     toc = clock();
     LOut() << "Step 5 end. Executed in " << secs(tic,toc) << "s" << endl;
     accounted_time += secs(tic,toc);
+    //step5.Print();
 
     LOut() << "Step 6 begin: Cancel trivial gates." << endl;
     tic = clock();
@@ -56,6 +62,7 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
     toc = clock();
     LOut() << "Step 6 end. Executed in " << secs(tic,toc) << "s" << endl;
     accounted_time += secs(tic,toc);
+    //step5.Print();
 
     LOut() << "Step 7 begin: Hadamard partitions." << endl;
     tic = clock();
@@ -64,6 +71,8 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
     int step6_N_Hs, step6_N_Ps;
     SQC_Circuit::decompose_into_Hadamard_partitions(step5, step6_Hs, step6_N_Hs, step6_Ps, step6_N_Ps);
     toc = clock();
+    LOut() << "Number of partitions = " << step6_N_Ps << endl;
+    LOut() << "Number of Hadamard partitions = " << step6_N_Hs << endl;
     LOut() << "Step 7 end. Executed in " << secs(tic,toc) << "s" << endl;
     accounted_time += secs(tic,toc);
 
@@ -83,6 +92,10 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
         SQC_Circuit::Hadamards_to_Gadgets(*this_part,this_L,this_Pp,this_R);
         toc = clock();
         step8_time += secs(tic,toc);
+        cout << "Had parts:"<<endl;
+        this_L->Print();
+        this_Pp->Print();
+        this_R->Print();
 
         if(this_Pp->n>final_n) final_n = this_Pp->n;
         SQC_Circuit* this_CNOT = NULL;
@@ -92,18 +105,24 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
         SQC_Circuit::decompose_C3_to_CNOT_D3(*this_Pp, this_CNOT, this_D3);
         toc = clock();
         step9_time += secs(tic,toc);
+        //cout << "step9" << endl;
+        //this_CNOT->Print();
+        //this_D3->Print();
 
         tic = clock();
         SQC_Circuit step10 = SQC_Circuit::optimize_D3(*this_D3, decoder);
+        //cout << "step10" << endl;
+        //step10.Print();
         toc = clock();
         step10_time += secs(tic,toc);
 
-        step10s[p] = new SQC_Circuit(this_Pp->n);
+        step10s[p] = new SQC_Circuit(this_Pp->n,this_Pp->d,this_Pp->p_hads);
         for(int i = 0; i < this_L->m; i++) step10s[p]->AddOperator(this_L->operator_list[i],this_L->n+1);
         for(int i = 0; i < step10.m; i++) step10s[p]->AddOperator(step10.operator_list[i]);
+        for(int i = 0; i < this_CNOT->m; i++) step10s[p]->AddOperator(this_CNOT->operator_list[i]);
         for(int i = 0; i < this_R->m; i++) step10s[p]->AddOperator(this_R->operator_list[i],this_R->n+1);
     }
-    SQC_Circuit out(final_n);
+    SQC_Circuit out(final_n, in.d, final_n-in.d);
     for(int p = 0; p < step6_N_Ps; p++) {
         for(int i = 0; i < step6_Hs[p]->m; i++) out.AddOperator(step6_Hs[p]->operator_list[i],step6_Hs[p]->n+1);
         for(int i = 0; i < step10s[p]->m; i++) out.AddOperator(step10s[p]->operator_list[i],step10s[p]->n+1);
@@ -132,7 +151,7 @@ SQC_Circuit SQC_Circuit::UniversalOptimize(const SQC_Circuit& in, TO_Decoder dec
 
 SQC_Circuit SQC_Circuit::convert_Y_to_XZ(const SQC_Circuit& in) {
     int n = in.n;
-    SQC_Circuit out(n);
+    SQC_Circuit out(n,in.d);
 
     for(int t = 0; t < in.m; t++) {
         int* this_op = in.operator_list[t];
@@ -166,7 +185,7 @@ SQC_Circuit SQC_Circuit::expand_Toffn_to_Toff3(const SQC_Circuit& in) {
         }
     }
 
-    SQC_Circuit out(n_in + n_Toff);
+    SQC_Circuit out(n_in + n_Toff,in.d);
 
     for(int t = 0; t < in.m; t++) {
         int* this_op = in.operator_list[t];
@@ -213,7 +232,7 @@ SQC_Circuit SQC_Circuit::expand_Toffn_to_Toff3(const SQC_Circuit& in) {
 
 SQC_Circuit SQC_Circuit::convert_Xs(const SQC_Circuit& in) {
     int n = in.n;
-    SQC_Circuit out(n);
+    SQC_Circuit out(n,in.n);
 
     for(int t = 0; t < in.m; t++) {
         int* this_op = in.operator_list[t];
@@ -249,7 +268,7 @@ SQC_Circuit SQC_Circuit::convert_Xs(const SQC_Circuit& in) {
 
 SQC_Circuit SQC_Circuit::convert_Cliff3s(const SQC_Circuit& in) {
     int n = in.n;
-    SQC_Circuit out(n);
+    SQC_Circuit out(n,in.d);
 
     for(int t = 0; t < in.m; t++) {
         int* this_op = in.operator_list[t];
@@ -369,8 +388,8 @@ SQC_Circuit SQC_Circuit::convert_Cliff3s(const SQC_Circuit& in) {
                         out.AddOperator(this_CNOT,3);
                     }
                     {
-                        int this_T[] = {SQC_OPERATOR_T, this_op[3]};
-                        out.AddOperator(this_T,2);
+                        int this_T_dag[] = {SQC_OPERATOR_T_DAG, this_op[3]};
+                        out.AddOperator(this_T_dag,2);
                     }
                     {
                         int this_CNOT[] = {SQC_OPERATOR_CNOT, this_op[3], this_op[1]};
@@ -396,7 +415,7 @@ SQC_Circuit SQC_Circuit::convert_Cliff3s(const SQC_Circuit& in) {
 
 SQC_Circuit SQC_Circuit::convert_Daggers(const SQC_Circuit& in) {
     int n = in.n;
-    SQC_Circuit out(n);
+    SQC_Circuit out(n,in.d);
 
     for(int t = 0; t < in.m; t++) {
         int* this_op = in.operator_list[t];
@@ -554,7 +573,7 @@ void SQC_Circuit::decompose_into_Hadamard_partitions(const SQC_Circuit& in, SQC_
         // Search for left-most Hadamards
         if(this_C.m>0) {
             //cout << "1" << endl;
-            inHs[N_Hs] = new SQC_Circuit(n);
+            inHs[N_Hs] = new SQC_Circuit(n,in.d);
             //cout << "\ta" << endl;
             bool exit = 0;
             bool q_blocked[n];
@@ -609,8 +628,8 @@ void SQC_Circuit::decompose_into_Hadamard_partitions(const SQC_Circuit& in, SQC_
                 //cout << "3" << endl;
                 inPs[N_Ps] = new SQC_Circuit(this_C);
 
-                for(int t = 0; t < this_C.m; t++) {
-                    this_C.DeleteOperator(this_C.m-1-t);
+                while(this_C.m>0) {
+                    this_C.DeleteOperator(this_C.m-1);
                 }
                 //inPs[N_Ps]->Print();
                 N_Ps++;
@@ -619,7 +638,7 @@ void SQC_Circuit::decompose_into_Hadamard_partitions(const SQC_Circuit& in, SQC_
                 //cout << "5" << endl;
                 //cout << "N_Ps = " << N_Ps << endl;
                 //this_C.Print();
-                inPs[N_Ps] = new SQC_Circuit(n);
+                inPs[N_Ps] = new SQC_Circuit(n,in.d);
                 int this_N_H = 0;
                 while((this_N_H<g_Hadamard_ancillas)&&(0<this_C.m)) {
                     int* this_op = this_C.operator_list[0];
@@ -680,7 +699,7 @@ void SQC_Circuit::decompose_into_Hadamard_partitions(const SQC_Circuit& in, SQC_
     }
     // Find final Hadamard partition
     if(final_H) {
-        inHs[N_Hs] = new SQC_Circuit(n);
+        inHs[N_Hs] = new SQC_Circuit(n,in.d);
         bool exit = 0;
         bool q_blocked[n];
         for(int i = 0; i < n; i++) q_blocked[i] = 0;
@@ -726,9 +745,12 @@ void SQC_Circuit::Hadamards_to_Gadgets(const SQC_Circuit& in, SQC_Circuit*& outL
         int* this_op = in.operator_list[t];
         if(this_op[0] == SQC_OPERATOR_HADAMARD) N_H++;
     }
-    outL = new SQC_Circuit(n+N_H);
-    outPp = new SQC_Circuit(n+N_H);
-    outR = new SQC_Circuit(n+N_H);
+    outL = new SQC_Circuit(n+N_H,in.d);
+    outPp = new SQC_Circuit(n+N_H,in.d);
+    outR = new SQC_Circuit(n+N_H,in.d);
+    outL->p_hads = N_H;
+    outPp->p_hads = N_H;
+    outR->p_hads = N_H;
     int this_H = 0;
     for(int t = 0; t < in.m; t++) {
         int* this_op = in.operator_list[t];
@@ -736,6 +758,7 @@ void SQC_Circuit::Hadamards_to_Gadgets(const SQC_Circuit& in, SQC_Circuit*& outL
             case SQC_OPERATOR_HADAMARD:
                 {
                     int had_index = n + 1 + this_H;
+
                     // Add Hadamard to outL
                     {
                         int this_g[] = {SQC_OPERATOR_HADAMARD, had_index};
@@ -810,8 +833,8 @@ void SQC_Circuit::Hadamards_to_Gadgets(const SQC_Circuit& in, SQC_Circuit*& outL
 
 void SQC_Circuit::decompose_C3_to_CNOT_D3(const SQC_Circuit& in, SQC_Circuit*& CNOT, SQC_Circuit*& D3) {
     int n = in.n;
-    CNOT = new SQC_Circuit(n);
-    D3 = new SQC_Circuit(n);
+    CNOT = new SQC_Circuit(n,in.d,in.p_hads);
+    D3 = new SQC_Circuit(n,in.d,in.p_hads);
     // Add each CNOT in circuit 'in' to CNOT
     for(int t = 0; t < in.m; t++) {
         int* this_op = in.operator_list[t];
@@ -830,9 +853,13 @@ void SQC_Circuit::decompose_C3_to_CNOT_D3(const SQC_Circuit& in, SQC_Circuit*& C
 SQC_Circuit SQC_Circuit::optimize_D3(const SQC_Circuit& in, TO_Decoder decoder) {
     int n = in.n;
     PhasePolynomial in_f = TO_Maps::SQC_Circuit_to_PhasePolynomial(in);
+    //cout << "PhasePolynomial in:" << endl;
+    //in_f.print();
     PhasePolynomial out_f = FullDecoderWrapper(in_f,decoder);
+    //cout << "PhasePolynomial out:" << endl;
+    //out_f.print();
     SQC_Circuit out = TO_Maps::PhasePolynomial_to_SQC_Circuit(out_f);
+    out.d = in.d;
+    out.p_hads = in.p_hads;
     return out;
 }
-
-

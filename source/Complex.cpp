@@ -79,7 +79,7 @@ string Complex::toString() {
 	string out;
 	ostringstream convert;
 	if(fabs(real) > 0.0) convert << real;
-	
+
 	if((fabs(real) > 0.0)&&(fabs(imaginary) > 0.0)) {
 		convert << " ";
 		if(imaginary >= 0.0) {
@@ -88,7 +88,7 @@ string Complex::toString() {
 			convert << "- ";
 		}
 	} else if(imaginary < 0.0) convert << "-";
-	
+
 	if(fabs(imaginary) > 0.0) {
 		if(fabs(imaginary)==1.0) {
 			convert << "i";
@@ -196,3 +196,10 @@ Complex Complex::operator-=(Complex inC) {
 }
 
 //Complex Complex::NACN(0,0);
+
+Complex& Complex::operator=(const double* in) {
+    real = in[0];
+    imaginary = in[1];
+
+    return (*this);
+}

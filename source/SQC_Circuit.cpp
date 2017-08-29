@@ -20,8 +20,10 @@ using namespace std;
 #include "Interface_BMSGSS.h"
 #include "LukeConsoleOut.h"
 #include "Matrix.h"
+#include "TO_Maps.h"
 using namespace LukeConsoleOut;
-
+#include "Utils.h"
+using namespace Utils;
 
 
 SQC_Circuit::SQC_Circuit() {
@@ -30,6 +32,19 @@ SQC_Circuit::SQC_Circuit() {
 
 SQC_Circuit::SQC_Circuit(int in_n) {
     n = in_n;
+    Construct();
+}
+
+SQC_Circuit::SQC_Circuit(int in_n, int in_d) {
+    n = in_n;
+    d = in_d;
+    Construct();
+}
+
+SQC_Circuit::SQC_Circuit(int in_n, int in_d, int in_p) {
+    n = in_n;
+    d = in_d;
+    p_hads = in_p;
     Construct();
 }
 
@@ -88,8 +103,10 @@ void SQC_Circuit::Copy(const SQC_Circuit& in_C) {
 
 void SQC_Circuit::Print(ostream* in_OS, int start_i, int print_n, bool with_t) const {
     (*in_OS) << "n " << n << endl;
+    (*in_OS) << "n_x " << d << endl;
+    (*in_OS) << "n_y " << (n-d-p_hads) << endl;
+    (*in_OS) << "n_z " << (p_hads) << endl;
     (*in_OS) << "m " << max_m << endl;
-    (*in_OS) << "p " << p << endl;
     if(print_n<0) print_n = m; else print_n = (start_i+print_n);
     for(int i = start_i; i < fmin(m,print_n); i++) {
         string this_op_str;
@@ -1447,7 +1464,7 @@ SQC_Circuit* SQC_Circuit::LoadTFCFile(const char* inFilename) {
                                                 }
                                             } while(this_tok);
                                         }
-                                        if(n) out = new SQC_Circuit(n);
+                                        if(n) out = new SQC_Circuit(n,n);
                                         file_state = 1;
                                     }
                                     break;
@@ -1569,6 +1586,24 @@ SQC_Circuit* SQC_Circuit::LoadTFCFile(const char* inFilename) {
                                             } else {
                                                 this_gate[0] = SQC_OPERATOR_S;
                                             }
+                                            int this_q = 0;
+                                            this_tok = strtok(NULL," ,\t");
+                                            for(int i = 0; (this_q==0)&&(i < n); i++) {
+                                                if(!qubit_strings[i].compare(this_tok)) {
+                                                    this_q = (i+1);
+                                                }
+                                            }
+                                            if(this_q!=0) {
+                                                this_gate[1] = this_q;
+                                                out->AddOperator(this_gate);
+                                            }
+                                        }
+                                        break;
+                                    case 'Z':
+                                        {
+                                            int this_gate[n+1];
+                                            for(int i = 0; i < (n+1); i++) this_gate[i] = 0;
+                                            this_gate[0] = SQC_OPERATOR_Z;
                                             int this_q = 0;
                                             this_tok = strtok(NULL," ,\t");
                                             for(int i = 0; (this_q==0)&&(i < n); i++) {
@@ -2019,4 +2054,124 @@ void SQC_Circuit::PrintOperatorDistribution() const {
     for(int i = 0; i < SQC_OPERATOR_N; i++) {
         cout << "\t" << i << "\t" << hist[i] << endl;
     }
+}
+
+double VerifyOptimization(const SQC_Circuit& U1, const SQC_Circuit& U2) {
+    double out = 0.0;
+
+    int n = max(U1.n, U2.n);
+
+    int N = pow(2,n);
+
+    Matrix matrix_in = TO_Maps::SQC_Circuit_to_Matrix(U1,n);
+    cout << "U1:" << endl;
+    matrix_in.print();
+    Matrix matrix_out = TO_Maps::SQC_Circuit_to_Matrix(U2,n);
+    cout << "U2:" << endl;
+    matrix_out.print();
+
+    Matrix U2d = matrix_out.adjoint();
+    Matrix U1U2d = matrix_in*U2d;
+
+    Complex U1U2d_trace;
+    for(int i = 0; i < N; i++) {
+        U1U2d_trace += U1U2d.E(i,i);
+    }
+
+    Matrix temp = (U1U2d*N)*(Complex(1.0,0.0)/U1U2d_trace);
+    Matrix temp2 = Matrix::identity(N);
+    Matrix matrix_brackets = (temp2 - temp);
+
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            out -= matrix_brackets.E(i,j).magnitude();
+        }
+    }
+
+
+    return out;
+}
+
+double VerifyOptimization2(const SQC_Circuit& U1, const SQC_Circuit& U2) {
+    LOut() << "Begin circuit verification..." << endl;
+    LOut_Pad++;
+    LOut() << "^ = tensor product" << endl;
+    LOut() << "` = Hermitian conjugate" << endl;
+    LOut() << "F = fidelity" << endl;
+    double out = 0.0;
+    int N_d = 1;
+
+    int n = U1.d;
+    int N = pow(2,n);
+    Matrix Uin = TO_Maps::SQC_Circuit_to_Matrix(U1);
+    LOut() << "U_in:" << endl;
+    Uin.print(); LOut() << endl;
+    Matrix Uout = TO_Maps::SQC_Circuit_to_Matrix(U2);
+    LOut() << "U_out:" << endl;
+    Uout.print(); LOut() << endl;
+    //Uout = (Matrix::M(2,2)*Uout*Matrix::M(2,2));
+    //LOut() << "Uout:" << endl;
+    //Uout.print();
+    Matrix psi(N,1);
+    srand(time(NULL));
+    for(int d = 0; d < N_d; d++) {
+        for(int i = 0; i < N; i++) psi.E(i,0,Utils::rand_d(),Utils::rand_d());
+        psi = (psi*sqrt(1.0/((psi.adjoint()*psi).E(0,0).getReal())));
+        //LOut() << "norm(psi) = " << ((psi.adjoint()*psi).E(0,0).getReal()) << endl;
+        LOut() << "|psi> = random state" << endl;
+        psi.print(); LOut() << endl;
+        int n_anc = U2.n-n;
+        int N_anc = pow(2,n_anc);
+        Matrix anc(N_anc,1);
+        anc.E(0,0,1.0);
+        LOut() << "|anc> = hadamard ancillas" << endl;
+        anc.print(); LOut() << endl;
+        Matrix phi = (anc^psi);
+        LOut() << "|phi> = |anc> ^ |psi>" << endl;
+        phi.print(); LOut() << endl;
+
+        phi = (Uout*phi);
+        LOut() << "U_out |phi> = " << endl;
+        phi.print(); LOut() << endl;
+
+        Matrix rho_out = phi*phi.adjoint();
+        LOut() << "rho_out = U_out |phi><phi| U_out'" << endl;
+        rho_out.print(); LOut() << endl;
+
+        Matrix rho = rho_out;
+        for(int i = U2.n; i > (U2.n-U2.p_hads); i--) {
+            LOut() << "Tracing qubit " << i << " of rho_out" << endl;
+            rho = rho.partialTrace(i);
+        }
+        /*for(int i = U2.n; i > (U2.n-U2.p_hads); i--) {
+            LOut() << "Tracing qubit " << i << " of rho_out" << endl;
+            rho = rho.partialTrace(i);
+        }*/
+
+        rho = rho*(1.0/rho.trace().magnitude());
+        LOut() << "rho_out` = Tr_{anc}(rho_out)" << endl;
+        rho.print(); LOut() << endl;
+
+        psi = (Uin*psi);
+        LOut() << "U_in|psi>" << endl;
+        psi.print(); LOut() << endl;
+
+        LOut() << "rho_in = U_in |psi><psi| U_in'" << endl;
+        (psi*psi.adjoint()).print(); LOut() << endl;
+
+        Complex expt = (psi.adjoint()*rho*psi).E(0,0);
+        LOut() << "<psi|rho_out`|psi> =" << endl;
+        expt.print(); LOut() << endl;
+
+        out += sqrt(expt.magnitude());
+        cout << "F(U_in|psi>, rho_out`) = " << sqrt(expt.magnitude()) << endl;
+    }
+    out /= N_d;
+
+    LOut_Pad--;
+
+    LOut() << "End circuit verification." << endl;
+
+
+    return out;
 }

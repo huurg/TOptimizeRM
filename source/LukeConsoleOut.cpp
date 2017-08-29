@@ -28,3 +28,39 @@ double LukeConsoleOut::secs(clock_t tic, clock_t toc) {
 
     return out;
 }
+
+void LukeConsoleOut::warning(const char* message, const char* function_name, const char* class_name) {
+    LOut() << "WARNING! ";
+    if(function_name||class_name) {
+        LOut() << "In `";
+        if(class_name) {
+            LOut() << class_name;
+            if(function_name) {
+                LOut() << "::";
+            }
+        }
+        if(function_name) {
+            LOut() << function_name;
+        }
+        LOut() << "'. ";
+    }
+    LOut() << message << endl;
+}
+
+void LukeConsoleOut::error(const char* message, const char* function_name, const char* class_name) {
+    LOut() << "ERROR! ";
+    if(function_name||class_name) {
+        LOut() << "In `";
+        if(class_name) {
+            LOut() << class_name;
+            if(function_name) {
+                LOut() << "::";
+            }
+        }
+        if(function_name) {
+            LOut() << function_name;
+        }
+        LOut() << "'. ";
+    }
+    LOut() << message << endl;
+}

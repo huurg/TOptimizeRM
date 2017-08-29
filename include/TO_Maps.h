@@ -9,6 +9,7 @@
 #include "GateStringSparse.h"
 #include "WeightedPolynomial.h"
 #include "Signature.h"
+#include "Matrix.h"
 
 namespace TO_Maps {
     // PhasePolynomial <-> SQC_Circuit
@@ -25,6 +26,10 @@ namespace TO_Maps {
 
     // WeightedPolynomia <-> Signature
     Signature WeightedPolynomial_to_Signature(const WeightedPolynomial& in);
+
+    // SQC_Circuit -> Matrix
+    Matrix SQC_Circuit_to_Matrix(const SQC_Circuit& in, int in_n = -1);
+
 }
 
 #endif // TO_MAPS_HEADER
